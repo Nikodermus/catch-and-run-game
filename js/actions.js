@@ -1,9 +1,15 @@
 window.onload = function () {
 
+    //Get Elements
+    var container = document.getElementById('CanvasContainer');
+    var soul_count = document.getElementById('SoulsCount');
+    var life_count = document.getElementById('LifeCount');
+    var player_status = document.getElementById('PlayerStatus');
+    var power_up = document.getElementById('PowerUp');
+
     //Generate canvas
     var canvas = document.createElement('canvas');
     var ctx = canvas.getContext('2d');
-    var container = document.getElementById('CanvasContainer');
 
     //Set canvas size as window size
     canvas.width = container.clientWidth - 128;
@@ -54,7 +60,8 @@ window.onload = function () {
         x: 0,
         y: 0,
         width: 40,
-        height: 40
+        height: 40,
+        speed: hero.speed * 0.3
     };
 
     //Enemy prototype
@@ -67,11 +74,16 @@ window.onload = function () {
         health: 100
     };
 
-    var caco_demon = Object.create(monster);
-    var caco_demon = Object.create(monster);
-    var caco_demon = Object.create(monster);
-    var caco_demon = Object.create(monster);
-    var caco_demon = Object.create(monster);
+    //Create monsters
+    var imp = Object.create(monster);
+    var revenant = Object.create(monster);
+    var baron = Object.create(monster);
+    var knight = Object.create(monster);
+    var cyberdemon = Object.create(monster);
+    var cacodemon = Object.create(monster);
+    var mancubus = Object.create(monster);
+    var spider = Object.create(monster);
+    var boss = Object.create(monster);
 
     var total_catches = 0;
 
@@ -103,15 +115,36 @@ window.onload = function () {
     function update(modifier) {
         if (38 in keysDown) { // Player holding up
             hero.y -= hero.speed * modifier;
+            if (hero.y < 0) {
+                hero.y = 0;
+            }
+
+            catchable.y += catchable.speed * modifier;
+
         }
         if (40 in keysDown) { // Player holding down
             hero.y += hero.speed * modifier;
+            if (hero.y > canvas.height - hero.height) {
+                hero.y = canvas.height - hero.height;
+            }
+            catchable.y -= catchable.speed * modifier;
+
         }
         if (37 in keysDown) { // Player holding left
             hero.x -= hero.speed * modifier;
+            if (hero.x < 0) {
+                hero.x = 0;
+            }
+            catchable.x += catchable.speed * modifier;
+
         }
         if (39 in keysDown) { // Player holding right
             hero.x += hero.speed * modifier;
+            if (hero.x > canvas.width - hero.width) {
+                hero.x = canvas.width - hero.width;
+            }
+            catchable.x -= catchable.speed * modifier;
+
         }
 
         // Are they touching?
@@ -139,7 +172,7 @@ window.onload = function () {
 
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-
+        soul_count.innerText = total_catches < 10 ? '0' + total_catches : total_catches;
         if (hero_ready) {
             ctx.drawImage(hero_image, hero.x, hero.y);
         }
@@ -149,6 +182,7 @@ window.onload = function () {
         if (catchable_ready) {
             ctx.drawImage(catchable_image, catchable.x, catchable.y);
         }
+
 
 
     }
