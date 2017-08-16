@@ -1,14 +1,14 @@
 # catch-and-run-game
 Pure JS game, with DOOM 1993 Sprites and a lot of incoming fun! Play it in: game.nikodermus.media
 
-MVP   
+##MVP   
 --- ✓ Hero can collect souls   
---- ✓ Souls count go to 0 if the hero touches the monster   
---- x Make status panel   
+--- ✓ Souls count decreases if the hero touches the monster   
+--- ✓ Make status panel   
 --- x Soul should move randomly against hero   
---- x Monster should try to catch the hero   
---- x Hero should have 3 lives before souls count go to 0   
---- x Monster should change based on the souls count   
+--- ✓ Monster should try to catch the hero   
+--- ✓ Hero should have 3 lives before souls count go to 0   
+--- ✓ Monster should change based on the souls count   
 --- x PowerUps should appear randomly based on the probability table   
 --- x PowerUps picked should change game experience   
 --- x If souls count is bigger than 30, start boss level   
@@ -16,7 +16,7 @@ MVP
 
 
 
-Addons   
+##Addons   
 --- x Bind hero sprite to change based on the keys hold   
 --- x Bind monster sprite to change based on the keys hold   
 --- x Sounds should trigger on Catch, PowerUp, Death(Hero + Unique monster sound)   

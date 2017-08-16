@@ -357,11 +357,6 @@ window.onload = function () {
 
         var monster_image = new Image();
         monster_image.src = "./img/" + monster.name + ".png";
-        ctx.beginPath();
-        ctx.lineWidth = "4";
-        ctx.strokeStyle = "green";
-        ctx.rect(monster.x, monster.y, monster.width, monster.height);
-        ctx.stroke();
         ctx.drawImage(monster_image, monster.x, monster.y);
 
 
