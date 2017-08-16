@@ -1,3 +1,20 @@
+/*!
+    Project: Catch & Run
+    Date: 08/14/2017
+    Author: Nicolas M. Pardo
+*/
+
+
+var game = {
+    playable: false,
+    lifes: 3,
+    x0: 0,
+    y0: 0,
+    catches: 0,
+    modifier: 1
+}
+
+
 window.onload = function () {
 
     //Get Elements
@@ -6,6 +23,8 @@ window.onload = function () {
     var life_count = document.getElementById('LifeCount');
     var player_status = document.getElementById('PlayerStatus');
     var power_up = document.getElementById('PowerUp');
+    var life_img = document.createElement('img');
+    life_img.src = './img/life.png';
 
     //Generate canvas
     var canvas = document.createElement('canvas');
@@ -24,13 +43,6 @@ window.onload = function () {
     };
     hero_image.src = "./img/marine.png";
 
-    // Monster image
-    var monster_ready = false;
-    var monster_image = new Image();
-    monster_image.onload = function () {
-        monster_ready = true;
-    };
-    monster_image.src = "./img/cyberdemon.png";
 
     // Catchable image
     var catchable_ready = false;
@@ -40,58 +52,119 @@ window.onload = function () {
     };
     catchable_image.src = "./img/lost_soul.png";
 
-    var game = {
-        playable: true,
-        lifes: 3,
-        killable: true,
-        health: 100,
-        damage: 40,
-        weapon_size: 20
-    }
+
+    game.x0 = canvas.width / 2;
+    game.y0 = canvas.height / 2;
 
     var hero = {
         speed: 256,
         x: 0,
         y: 0,
         width: 38,
-        height: 56
+        height: 56,
+        killable: true,
+        weapon_size: 20
     };
     var catchable = {
         x: 0,
         y: 0,
         width: 40,
         height: 40,
-        speed: hero.speed * 0.3
+        speed: hero.speed * 0.3 * game.modifier
     };
 
     //Enemy prototype
-    var monster = {
-        speed: 0,
+    var Monster = {
+        name: "",
         x: 0,
         y: 0,
         width: 0,
         height: 0,
-        health: 100
+        s_modifier: 1,
+        h_modifier: 1,
     };
 
     //Create monsters
-    var imp = Object.create(monster);
-    var revenant = Object.create(monster);
-    var baron = Object.create(monster);
-    var knight = Object.create(monster);
-    var cyberdemon = Object.create(monster);
-    var cacodemon = Object.create(monster);
-    var mancubus = Object.create(monster);
-    var spider = Object.create(monster);
-    var boss = Object.create(monster);
+    var imp = Object.create(Monster);
+    var revenant = Object.create(Monster);
+    var baron = Object.create(Monster);
+    var knight = Object.create(Monster);
+    var cyberdemon = Object.create(Monster);
+    var cacodemon = Object.create(Monster);
+    var mancubus = Object.create(Monster);
+    var spider = Object.create(Monster);
+    var boss = Object.create(Monster);
 
-    var total_catches = 0;
+    //Add data to each monster
+    imp.name = "imp";
+    imp.width = 41;
+    imp.height = 57;
+    imp.s_modifier = 0.5;
+    imp.h_modifier = 0.6;
+    imp.speed = hero.speed * imp.s_modifier * game.modifier;
+
+    revenant.name = "revenant";
+    revenant.width = 49;
+    revenant.height = 71;
+    revenant.s_modifier = 0.6;
+    revenant.h_modifier = 0.65;
+    revenant.speed = hero.speed * revenant.s_modifier * game.modifier;
+
+    baron.name = "baron";
+    baron.width = 49;
+    baron.height = 74;
+    baron.s_modifier = 0.7;
+    baron.h_modifier = 0.8;
+    baron.speed = hero.speed * baron.s_modifier * game.modifier;
+
+    knight.name = "knight";
+    knight.width = 52;
+    knight.height = 74;
+    knight.s_modifier = 0.65;
+    knight.h_modifier = 0.85;
+    knight.speed = hero.speed * knight.s_modifier * game.modifier;
+
+    cyberdemon.name = "cyberdemon";
+    cyberdemon.width = 85;
+    cyberdemon.height = 109;
+    cyberdemon.s_modifier = 0.8;
+    cyberdemon.h_modifier = 0.9;
+    knight.speed = hero.speed * knight.s_modifier * game.modifier;
+
+    cacodemon.name = "cacodemon";
+    cacodemon.width = 63;
+    cacodemon.height = 65;
+    cacodemon.s_modifier = 1;
+    cacodemon.h_modifier = 0.7;
+    cacodemon.speed = hero.speed * cacodemon.s_modifier * game.modifier;
+
+    mancubus.name = "mancubus";
+    mancubus.width = 164;
+    mancubus.height = 140;
+    mancubus.s_modifier = 0.9;
+    mancubus.h_modifier = 1.4;
+    mancubus.speed = hero.speed * mancubus.s_modifier * game.modifier;
+
+    spider.name = "spider";
+    spider.width = 194;
+    spider.height = 106;
+    spider.s_modifier = 1.1;
+    spider.h_modifier = 1.3;
+    spider.speed = hero.speed * spider.s_modifier * game.modifier;
+
+    boss.name = "final_boss";
+    boss.width = canvas.width * 0.7;
+    boss.height = this.width * 0.415549598;
+    boss.s_modifier = 0.5;
+    boss.h_modifier = 3;
+    boss.speed = hero.speed * boss.s_modifier * game.modifier;
 
     // Handle keyboard controls
     var keysDown = {};
 
     addEventListener("keydown", function (e) {
         keysDown[e.keyCode] = true;
+        game.playable = true;
     }, false);
 
     addEventListener("keyup", function (e) {
@@ -100,6 +173,32 @@ window.onload = function () {
 
     // Reset the game when the player catches a monster
     function reset() {
+        game.playable = false;
+
+        if (game.catches < 4) {
+            monster = imp;
+        } else if (game.catches < 8) {
+            monster = revenant;
+        } else if (game.catches < 12) {
+            monster = baron;
+        } else if (game.catches < 15) {
+            monster = knight;
+        } else if (game.catches < 17) {
+            monster = cyberdemon;
+        } else if (game.catches < 21) {
+            monster = cacodemon;
+        } else if (game.catches < 26) {
+            monster = mancubus;
+        } else if (game.catches < 30) {
+            monster = spider;
+        } else {
+            monster = boss;
+        }
+
+        console.log(imp.speed);
+
+
+
         hero.x = canvas.width / 2;
         hero.y = canvas.height / 2;
 
@@ -113,58 +212,124 @@ window.onload = function () {
     }
 
     function update(modifier) {
-        if (38 in keysDown) { // Player holding up
-            hero.y -= hero.speed * modifier;
-            if (hero.y < 0) {
-                hero.y = 0;
+        if (game.playable) {
+
+
+            //Move monster
+            if (hero.x > monster.x) {
+                monster.x += monster.speed * modifier;
+                if (monster.x > canvas.width - monster.width) {
+                    monster.x = canvas.width - monster.width;
+                }
+            }
+            if (hero.x < monster.x) {
+                monster.x -= monster.speed * modifier;
+                if (monster.x < 0) {
+                    monster.x = 0;
+                }
+
             }
 
-            catchable.y += catchable.speed * modifier;
-
-        }
-        if (40 in keysDown) { // Player holding down
-            hero.y += hero.speed * modifier;
-            if (hero.y > canvas.height - hero.height) {
-                hero.y = canvas.height - hero.height;
+            if (hero.y > monster.y) {
+                monster.y += monster.speed * modifier;
+                if (monster.y > canvas.height - monster.height) {
+                    monster.y = canvas.height - monster.height;
+                }
             }
-            catchable.y -= catchable.speed * modifier;
+            if (hero.y < monster.y) {
+                monster.y -= monster.speed * modifier;
 
-        }
-        if (37 in keysDown) { // Player holding left
-            hero.x -= hero.speed * modifier;
-            if (hero.x < 0) {
-                hero.x = 0;
+                if (monster.y < 0) {
+                    monster.y = 0;
+                }
             }
-            catchable.x += catchable.speed * modifier;
 
-        }
-        if (39 in keysDown) { // Player holding right
-            hero.x += hero.speed * modifier;
-            if (hero.x > canvas.width - hero.width) {
-                hero.x = canvas.width - hero.width;
+
+            //Move catchable
+            if (hero.x < catchable.x) {
+                catchable.x += catchable.speed * modifier;
+                if (catchable.x > canvas.width - catchable.width) {
+                    catchable.x = canvas.width - catchable.width;
+                }
             }
-            catchable.x -= catchable.speed * modifier;
+            if (hero.x > catchable.x) {
+                catchable.x -= catchable.speed * modifier;
+                if (catchable.x < 0) {
+                    catchable.x = 0;
+                }
 
-        }
+            }
 
-        // Are they touching?
-        if (
-            hero.x <= (catchable.x + 32) &&
-            catchable.x <= (hero.x + 32) &&
-            hero.y <= (catchable.y + 32) &&
-            catchable.y <= (hero.y + 32)
-        ) {
-            ++total_catches;
-            reset();
-        } else if (
-            hero.x <= (monster.x + 32) &&
-            monster.x <= (hero.x + 32) &&
-            hero.y <= (monster.y + 32) &&
-            monster.y <= (hero.y + 32)
-        ) {
-            location.reload();
+            if (hero.y < catchable.y) {
+                catchable.y += catchable.speed * modifier;
+                if (catchable.y > canvas.height - catchable.height) {
+                    catchable.y = canvas.height - catchable.height;
+                }
+            }
+            if (hero.y > catchable.y) {
+                catchable.y -= catchable.speed * modifier;
+
+                if (catchable.y < 0) {
+                    catchable.y = 0;
+                }
+            }
+
+
+            //Move user
+            if (38 in keysDown) { // Player holding up
+                hero.y -= hero.speed * modifier;
+                if (hero.y < 0) {
+                    hero.y = 0;
+                }
+
+            }
+            if (40 in keysDown) { // Player holding down
+                hero.y += hero.speed * modifier;
+                if (hero.y > canvas.height - hero.height) {
+                    hero.y = canvas.height - hero.height;
+                }
+
+            }
+            if (37 in keysDown) { // Player holding left
+                hero.x -= hero.speed * modifier;
+                if (hero.x < 0) {
+                    hero.x = 0;
+                }
+
+            }
+            if (39 in keysDown) { // Player holding right
+                hero.x += hero.speed * modifier;
+                if (hero.x > canvas.width - hero.width) {
+                    hero.x = canvas.width - hero.width;
+                }
+            }
+
+
+
+            // Are they touching?
+            if (
+                hero.x <= (catchable.x + catchable.width) &&
+                catchable.x <= (hero.x + catchable.width) &&
+                hero.y <= (catchable.y + catchable.height) &&
+                catchable.y <= (hero.y + catchable.height)
+            ) {
+                game.catches++;
+                reset();
+            } else if (
+                hero.x <= (monster.x + monster.width) &&
+                monster.x <= (hero.x + monster.width) &&
+                hero.y <= (monster.y + monster.height) &&
+                monster.y <= (hero.y + monster.height)
+            ) {
+                game.lifes--;
+                if (game.lifes < 1) location.reload();
+                reset();
+                player_status.src = `./img/${game.lifes}_lifes.gif`;
+            }
+
         }
     }
+
 
     // Draw everything
     function render() {
@@ -172,16 +337,36 @@ window.onload = function () {
 
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        soul_count.innerText = total_catches < 10 ? '0' + total_catches : total_catches;
+        soul_count.innerText = game.catches < 10 ? '0' + game.catches : game.catches;
+
+        life_count.innerHTML = "";
+        for (var i = 0; i < game.lifes; i++) {
+            var clone_img = life_img.cloneNode();
+            life_count.appendChild(clone_img);
+        }
+
+
         if (hero_ready) {
+
             ctx.drawImage(hero_image, hero.x, hero.y);
         }
-        if (monster_ready) {
-            ctx.drawImage(monster_image, monster.x, monster.y);
-        }
+
         if (catchable_ready) {
             ctx.drawImage(catchable_image, catchable.x, catchable.y);
         }
+
+        var monster_image = new Image();
+        monster_image.src = "./img/" + monster.name + ".png";
+        ctx.beginPath();
+        ctx.lineWidth = "4";
+        ctx.strokeStyle = "green";
+        ctx.rect(monster.x, monster.y, monster.width, monster.height);
+        ctx.stroke();
+        ctx.drawImage(monster_image, monster.x, monster.y);
+
+
+
+
 
 
 
@@ -208,5 +393,11 @@ window.onload = function () {
     var then = Date.now();
     reset();
     main();
+
     //render();
 };
+
+function levelUp(n) {
+    game.catches += n;
+
+}
