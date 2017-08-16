@@ -1,0 +1,8 @@
+GIFS
+http://www.dsclab.ntua.gr/~phib/doom1.htm
+
+SPRITES
+http://doomfansite.synthasite.com/doom-sprites.php
+
+TEXTURES
+http://www.bghq.com/textures.php?game=doom

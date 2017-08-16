@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Catch and Run Game | Nikodermus</title>
+    <link rel="stylesheet" href="./css/reset.css">
+    <link rel="stylesheet" href="./css/fonts/fonts.css">
+    <link rel="stylesheet" href="./css/main.css">
+    <script src="./js/actions.js"></script>
+</head>
+
+<body>
+    <figure class="top">
+        <img src="./img/pause_icon.png" alt="">
+
+    </figure>
+    <div class="border">
+    </div>
+    <div class="border"></div>
+    <div class="border">
+        <div class="panel">
+
+            <div class="left">
+                <img src="./img/lost_soul.gif" alt="">
+                <span id="SoulsCount">00</span>
+            </div>
+            <div class="right">
+
+                <figure class="lives" id="LifeCount">
+                    <img src="./img/life.png" alt="">
+                    <img src="./img/life.png" alt="">
+                    <img src="./img/life.png" alt="">
+                </figure>
+                <button disabled="disabled" id="PauseGame"> <div>II</div>       </button>
+            </div>
+            <figure>
+                <img src="./img/3_lifes.gif" alt="" id="PlayerStatus">
+                <img src="./img/yellow.png" alt="" id="PowerUp">
+            </figure>
+        </div>
+
+    </div>
+    <div class="border"></div>
+    <img src="./img/corner.png" alt="" class="corner">
+    <img src="./img/corner.png" alt="" class="corner">
+    <img src="./img/corner.png" alt="" class="corner">
+    <img src="./img/corner.png" alt="" class="corner">
+    <div id="CanvasContainer"></div>
+</body>
+
+</html>
