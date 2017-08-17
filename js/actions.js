@@ -102,8 +102,10 @@ window.onload = function () {
     var mancubus = Object.create(Monster);
     var spider = Object.create(Monster);
     var boss = Object.create(Monster);
+    var m_empty = Object.create(Monster);
 
-
+    //Empty container for monsters
+    var monster, monster2;
 
     //Add data to each monster
     imp.name = "imp";
@@ -137,28 +139,28 @@ window.onload = function () {
     cyberdemon.name = "cyberdemon";
     cyberdemon.width = 85;
     cyberdemon.height = 109;
-    cyberdemon.s_modifier = 0.6;
+    cyberdemon.s_modifier = 0.55;
     cyberdemon.h_modifier = 0.9;
     knight.speed = hero.speed * knight.s_modifier * game.modifier;
 
     cacodemon.name = "cacodemon";
     cacodemon.width = 63;
     cacodemon.height = 65;
-    cacodemon.s_modifier = 0.7;
+    cacodemon.s_modifier = 0.65;
     cacodemon.h_modifier = 0.7;
     cacodemon.speed = hero.speed * cacodemon.s_modifier * game.modifier;
 
     mancubus.name = "mancubus";
     mancubus.width = 164;
     mancubus.height = 140;
-    mancubus.s_modifier = 0.75;
+    mancubus.s_modifier = 0.6;
     mancubus.h_modifier = 1.4;
     mancubus.speed = hero.speed * mancubus.s_modifier * game.modifier;
 
     spider.name = "spider";
     spider.width = 194;
     spider.height = 106;
-    spider.s_modifier = 0.85;
+    spider.s_modifier = 0.7;
     spider.h_modifier = 1.3;
     spider.speed = hero.speed * spider.s_modifier * game.modifier;
 
@@ -193,15 +195,16 @@ window.onload = function () {
     red.name = "red";
     blue.name = "blue";
     green.name = "green";
-    green.name = "life";
+    life.name = "life";
+    empty.name = "empty"
 
     yellow.do = function () {
         monster.speed *= 1.3;
-
     };
 
     red.do = function () {
-        //
+        monster2 = getMonster();
+        drawSecond();
     };
 
     white.do = function () {
@@ -238,6 +241,65 @@ window.onload = function () {
     //Random for various purposes
     function getRandom(min, max) {
         return Math.random() * (max - min) + min;
+    }
+
+    function getMonster() {
+        var danger_level = getRandom(0, 30);
+        if (danger_level < 7) {
+            return imp;
+        } else if (danger_level < 13) {
+            return revenant;
+        } else if (danger_level < 18) {
+            return baron;
+        } else if (danger_level < 22) {
+            return knight;
+        } else if (danger_level < 25) {
+            return cyberdemon;
+        } else if (danger_level < 27) {
+            return cacodemon;
+        } else if (danger_level < 30) {
+            return mancubus;
+        } else {
+            return spider;
+        }
+    }
+
+    function drawSecond() {
+        if (monster2 !== null && monster2 !== undefined) {
+            var monster2_image = new Image();
+            monster2_image.src = "./img/" + monster2.name + ".png";
+            ctx.drawImage(monste2r_image, 0, 0);
+
+            //Move second monster
+            if (hero.x > monster2.x) {
+                monster2.x += monster2.speed * modifier;
+                if (monster2.x > canvas.width - monster2.width) {
+                    monster2.x = canvas.width - monster2.width;
+                }
+            }
+            if (hero.x < monster2.x) {
+                monster2.x -= monster2.speed * modifier;
+                if (monster2.x < 0) {
+                    monster2.x = 0;
+                }
+
+            }
+
+            if (hero.y > monster2.y) {
+                monster2.y += monster2.speed * modifier;
+                if (monster2.y > canvas.height - monster2.height) {
+                    monster2.y = canvas.height - monster2.height;
+                }
+            }
+            if (hero.y < monster2.y) {
+                monster2.y -= monster2.speed * modifier;
+
+                if (monster2.y < 0) {
+                    monster2.y = 0;
+                }
+            }
+        }
+
     }
 
     // Reset the game when the player catches a monster
@@ -424,15 +486,16 @@ window.onload = function () {
                 hero.x <= (catchable.x + catchable.width) &&
                 catchable.x <= (hero.x + catchable.width) &&
                 hero.y <= (catchable.y + catchable.height) &&
-                catchable.y <= (hero.y + catchable.height) && hero.killable
+                catchable.y <= (hero.y + catchable.height)
             ) {
                 game.catches++;
                 reset();
-            } else if (
+            }
+            if (
                 hero.x <= (monster.x + monster.width) &&
                 monster.x <= (hero.x + monster.width) &&
                 hero.y <= (monster.y + monster.height) &&
-                monster.y <= (hero.y + monster.height)
+                monster.y <= (hero.y + monster.height) && hero.killable
             ) {
                 game.lifes--;
                 if (game.lifes < 1) location.reload();
@@ -477,17 +540,8 @@ window.onload = function () {
 
         soul_count.innerText = game.catches < 10 ? '0' + game.catches : game.catches;
 
-
-
-
-        if (hero_ready) {
-
-            ctx.drawImage(hero_image, hero.x, hero.y);
-        }
-
-        if (catchable_ready) {
-            ctx.drawImage(catchable_image, catchable.x, catchable.y);
-        }
+        ctx.drawImage(hero_image, hero.x, hero.y);
+        ctx.drawImage(catchable_image, catchable.x, catchable.y);
 
         var monster_image = new Image();
         monster_image.src = "./img/" + monster.name + ".png";
@@ -497,11 +551,7 @@ window.onload = function () {
         power_up_image.src = "./img/" + power_up.name + ".png";
         ctx.drawImage(power_up_image, power_up.x, power_up.y);
 
-
-
-
-
-
+        drawSecond();
 
     }
 
@@ -526,8 +576,6 @@ window.onload = function () {
     var then = Date.now();
     reset();
     main();
-
-    //render();
 };
 
 function levelUp(n) {
