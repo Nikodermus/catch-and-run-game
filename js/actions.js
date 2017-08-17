@@ -105,7 +105,7 @@ window.onload = function () {
     var m_empty = Object.create(Monster);
 
     //Empty container for monsters
-    var monster, monster2;
+    var monster, monster2, danger_level;
 
     //Add data to each monster
     imp.name = "imp";
@@ -171,6 +171,8 @@ window.onload = function () {
     boss.h_modifier = 3;
     boss.speed = hero.speed * boss.s_modifier * game.modifier;
 
+    m_empty.name = "empty";
+
     //PowerUp protype
     var PowerUp = {
         name: "",
@@ -204,7 +206,6 @@ window.onload = function () {
 
     red.do = function () {
         monster2 = getMonster();
-        drawSecond();
     };
 
     white.do = function () {
@@ -244,7 +245,7 @@ window.onload = function () {
     }
 
     function getMonster() {
-        var danger_level = getRandom(0, 30);
+        danger_level = getRandom(0, 30);
         if (danger_level < 7) {
             return imp;
         } else if (danger_level < 13) {
@@ -264,46 +265,14 @@ window.onload = function () {
         }
     }
 
-    function drawSecond() {
-        if (monster2 !== null && monster2 !== undefined) {
-            var monster2_image = new Image();
-            monster2_image.src = "./img/" + monster2.name + ".png";
-            ctx.drawImage(monste2r_image, 0, 0);
 
-            //Move second monster
-            if (hero.x > monster2.x) {
-                monster2.x += monster2.speed * modifier;
-                if (monster2.x > canvas.width - monster2.width) {
-                    monster2.x = canvas.width - monster2.width;
-                }
-            }
-            if (hero.x < monster2.x) {
-                monster2.x -= monster2.speed * modifier;
-                if (monster2.x < 0) {
-                    monster2.x = 0;
-                }
 
-            }
 
-            if (hero.y > monster2.y) {
-                monster2.y += monster2.speed * modifier;
-                if (monster2.y > canvas.height - monster2.height) {
-                    monster2.y = canvas.height - monster2.height;
-                }
-            }
-            if (hero.y < monster2.y) {
-                monster2.y -= monster2.speed * modifier;
-
-                if (monster2.y < 0) {
-                    monster2.y = 0;
-                }
-            }
-        }
-
-    }
 
     // Reset the game when the player catches a monster
     function reset() {
+        monster2 = m_empty;
+        hero.killable = true;
         game.playable = false;
         power_active.src = "";
         drawLives();
@@ -348,7 +317,6 @@ window.onload = function () {
             power_up = life;
         }
 
-        console.log(power_up, fun_level);
 
         hero.x = canvas.width / 2;
         hero.y = canvas.height / 2;
@@ -385,8 +353,6 @@ window.onload = function () {
     }
 
     function update(modifier) {
-
-
         if (game.playable) {
 
 
@@ -404,7 +370,6 @@ window.onload = function () {
                 }
 
             }
-
             if (hero.y > monster.y) {
                 monster.y += monster.speed * modifier;
                 if (monster.y > canvas.height - monster.height) {
@@ -419,6 +384,34 @@ window.onload = function () {
                 }
             }
 
+            //Move second monster
+            if (hero.x > monster2.x) {
+                monster2.x += monster2.speed * modifier;
+                if (monster2.x > canvas.width - monster2.width) {
+                    monster2.x = canvas.width - monster2.width;
+                }
+            }
+            if (hero.x < monster2.x) {
+                monster2.x -= monster2.speed * modifier;
+                if (monster2.x < 0) {
+                    monster2.x = 0;
+                }
+
+            }
+
+            if (hero.y > monster2.y) {
+                monster2.y += monster2.speed * modifier;
+                if (monster2.y > canvas.height - monster2.height) {
+                    monster2.y = canvas.height - monster2.height;
+                }
+            }
+            if (hero.y < monster2.y) {
+                monster2.y -= monster2.speed * modifier;
+
+                if (monster2.y < 0) {
+                    monster2.y = 0;
+                }
+            }
 
             //Move catchable
             if (hero.x < catchable.x) {
@@ -434,7 +427,6 @@ window.onload = function () {
                 }
 
             }
-
             if (hero.y < catchable.y) {
                 catchable.y += catchable.speed * modifier;
                 if (catchable.y > canvas.height - catchable.height) {
@@ -449,28 +441,24 @@ window.onload = function () {
                 }
             }
 
-
             //Move user
             if (38 in keysDown) { // Player holding up
                 hero.y -= hero.speed * modifier;
                 if (hero.y < 0) {
                     hero.y = 0;
                 }
-
             }
             if (40 in keysDown) { // Player holding down
                 hero.y += hero.speed * modifier;
                 if (hero.y > canvas.height - hero.height) {
                     hero.y = canvas.height - hero.height;
                 }
-
             }
             if (37 in keysDown) { // Player holding left
                 hero.x -= hero.speed * modifier;
                 if (hero.x < 0) {
                     hero.x = 0;
                 }
-
             }
             if (39 in keysDown) { // Player holding right
                 hero.x += hero.speed * modifier;
@@ -481,7 +469,7 @@ window.onload = function () {
 
 
 
-            // Are they touching?
+            // If the hero touches the catchable
             if (
                 hero.x <= (catchable.x + catchable.width) &&
                 catchable.x <= (hero.x + catchable.width) &&
@@ -489,13 +477,30 @@ window.onload = function () {
                 catchable.y <= (hero.y + catchable.height)
             ) {
                 game.catches++;
+                hero.killable = true;
                 reset();
             }
+
+            // If the hero touches the monster            
             if (
                 hero.x <= (monster.x + monster.width) &&
                 monster.x <= (hero.x + monster.width) &&
                 hero.y <= (monster.y + monster.height) &&
                 monster.y <= (hero.y + monster.height) && hero.killable
+            ) {
+                game.lifes--;
+                if (game.lifes < 1) location.reload();
+                if (game.lifes !== 0) player_status.src = `./img/${game.lifes}_lifes.gif`;
+                reset();
+
+            }
+
+            // If the hero touches the second monster
+            if (
+                hero.x <= (monster2.x + monster2.width) &&
+                monster2.x <= (hero.x + monster2.width) &&
+                hero.y <= (monster2.y + monster2.height) &&
+                monster2.y <= (hero.y + monster2.height) && hero.killable
             ) {
                 game.lifes--;
                 if (game.lifes < 1) location.reload();
@@ -520,9 +525,13 @@ window.onload = function () {
                 power_up = empty;
             }
 
+
+
         }
     }
 
+
+    //Check how many lives 
     function drawLives() {
         life_count.innerHTML = "";
         if (game.lifes > 5) game.lifes = 5;
@@ -536,22 +545,30 @@ window.onload = function () {
     // Draw everything
     function render() {
 
+        //Clear the canvas
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+        //Place the souls count
         soul_count.innerText = game.catches < 10 ? '0' + game.catches : game.catches;
 
+        //Draw hero and catchable
         ctx.drawImage(hero_image, hero.x, hero.y);
         ctx.drawImage(catchable_image, catchable.x, catchable.y);
 
+        //Draw Image
         var monster_image = new Image();
         monster_image.src = "./img/" + monster.name + ".png";
         ctx.drawImage(monster_image, monster.x, monster.y);
 
+        //Draw Power Up
         var power_up_image = new Image();
         power_up_image.src = "./img/" + power_up.name + ".png";
         ctx.drawImage(power_up_image, power_up.x, power_up.y);
 
-        drawSecond();
+        //Draw second monster
+        var monster2_image = new Image();
+        monster2_image.src = "./img/" + monster2.name + ".png";
+        ctx.drawImage(monster2_image, monster2.x, monster2.y);
 
     }
 
