@@ -104,8 +104,9 @@ window.onload = function () {
     var boss = Object.create(Monster);
     var m_empty = Object.create(Monster);
 
-    //Empty container for monsters
-    var monster, monster2, danger_level;
+
+    m_empty.name = "empty";
+
 
     //Add data to each monster
     imp.name = "imp";
@@ -171,7 +172,7 @@ window.onload = function () {
     boss.h_modifier = 3;
     boss.speed = hero.speed * boss.s_modifier * game.modifier;
 
-    m_empty.name = "empty";
+
 
     //PowerUp protype
     var PowerUp = {
@@ -223,6 +224,31 @@ window.onload = function () {
     life.do = function () {
         game.lifes++;
     };
+
+    //Empty container for monsters
+    var monster = m_empty;
+    var monster2 = m_empty;
+    var danger_level = 0;
+    var power_up = empty;
+
+    var m_x_last = monster.x;
+    var m_y_last = monster.y;
+    var m2_x_last = monster2.x;
+    var m2_y_last = monster2.y;
+    var h_x_last = hero.x;
+    var h_y_last = hero.y;
+    var c_x_last = catchable.x;
+    var c_y_last = catchable.y;
+
+
+    var monster_image = new Image();
+    monster_image.src = "./img/" + monster.name + ".png";
+
+    var power_up_image = new Image();
+    power_up_image.src = "./img/" + power_up.name + ".png";
+
+    var monster2_image = new Image();
+    monster2_image.src = "./img/" + monster2.name + ".png";
 
 
 
@@ -378,7 +404,6 @@ window.onload = function () {
             }
             if (hero.y < monster.y) {
                 monster.y -= monster.speed * modifier;
-
                 if (monster.y < 0) {
                     monster.y = 0;
                 }
@@ -524,6 +549,14 @@ window.onload = function () {
                 ctx.clearRect(power_up.x, power_up.y, power_up.width, power_up.height);
                 power_up = empty;
             }
+            var items = [hero, monster, catchable];
+
+            var savePos = [];
+            items.forEach(function (elem, i) {
+                savePos.push(elem.x);
+                savePos.push(elem.y);
+            })
+            console.log(savePos);
 
 
 
@@ -556,18 +589,12 @@ window.onload = function () {
         ctx.drawImage(catchable_image, catchable.x, catchable.y);
 
         //Draw Image
-        var monster_image = new Image();
-        monster_image.src = "./img/" + monster.name + ".png";
         ctx.drawImage(monster_image, monster.x, monster.y);
 
         //Draw Power Up
-        var power_up_image = new Image();
-        power_up_image.src = "./img/" + power_up.name + ".png";
         ctx.drawImage(power_up_image, power_up.x, power_up.y);
 
         //Draw second monster
-        var monster2_image = new Image();
-        monster2_image.src = "./img/" + monster2.name + ".png";
         ctx.drawImage(monster2_image, monster2.x, monster2.y);
 
     }
