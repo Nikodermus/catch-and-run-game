@@ -9,8 +9,8 @@ Pure JS game, with DOOM 1993 Sprites and a lot of incoming fun! Play it in: game
 --- ✓ Monster should try to catch the hero   
 --- ✓ Hero should have 3 lives before souls count go to 0   
 --- ✓ Monster should change based on the souls count   
---- x PowerUps should appear randomly based on the probability table   
---- x PowerUps picked should change game experience   
+--- ✓ PowerUps should appear randomly based on the probability table   
+--- ✓ PowerUps picked should change game experience   
 --- x If souls count is bigger than 30, start boss level   
 --- x Game can be paused, and show menu to reset, share or see source code
 
