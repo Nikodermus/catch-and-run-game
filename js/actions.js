@@ -152,7 +152,7 @@ window.onload = function () {
     cyberdemon.height = 109;
     cyberdemon.s_modifier = 0.55;
     cyberdemon.h_modifier = 0.9;
-    knight.speed = hero.speed * knight.s_modifier * game.modifier;
+    cyberdemon.speed = hero.speed * knight.s_modifier * game.modifier;
 
     cacodemon.name = "cacodemon";
     cacodemon.width = 63;
