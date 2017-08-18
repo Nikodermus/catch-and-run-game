@@ -24,8 +24,19 @@ window.onload = function () {
     var life_count = document.getElementById('LifeCount');
     var player_status = document.getElementById('PlayerStatus');
     var power_active = document.getElementById('PowerActive');
+    var pause_game = document.getElementById('PauseGame');
+    var reload_game = document.getElementById('ReloadGame');
+    var close_menu = document.getElementById('CloseMenu');
+    var pause_menu = document.getElementById('PauseMenu');
+    console.log(pause_game);
+    var menu_overlay = document.querySelector('.menu_overlay');
+    var menu_container = document.querySelector('.menu_container');
+    var power_up_text = document.getElementById('PowerUpText');
     var life_img = document.createElement('img');
+
+
     life_img.src = './img/life.png';
+    pause_menu.style.visibility = 'hidden';
 
     //Generate canvas
     var canvas = document.createElement('canvas');
@@ -104,9 +115,8 @@ window.onload = function () {
     var boss = Object.create(Monster);
     var m_empty = Object.create(Monster);
 
-
-    m_empty.name = "empty";
-
+    //Empty container for monsters
+    var monster, monster2, danger_level;
 
     //Add data to each monster
     imp.name = "imp";
@@ -172,7 +182,7 @@ window.onload = function () {
     boss.h_modifier = 3;
     boss.speed = hero.speed * boss.s_modifier * game.modifier;
 
-
+    m_empty.name = "empty";
 
     //PowerUp protype
     var PowerUp = {
@@ -181,6 +191,7 @@ window.onload = function () {
         y: 0,
         width: 37,
         height: 33,
+        explanation: "",
         do: function () {}
     };
 
@@ -201,56 +212,37 @@ window.onload = function () {
     life.name = "life";
     empty.name = "empty"
 
+    //PowerUp Effects
     yellow.do = function () {
+        yellow.explanation = "";
         monster.speed *= 1.3;
     };
 
     red.do = function () {
+        red.explanation = "";
         monster2 = getMonster();
     };
 
     white.do = function () {
+        white.explanation = "";
         hero.killable = false;
     };
 
     blue.do = function () {
+        blue.explanation = "";
         hero.speed *= 1.2;
     };
 
     green.do = function () {
+        green.explanation = "";
         monster.speed *= 0.8;
     };
 
     life.do = function () {
+        life.explanation = "";
         game.lifes++;
+        drawLives();
     };
-
-    //Empty container for monsters
-    var monster = m_empty;
-    var monster2 = m_empty;
-    var danger_level = 0;
-    var power_up = empty;
-
-    var m_x_last = monster.x;
-    var m_y_last = monster.y;
-    var m2_x_last = monster2.x;
-    var m2_y_last = monster2.y;
-    var h_x_last = hero.x;
-    var h_y_last = hero.y;
-    var c_x_last = catchable.x;
-    var c_y_last = catchable.y;
-
-
-    var monster_image = new Image();
-    monster_image.src = "./img/" + monster.name + ".png";
-
-    var power_up_image = new Image();
-    power_up_image.src = "./img/" + power_up.name + ".png";
-
-    var monster2_image = new Image();
-    monster2_image.src = "./img/" + monster2.name + ".png";
-
-
 
 
     // Handle keyboard controls
@@ -404,6 +396,7 @@ window.onload = function () {
             }
             if (hero.y < monster.y) {
                 monster.y -= monster.speed * modifier;
+
                 if (monster.y < 0) {
                     monster.y = 0;
                 }
@@ -514,9 +507,16 @@ window.onload = function () {
                 monster.y <= (hero.y + monster.height) && hero.killable
             ) {
                 game.lifes--;
-                if (game.lifes < 1) location.reload();
-                if (game.lifes !== 0) player_status.src = `./img/${game.lifes}_lifes.gif`;
+                if (game.lifes >= 3) {
+                    player_status.src = `./img/3_lifes.gif`;
+                } else if (game.lifes > 0) {
+                    player_status.src = `./img/${game.lifes}_lifes.gif`;
+
+                } else {
+                    location.reload();
+                }
                 reset();
+
 
             }
 
@@ -546,17 +546,11 @@ window.onload = function () {
 
                 }
                 power_up.do();
+                power_up_text.className = power_up.name;
+                power_up_text.innerText = power_up.explanation;
                 ctx.clearRect(power_up.x, power_up.y, power_up.width, power_up.height);
                 power_up = empty;
             }
-            var items = [hero, monster, catchable];
-
-            var savePos = [];
-            items.forEach(function (elem, i) {
-                savePos.push(elem.x);
-                savePos.push(elem.y);
-            })
-            console.log(savePos);
 
 
 
@@ -589,12 +583,18 @@ window.onload = function () {
         ctx.drawImage(catchable_image, catchable.x, catchable.y);
 
         //Draw Image
+        var monster_image = new Image();
+        monster_image.src = "./img/" + monster.name + ".png";
         ctx.drawImage(monster_image, monster.x, monster.y);
 
         //Draw Power Up
+        var power_up_image = new Image();
+        power_up_image.src = "./img/" + power_up.name + ".png";
         ctx.drawImage(power_up_image, power_up.x, power_up.y);
 
         //Draw second monster
+        var monster2_image = new Image();
+        monster2_image.src = "./img/" + monster2.name + ".png";
         ctx.drawImage(monster2_image, monster2.x, monster2.y);
 
     }
@@ -612,6 +612,18 @@ window.onload = function () {
         requestAnimationFrame(main);
     }
 
+    function closeMenu() {
+        pause_menu.style.visibility = 'hidden';
+        game.playable = true;
+        console.log('closed')
+    }
+
+    function openMenu() {
+        pause_menu.style.visibility = 'visible';
+        game.playable = false;
+        console.log('opening')
+    }
+
     // Cross-browser support for requestAnimationFrame
     var w = window;
     requestAnimationFrame = w.requestAnimationFrame || w.webkitRequestAnimationFrame || w.msRequestAnimationFrame || w.mozRequestAnimationFrame;
@@ -620,9 +632,42 @@ window.onload = function () {
     var then = Date.now();
     reset();
     main();
+
+
+    //Close menu
+    menu_container.addEventListener('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+    }, false);
+
+    close_menu.addEventListener('click', closeMenu, false);
+
+    menu_overlay.addEventListener('click', closeMenu, false);
+
+    //Show Menu
+    pause_game.addEventListener('click', openMenu, false);
+    document.addEventListener('blur', openMenu, false);
+
+    //Shortcuts
+    document.addEventListener('keypress', function (e) {
+        var key = e.which ||  e.keyCode;
+        if (key === 112) {
+            if (pause_menu.style.visibility !== 'visible') {
+                openMenu();
+            } else {
+                closeMenu();
+            }
+        } else if (key === 114) {
+            location.reload();
+        }
+
+
+    }, false);
+
+    //Reload if need
+    pause_game.addEventListener('click', openMenu, false);
 };
 
 function levelUp(n) {
     game.catches += n;
-
 }

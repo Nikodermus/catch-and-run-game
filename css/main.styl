@@ -71,7 +71,6 @@ body
     background-size 80px 80px
     background-repeat  repeat
     overflow hidden
-    border url('../img/border-top.png') 128
 
 *
 h1
@@ -102,7 +101,7 @@ button
         height 100%
         display flex
         justify-content center
-        align-content center
+        align-items center
         color $green
         opacity .9
     &:hover
@@ -235,4 +234,102 @@ button
                     margin-left 1rem
                     font-size 1.6rem
                     line-height 40px
+#PauseMenu
+    visibility hidden
+    height 100%
+    width 100%
+    .menu_overlay
+        height 100%
+        width 100%
+        position fixed
+        top 0
+        left 0
+        right unset
+        bottom unset
+        z-index 100
+        background alpha(black,0.5)
+        display flex
+        justify-content center
+        align-items center
+        .menu_container 
+            position relative
+            z-index 1001
+            min-width 200px
+            width 80%
+            max-width (550/$size)rem
+            height 40%
+            max-height 350px
+            min-height 250px
+            background-image url('../img/menu_bg.png') 
+            background-size cover
+            border-image url('../img/menu_border.png')
+            align-items center
+            display flex
+            border-image-width 15px
+            border-image-repeat repeat
+            border-image-slice 15
+            h1
+                text-align center
+                text-transform uppercase
+                font-size 22px
+                padding 2rem
+                position absolute
+                top 0
+                left 0
+                width 100%
+                right unset 
+                bottom unset
+            h3
+                position absolute
+                bottom 15px
+                top unset
+                padding 1rem
+                text-transform uppercase
+                font-size 12px
+                &:first-of-type
+                    left 15px
+                    right unset
+                &:last-of-type
+                    left unset
+                    right 15px
+                &:hover
+                    cursor pointer
+            figure
+                width 100%
+                position absolute
+                z-index -2
+                bottom 15px
+                left 0
+                right unset
+                top unset 
+                text-align center
+                padding 0
+                img
+                    margin-bottom -3px
+            .menu_buttons
+                width 100%
+                text-align center
+                a
+                    button
+                        width 40px
+                        margin-right 1rem
+                        &:hover
+                            i
+                                color $red
+                    &:last-of-type
+                        button
+                            margin-right 0
+                    
+                    i
+                        text-align center
+                        color $green
+                        vertical-align middle
+                        font-size 21px
+                        line-height 21px
+
+
+            
+            
+
+
                 
