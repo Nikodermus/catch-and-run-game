@@ -197,9 +197,10 @@ button:hover > * {
   justify-content: center;
   position: relative;
 }
-.border .panel > figure img {
+.border .panel > figure #PlayerStatus {
   position: relative;
   z-index: 3;
+  left: 2px;
 }
 .border .panel > figure #PowerActive {
   position: absolute;
@@ -346,4 +347,34 @@ button:hover > * {
   vertical-align: middle;
   font-size: 21px;
   line-height: 21px;
+  text-shadow: none;
+}
+#PauseMenu .menu_overlay .menu_container .menu_buttons a i.icon-nikodermus {
+  font-size: 16px;
+  line-height: 16px;
+}
+#PowerUpText {
+  position: fixed;
+  top: 64px;
+  left: 64px;
+  font-size: 12ppx;
+  padding: 1rem;
+  z-index: 40;
+  text-transform: uppercase;
+  font-family: 'doomregular';
+}
+#PowerUpText.blue {
+  color: #0000d3;
+}
+#PowerUpText.yellow {
+  color: #ff5;
+}
+#PowerUpText.white {
+  color: #fff;
+}
+#PowerUpText.life {
+  color: #10210b;
+}
+#PowerUpText.green {
+  color: #6ccf3f;
 }

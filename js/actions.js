@@ -28,7 +28,6 @@ window.onload = function () {
     var reload_game = document.getElementById('ReloadGame');
     var close_menu = document.getElementById('CloseMenu');
     var pause_menu = document.getElementById('PauseMenu');
-    console.log(pause_game);
     var menu_overlay = document.querySelector('.menu_overlay');
     var menu_container = document.querySelector('.menu_container');
     var power_up_text = document.getElementById('PowerUpText');
@@ -52,22 +51,9 @@ window.onload = function () {
         canvas.height = container.clientHeight - 128;
     };
 
-    // Hero image
-    var hero_ready = false;
-    var hero_image = new Image();
-    hero_image.onload = function () {
-        hero_ready = true;
-    };
-    hero_image.src = "./img/marine.png";
 
 
-    // Catchable image
-    var catchable_ready = false;
-    var catchable_image = new Image();
-    catchable_image.onload = function () {
-        catchable_ready = true;
-    };
-    catchable_image.src = "./img/lost_soul.png";
+
 
 
     game.x0 = canvas.width / 2;
@@ -75,45 +61,73 @@ window.onload = function () {
     game.safe_area = 0.2 / game.modifier;
 
     var hero = {
+        name: "marine",
         speed: 256,
         x: 0,
         y: 0,
         width: 38,
         height: 56,
         killable: true,
-        weapon_size: 20
+        weapon_size: 20,
+        x_pos: false,
+        x_neg: false,
+        y_pos: false,
+        y_neg: false,
+        image: new Image()
     };
+
+    // Hero image
+    hero.image.src = "./img/" + hero.name + ".png";
+
+    //Catchable object
     var catchable = {
+        name: "lost_soul",
         x: 0,
         y: 0,
         width: 40,
         height: 40,
-        speed: hero.speed * 0.3 * game.modifier
+        speed: hero.speed * 0.3 * game.modifier,
+        x_pos: false,
+        x_neg: false,
+        y_pos: false,
+        y_neg: false,
+        image: new Image()
     };
 
+
+    // Catchable image
+    catchable.image.src = "./img/lost_soul.png";
+
     //Enemy prototype
-    var Monster = {
-        name: "",
-        x: 0,
-        y: 0,
-        width: 0,
-        height: 0,
-        s_modifier: 1,
-        h_modifier: 1
+    var Monster = function (params) {
+        return {
+            name: params.name,
+            x: params.x,
+            y: params.x,
+            width: params.width,
+            height: params.height,
+            s_modifier: params.s_modifier,
+            h_modifier: params.h_modifier,
+            x_pos: params.x_pos,
+            x_neg: params.x_neg,
+            y_pos: params.y_pos,
+            y_neg: params.y_neg,
+            image: new Image(),
+        };
     };
 
 
     //Create monsters
-    var imp = Object.create(Monster);
-    var revenant = Object.create(Monster);
-    var baron = Object.create(Monster);
-    var knight = Object.create(Monster);
-    var cyberdemon = Object.create(Monster);
-    var cacodemon = Object.create(Monster);
-    var mancubus = Object.create(Monster);
-    var spider = Object.create(Monster);
-    var boss = Object.create(Monster);
-    var m_empty = Object.create(Monster);
+    var imp = Monster({});
+    var revenant = Monster({});
+    var baron = Monster({});
+    var knight = Monster({});
+    var cyberdemon = Monster({});
+    var cacodemon = Monster({});
+    var mancubus = Monster({});
+    var spider = Monster({});
+    var boss = Monster({});
+    var m_empty = Monster({});
 
     //Empty container for monsters
     var monster, monster2, danger_level;
@@ -125,6 +139,7 @@ window.onload = function () {
     imp.s_modifier = 0.3;
     imp.h_modifier = 0.6;
     imp.speed = hero.speed * imp.s_modifier * game.modifier;
+    imp.image.src = "./img/imp.png";
 
     revenant.name = "revenant";
     revenant.width = 49;
@@ -132,6 +147,7 @@ window.onload = function () {
     revenant.s_modifier = 0.35;
     revenant.h_modifier = 0.65;
     revenant.speed = hero.speed * revenant.s_modifier * game.modifier;
+    revenant.image.src = "./img/revenant.png";
 
     baron.name = "baron";
     baron.width = 49;
@@ -139,6 +155,7 @@ window.onload = function () {
     baron.s_modifier = 0.4;
     baron.h_modifier = 0.8;
     baron.speed = hero.speed * baron.s_modifier * game.modifier;
+    baron.image.src = "./img/baron.png";
 
     knight.name = "knight";
     knight.width = 52;
@@ -146,6 +163,7 @@ window.onload = function () {
     knight.s_modifier = 0.45;
     knight.h_modifier = 0.85;
     knight.speed = hero.speed * knight.s_modifier * game.modifier;
+    knight.image.src = "./img/knight.png";
 
     cyberdemon.name = "cyberdemon";
     cyberdemon.width = 85;
@@ -153,6 +171,7 @@ window.onload = function () {
     cyberdemon.s_modifier = 0.55;
     cyberdemon.h_modifier = 0.9;
     cyberdemon.speed = hero.speed * knight.s_modifier * game.modifier;
+    cyberdemon.image.src = "./img/cyberdemon.png";
 
     cacodemon.name = "cacodemon";
     cacodemon.width = 63;
@@ -160,6 +179,7 @@ window.onload = function () {
     cacodemon.s_modifier = 0.65;
     cacodemon.h_modifier = 0.7;
     cacodemon.speed = hero.speed * cacodemon.s_modifier * game.modifier;
+    cacodemon.image.src = "./img/cacodemon.png";
 
     mancubus.name = "mancubus";
     mancubus.width = 164;
@@ -167,6 +187,7 @@ window.onload = function () {
     mancubus.s_modifier = 0.6;
     mancubus.h_modifier = 1.4;
     mancubus.speed = hero.speed * mancubus.s_modifier * game.modifier;
+    mancubus.image.src = "./img/mancubus.png";
 
     spider.name = "spider";
     spider.width = 194;
@@ -174,6 +195,7 @@ window.onload = function () {
     spider.s_modifier = 0.7;
     spider.h_modifier = 1.3;
     spider.speed = hero.speed * spider.s_modifier * game.modifier;
+    spider.image.src = "./img/spider.png";
 
     boss.name = "final_boss";
     boss.width = canvas.width * 0.7;
@@ -181,8 +203,12 @@ window.onload = function () {
     boss.s_modifier = 0.5;
     boss.h_modifier = 3;
     boss.speed = hero.speed * boss.s_modifier * game.modifier;
+    boss.image.src = "./img/final_boss.png";
 
     m_empty.name = "empty";
+
+
+
 
     //PowerUp protype
     var PowerUp = {
@@ -192,7 +218,8 @@ window.onload = function () {
         width: 37,
         height: 33,
         explanation: "",
-        do: function () {}
+        do: function () {},
+        image: new Image()
     };
 
     //Create powerups
@@ -210,36 +237,36 @@ window.onload = function () {
     blue.name = "blue";
     green.name = "green";
     life.name = "life";
-    empty.name = "empty"
+    empty.name = "empty";
 
     //PowerUp Effects
     yellow.do = function () {
-        yellow.explanation = "";
+        yellow.explanation = monster.name + " speed increased";
         monster.speed *= 1.3;
     };
 
     red.do = function () {
-        red.explanation = "";
         monster2 = getMonster();
+        red.explanation = monster2.name + " appeared";
     };
 
     white.do = function () {
-        white.explanation = "";
+        white.explanation = "Indestructible";
         hero.killable = false;
     };
 
     blue.do = function () {
-        blue.explanation = "";
+        blue.explanation = "Hero speed increased";
         hero.speed *= 1.2;
     };
 
     green.do = function () {
-        green.explanation = "";
+        green.explanation = monster.name + " speed decreased";
         monster.speed *= 0.8;
     };
 
     life.do = function () {
-        life.explanation = "";
+        life.explanation = "Life added";
         game.lifes++;
         drawLives();
     };
@@ -255,6 +282,26 @@ window.onload = function () {
 
     addEventListener("keyup", function (e) {
         delete keysDown[e.keyCode];
+        //Reset X-
+        if (e.keyCode === 37) {
+            hero.x_neg = false;
+        }
+
+        //Reset X+
+        if (e.keyCode === 39) {
+            hero.x_pos = false;
+        }
+
+        //Reset Y-
+        if (e.keyCode === 40) {
+            hero.y_neg = false;
+        }
+
+        //Reset Y+
+        if (e.keyCode === 38) {
+            hero.y_pos = false;
+        }
+
     }, false);
 
     //Random for various purposes
@@ -265,21 +312,21 @@ window.onload = function () {
     function getMonster() {
         danger_level = getRandom(0, 30);
         if (danger_level < 7) {
-            return imp;
+            return monster !== imp ? imp : revenant;
         } else if (danger_level < 13) {
-            return revenant;
+            return monster !== revenant ? revenant : baron;
         } else if (danger_level < 18) {
-            return baron;
+            return monster !== baron ? baron : knight;
         } else if (danger_level < 22) {
-            return knight;
+            return monster !== knight ? knight : cyberdemon;
         } else if (danger_level < 25) {
-            return cyberdemon;
+            return monster !== cyberdemon ? cyberdemon : cacodemon;
         } else if (danger_level < 27) {
-            return cacodemon;
+            return monster !== cacodemon ? cacodemon : mancubus;
         } else if (danger_level < 30) {
-            return mancubus;
+            return monster !== mancubus ? mancubus : spider;
         } else {
-            return spider;
+            return monster !== spider ? spider : imp;
         }
     }
 
@@ -293,24 +340,33 @@ window.onload = function () {
         hero.killable = true;
         game.playable = false;
         power_active.src = "";
+        power_up_text.innerText = "";
         drawLives();
 
         if (game.catches < 4) {
             monster = imp;
+
         } else if (game.catches < 8) {
             monster = revenant;
+
         } else if (game.catches < 12) {
             monster = baron;
+
         } else if (game.catches < 15) {
             monster = knight;
+
         } else if (game.catches < 17) {
             monster = cyberdemon;
+
         } else if (game.catches < 21) {
             monster = cacodemon;
+
         } else if (game.catches < 26) {
             monster = mancubus;
+
         } else if (game.catches < 29) {
             monster = spider;
+
         } else {
             monster = boss;
         }
@@ -377,12 +433,16 @@ window.onload = function () {
             //Move monster
             if (hero.x > monster.x) {
                 monster.x += monster.speed * modifier;
+                monster.x_pos = true;
+                monster.x_neg = false;
                 if (monster.x > canvas.width - monster.width) {
                     monster.x = canvas.width - monster.width;
                 }
             }
             if (hero.x < monster.x) {
                 monster.x -= monster.speed * modifier;
+                monster.x_neg = true;
+                monster.x_pos = false;
                 if (monster.x < 0) {
                     monster.x = 0;
                 }
@@ -390,13 +450,16 @@ window.onload = function () {
             }
             if (hero.y > monster.y) {
                 monster.y += monster.speed * modifier;
+                monster.y_pos = true;
+                monster.y_neg = false;
                 if (monster.y > canvas.height - monster.height) {
                     monster.y = canvas.height - monster.height;
                 }
             }
             if (hero.y < monster.y) {
                 monster.y -= monster.speed * modifier;
-
+                monster.y_neg = true;
+                monster.y_pos = false;
                 if (monster.y < 0) {
                     monster.y = 0;
                 }
@@ -405,12 +468,16 @@ window.onload = function () {
             //Move second monster
             if (hero.x > monster2.x) {
                 monster2.x += monster2.speed * modifier;
+                monster2.x_pos = true;
+                monster2.x_neg = false;
                 if (monster2.x > canvas.width - monster2.width) {
                     monster2.x = canvas.width - monster2.width;
                 }
             }
             if (hero.x < monster2.x) {
                 monster2.x -= monster2.speed * modifier;
+                monster2.x_neg = true;
+                monster2.x_pos = false;
                 if (monster2.x < 0) {
                     monster2.x = 0;
                 }
@@ -419,13 +486,16 @@ window.onload = function () {
 
             if (hero.y > monster2.y) {
                 monster2.y += monster2.speed * modifier;
+                monster2.y_pos = true;
+                monster2.y_neg = false;
                 if (monster2.y > canvas.height - monster2.height) {
                     monster2.y = canvas.height - monster2.height;
                 }
             }
             if (hero.y < monster2.y) {
                 monster2.y -= monster2.speed * modifier;
-
+                monster2.y_neg = true;
+                monster2.y_pos = false;
                 if (monster2.y < 0) {
                     monster2.y = 0;
                 }
@@ -434,12 +504,16 @@ window.onload = function () {
             //Move catchable
             if (hero.x < catchable.x) {
                 catchable.x += catchable.speed * modifier;
+                catchable.x_pos = true;
+                catchable.x_neg = false;
                 if (catchable.x > canvas.width - catchable.width) {
                     catchable.x = canvas.width - catchable.width;
                 }
             }
             if (hero.x > catchable.x) {
                 catchable.x -= catchable.speed * modifier;
+                catchable.x_neg = true;
+                catchable.x_pos = false;
                 if (catchable.x < 0) {
                     catchable.x = 0;
                 }
@@ -447,45 +521,98 @@ window.onload = function () {
             }
             if (hero.y < catchable.y) {
                 catchable.y += catchable.speed * modifier;
+                catchable.y_pos = true;
+                catchable.y_neg = true;
                 if (catchable.y > canvas.height - catchable.height) {
                     catchable.y = canvas.height - catchable.height;
                 }
             }
             if (hero.y > catchable.y) {
                 catchable.y -= catchable.speed * modifier;
+                catchable.y_neg = true;
+                catchable.y_pos = true;
 
                 if (catchable.y < 0) {
                     catchable.y = 0;
                 }
             }
 
+            var elems = [monster, monster2, catchable];
+            elems.forEach(function (elem, i) {
+                if (elem.y_pos && elem.x_pos) {
+                    elem.image.src = "./img/" + elem.name + "_2.png";
+                } else if (elem.x_pos && elem.y_neg) {
+                    elem.image.src = "./img/" + elem.name + "_4.png";
+                } else if (elem.x_neg && elem.y_neg) {
+                    elem.image.src = "./img/" + elem.name + "_6.png";
+                } else if (elem.x_neg && elem.y_pos) {
+                    elem.image.src = "./img/" + elem.name + "_8.png";
+                } else if (elem.y_pos && !elem.x_pos && !elem.x_neg) {
+                    elem.image.src = "./img/" + elem.name + "_1.png";
+                } else if (elem.x_pos && !elem.y_pos && !elem.y_neg && !elem.x_neg) {
+                    elem.image.src = "./img/" + elem.name + "_3.png";
+                } else if (elem.x_neg && !elem.y_pos && !elem.y_neg && !elem.x_pos) {
+                    elem.image.src = "./img/" + elem.name + "_7.png";
+                } else if (elem.y_neg && !elem.x_pos && !elem.x_neg && !elem.y_pos) {
+                    elem.image.src = "./img/" + elem.name + "_5.png";
+                } else if (!elem.y_pos && !elem.y_neg && !elem.x_pos && !elem.x_neg) {
+                    elem.image.src = "./img/" + elem.name + ".png";
+                }
+
+
+            });
+
+
             //Move user
             if (38 in keysDown) { // Player holding up
                 hero.y -= hero.speed * modifier;
+                hero.y_pos = true;
                 if (hero.y < 0) {
                     hero.y = 0;
                 }
             }
             if (40 in keysDown) { // Player holding down
                 hero.y += hero.speed * modifier;
+                hero.y_neg = true;
                 if (hero.y > canvas.height - hero.height) {
                     hero.y = canvas.height - hero.height;
                 }
             }
             if (37 in keysDown) { // Player holding left
                 hero.x -= hero.speed * modifier;
+                hero.x_neg = true;
                 if (hero.x < 0) {
                     hero.x = 0;
                 }
             }
             if (39 in keysDown) { // Player holding right
                 hero.x += hero.speed * modifier;
+                hero.x_pos = true;
                 if (hero.x > canvas.width - hero.width) {
                     hero.x = canvas.width - hero.width;
                 }
             }
 
-
+            //Bind sprite to hero movement
+            if (hero.y_pos && hero.x_pos) {
+                hero.image.src = "./img/" + hero.name + "_2.png";
+            } else if (hero.x_pos && hero.y_neg) {
+                hero.image.src = "./img/" + hero.name + "_4.png";
+            } else if (hero.x_neg && hero.y_neg) {
+                hero.image.src = "./img/" + hero.name + "_6.png";
+            } else if (hero.x_neg && hero.y_pos) {
+                hero.image.src = "./img/" + hero.name + "_8.png";
+            } else if (hero.y_pos && !hero.x_pos && !hero.x_neg) {
+                hero.image.src = "./img/" + hero.name + "_1.png";
+            } else if (hero.x_pos && !hero.y_pos && !hero.y_neg && !hero.x_neg) {
+                hero.image.src = "./img/" + hero.name + "_3.png";
+            } else if (hero.x_neg && !hero.y_pos && !hero.y_neg && !hero.x_pos) {
+                hero.image.src = "./img/" + hero.name + "_7.png";
+            } else if (hero.y_neg && !hero.x_pos && !hero.x_neg && !hero.y_pos) {
+                hero.image.src = "./img/" + hero.name + "_5.png";
+            } else if (!hero.y_pos && !hero.y_neg && !hero.x_pos && !hero.x_neg) {
+                hero.image.src = "./img/" + hero.name + ".png";
+            }
 
             // If the hero touches the catchable
             if (
@@ -504,18 +631,22 @@ window.onload = function () {
                 hero.x <= (monster.x + monster.width) &&
                 monster.x <= (hero.x + monster.width) &&
                 hero.y <= (monster.y + monster.height) &&
-                monster.y <= (hero.y + monster.height) && hero.killable
+                monster.y <= (hero.y + monster.height)
             ) {
-                game.lifes--;
-                if (game.lifes >= 3) {
-                    player_status.src = `./img/3_lifes.gif`;
-                } else if (game.lifes > 0) {
-                    player_status.src = `./img/${game.lifes}_lifes.gif`;
-
+                if (hero.killable) {
+                    game.lifes--;
+                    if (game.lifes >= 3) {
+                        player_status.src = `./img/3_lifes.gif`;
+                    } else if (game.lifes > 0) {
+                        player_status.src = `./img/${game.lifes}_lifes.gif`;
+                    } else {
+                        location.reload();
+                    }
+                    reset();
                 } else {
-                    location.reload();
+                    monster = m_empty;
                 }
-                reset();
+
 
 
             }
@@ -541,7 +672,7 @@ window.onload = function () {
                 hero.y <= (power_up.y + power_up.height) &&
                 power_up.y <= (hero.y + power_up.height)
             ) {
-                if (power_active.name === 'lifes') {} else {
+                if (power_active.name !== 'lifes' && power_active.name !== 'red') {
                     power_active.src = "./img/" + power_up.name + ".png";
 
                 }
@@ -579,23 +710,17 @@ window.onload = function () {
         soul_count.innerText = game.catches < 10 ? '0' + game.catches : game.catches;
 
         //Draw hero and catchable
-        ctx.drawImage(hero_image, hero.x, hero.y);
-        ctx.drawImage(catchable_image, catchable.x, catchable.y);
+        ctx.drawImage(hero.image, hero.x, hero.y);
+        ctx.drawImage(catchable.image, catchable.x, catchable.y);
 
-        //Draw Image
-        var monster_image = new Image();
-        monster_image.src = "./img/" + monster.name + ".png";
-        ctx.drawImage(monster_image, monster.x, monster.y);
+        ctx.drawImage(monster.image, monster.x, monster.y);
 
         //Draw Power Up
-        var power_up_image = new Image();
-        power_up_image.src = "./img/" + power_up.name + ".png";
-        ctx.drawImage(power_up_image, power_up.x, power_up.y);
+        power_up.image.src = "./img/" + power_up.name + ".png";
+        ctx.drawImage(power_up.image, power_up.x, power_up.y);
 
-        //Draw second monster
-        var monster2_image = new Image();
-        monster2_image.src = "./img/" + monster2.name + ".png";
-        ctx.drawImage(monster2_image, monster2.x, monster2.y);
+
+        ctx.drawImage(monster2.image, monster2.x, monster2.y);
 
     }
 
@@ -615,28 +740,22 @@ window.onload = function () {
     function closeMenu() {
         pause_menu.style.visibility = 'hidden';
         game.playable = true;
-        console.log('closed')
     }
 
     function openMenu() {
         pause_menu.style.visibility = 'visible';
         game.playable = false;
-        console.log('opening')
     }
 
     // Cross-browser support for requestAnimationFrame
     var w = window;
     requestAnimationFrame = w.requestAnimationFrame || w.webkitRequestAnimationFrame || w.msRequestAnimationFrame || w.mozRequestAnimationFrame;
 
-    // Let's play this game!
-    var then = Date.now();
-    reset();
-    main();
 
 
     //Close menu
     menu_container.addEventListener('click', function (e) {
-        e.preventDefault();
+        //e.preventDefault();
         e.stopPropagation();
     }, false);
 
@@ -666,6 +785,15 @@ window.onload = function () {
 
     //Reload if need
     pause_game.addEventListener('click', openMenu, false);
+
+    //Clear explanation text
+    power_up_text.innerText = "";
+
+    // Let's play this game!
+    var then = Date.now();
+    reset();
+    main();
+
 };
 
 function levelUp(n) {

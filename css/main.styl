@@ -193,9 +193,10 @@ button
             align-items center
             justify-content center
             position relative
-            img 
+            #PlayerStatus
                 position relative
                 z-index 3
+                left 2px
             #PowerActive
                 position absolute
                 margin auto
@@ -234,6 +235,8 @@ button
                     margin-left 1rem
                     font-size 1.6rem
                     line-height 40px
+
+
 #PauseMenu
     visibility hidden
     height 100%
@@ -326,10 +329,33 @@ button
                         vertical-align middle
                         font-size 21px
                         line-height 21px
+                        text-shadow none
+                        &.icon-nikodermus
+                            font-size 16px
+                            line-height 16px
+#PowerUpText
+    position fixed
+    top 64px
+    left 64px
+    font-size 12ppx
+    padding 1rem
+    z-index 40
+    text-transform uppercase
+    font-family 'doomregular'
+    &.blue
+        color #0000D3
+    &.yellow
+        color #FFFF55
+    &.white
+        color white
+    &.life
+        color $green
+    &.green
+        color #6CCF3F
 
 
             
-            
+
 
 
                 
