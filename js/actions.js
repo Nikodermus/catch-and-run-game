@@ -31,11 +31,13 @@ window.onload = function () {
     var menu_overlay = document.querySelector('.menu_overlay');
     var menu_container = document.querySelector('.menu_container');
     var power_up_text = document.getElementById('PowerUpText');
+    var count_down = document.getElementById('CountDown');
     var life_img = document.createElement('img');
 
-
+    //Basic state of elements
     life_img.src = './img/life.png';
     pause_menu.style.visibility = 'hidden';
+    count_down.style.visibility = 'hidden';
 
     //Generate canvas
     var canvas = document.createElement('canvas');
@@ -46,18 +48,13 @@ window.onload = function () {
     canvas.height = container.clientHeight - 128;
     container.appendChild(canvas);
 
+    //Resize canvas to fit window
     window.onresize = function () {
         canvas.width = container.clientWidth - 128;
         canvas.height = container.clientHeight - 128;
     };
 
 
-
-
-
-
-    game.x0 = canvas.width / 2;
-    game.y0 = canvas.height / 2;
     game.safe_area = 0.2 / game.modifier;
 
     var hero = {
@@ -76,6 +73,8 @@ window.onload = function () {
         image: new Image()
     };
 
+    var time_out = 3;
+
     // Hero image
     hero.image.src = "./img/" + hero.name + ".png";
 
@@ -93,7 +92,6 @@ window.onload = function () {
         y_neg: false,
         image: new Image()
     };
-
 
     // Catchable image
     catchable.image.src = "./img/lost_soul.png";
@@ -115,7 +113,6 @@ window.onload = function () {
             image: new Image(),
         };
     };
-
 
     //Create monsters
     var imp = Monster({});
@@ -207,9 +204,6 @@ window.onload = function () {
 
     m_empty.name = "empty";
 
-
-
-
     //PowerUp protype
     var PowerUp = {
         name: "",
@@ -231,6 +225,7 @@ window.onload = function () {
     var empty = Object.create(PowerUp);
     var life = Object.create(PowerUp);
 
+    //PowerUp Names
     yellow.name = "yellow";
     white.name = "white";
     red.name = "red";
@@ -241,32 +236,35 @@ window.onload = function () {
 
     //PowerUp Effects
     yellow.do = function () {
-        yellow.explanation = monster.name + " speed increased";
         monster.speed *= 1.3;
     };
 
     red.do = function () {
-        monster2 = getMonster();
-        red.explanation = monster2.name + " appeared";
+        var a = getMonster();
+        a.x = 0;
+        a.y = 0;
+        a.x_neg = false;
+        a.x_pos = false;
+        a.y_pos = false;
+        a.y_neg = false;
+        monster2 = a;
+        red.explanation = monster2.name + " appeared" ;
+        return monster2;
     };
 
     white.do = function () {
-        white.explanation = "Indestructible";
         hero.killable = false;
     };
 
     blue.do = function () {
-        blue.explanation = "Hero speed increased";
         hero.speed *= 1.2;
     };
 
     green.do = function () {
-        green.explanation = monster.name + " speed decreased";
         monster.speed *= 0.8;
     };
 
     life.do = function () {
-        life.explanation = "Life added";
         game.lifes++;
         drawLives();
     };
@@ -277,7 +275,6 @@ window.onload = function () {
 
     addEventListener("keydown", function (e) {
         keysDown[e.keyCode] = true;
-        game.playable = true;
     }, false);
 
     addEventListener("keyup", function (e) {
@@ -309,6 +306,7 @@ window.onload = function () {
         return Math.random() * (max - min) + min;
     }
 
+    //Create the second monster as needed
     function getMonster() {
         danger_level = getRandom(0, 30);
         if (danger_level < 7) {
@@ -330,17 +328,19 @@ window.onload = function () {
         }
     }
 
-
-
-
+    //Show countdown
+   
 
     // Reset the game when the player catches a monster
     function reset() {
+
+       
         monster2 = m_empty;
         hero.killable = true;
         game.playable = false;
         power_active.src = "";
         power_up_text.innerText = "";
+        timeOut = 3;
         drawLives();
 
         if (game.catches < 4) {
@@ -371,6 +371,14 @@ window.onload = function () {
             monster = boss;
         }
 
+        //Add explanation texts
+        white.explanation = "Indestructible";
+        red.explanation = monster2.name + " appeared";
+        blue.explanation = "Hero speed increased";
+        green.explanation = monster.name + " speed decreased";
+        life.explanation = "Life added";
+        yellow.explanation = monster.name + " speed increased";
+
         //Chances of getting a Power Up
         var fun_level = getRandom(0, 20);
 
@@ -391,7 +399,7 @@ window.onload = function () {
             power_up = life;
         }
 
-
+        //Hero will start in the middle of the canvas
         hero.x = canvas.width / 2;
         hero.y = canvas.height / 2;
 
@@ -424,11 +432,35 @@ window.onload = function () {
             power_up.y = (power_up.width / 2) + (Math.random() * (canvas.height - power_up.width));
         }
 
+        game.playable = false;
+        count_down.style.visibility = 'visible';
+        count_down.style.opacity = 1;
+
+
+        var x = 3;
+        var interval = 700;
+        
+        for (var i = 0; i < x; i++) {
+            setTimeout(function () {
+                count_down.innerHTML = `<span>${time_out}</span>`;
+                time_out--;
+                count_down.style.opacity -= .25;
+            }, i * interval)
+        }
+        setTimeout(function() {
+            count_down.style.opacity = 0;
+            count_down.style.visibility = 'hidden'; 
+            game.playable = true;
+            time_out = 3;
+        }, 2101);
+        
+            
+            
+            
     }
 
     function update(modifier) {
         if (game.playable) {
-
 
             //Move monster
             if (hero.x > monster.x) {
@@ -437,6 +469,7 @@ window.onload = function () {
                 monster.x_neg = false;
                 if (monster.x > canvas.width - monster.width) {
                     monster.x = canvas.width - monster.width;
+                    monster.x_pos = false;
                 }
             }
             if (hero.x < monster.x) {
@@ -445,8 +478,8 @@ window.onload = function () {
                 monster.x_pos = false;
                 if (monster.x < 0) {
                     monster.x = 0;
+                    monster.x_neg = false;
                 }
-
             }
             if (hero.y > monster.y) {
                 monster.y += monster.speed * modifier;
@@ -454,6 +487,7 @@ window.onload = function () {
                 monster.y_neg = false;
                 if (monster.y > canvas.height - monster.height) {
                     monster.y = canvas.height - monster.height;
+                    monster.y_pos = false;
                 }
             }
             if (hero.y < monster.y) {
@@ -462,7 +496,16 @@ window.onload = function () {
                 monster.y_pos = false;
                 if (monster.y < 0) {
                     monster.y = 0;
+                    monster.y_neg = false;
                 }
+            }
+            if(monster.x === hero.x){
+                monster.y_pos;
+                monster.y_neg;
+            }
+            if(monster.y === hero.y){
+                monster.x_pos;
+                monster.x_neg;
             }
 
             //Move second monster
@@ -472,6 +515,7 @@ window.onload = function () {
                 monster2.x_neg = false;
                 if (monster2.x > canvas.width - monster2.width) {
                     monster2.x = canvas.width - monster2.width;
+                    monster2.x_pos = false;
                 }
             }
             if (hero.x < monster2.x) {
@@ -480,8 +524,8 @@ window.onload = function () {
                 monster2.x_pos = false;
                 if (monster2.x < 0) {
                     monster2.x = 0;
+                    monster2.x_neg = false;
                 }
-
             }
 
             if (hero.y > monster2.y) {
@@ -490,6 +534,7 @@ window.onload = function () {
                 monster2.y_neg = false;
                 if (monster2.y > canvas.height - monster2.height) {
                     monster2.y = canvas.height - monster2.height;
+                    monster2.y_pos = false;
                 }
             }
             if (hero.y < monster2.y) {
@@ -498,8 +543,18 @@ window.onload = function () {
                 monster2.y_pos = false;
                 if (monster2.y < 0) {
                     monster2.y = 0;
+                    monster2.y_neg = false;
                 }
             }
+            if(monster2.x === hero.x){
+                monster2.y_pos;
+                monster2.y_neg;
+            }
+            if(monster2.y === hero.y){
+                monster2.x_pos;
+                monster2.x_neg;
+            }
+        
 
             //Move catchable
             if (hero.x < catchable.x) {
@@ -508,6 +563,7 @@ window.onload = function () {
                 catchable.x_neg = false;
                 if (catchable.x > canvas.width - catchable.width) {
                     catchable.x = canvas.width - catchable.width;
+                    catchable.x_pos = false;
                 }
             }
             if (hero.x > catchable.x) {
@@ -516,25 +572,36 @@ window.onload = function () {
                 catchable.x_pos = false;
                 if (catchable.x < 0) {
                     catchable.x = 0;
+                    catchable.x_neg = false;
                 }
 
             }
             if (hero.y < catchable.y) {
                 catchable.y += catchable.speed * modifier;
                 catchable.y_pos = true;
-                catchable.y_neg = true;
+                catchable.y_neg = false;
                 if (catchable.y > canvas.height - catchable.height) {
                     catchable.y = canvas.height - catchable.height;
+                    catchable.y_pos = false;
                 }
             }
             if (hero.y > catchable.y) {
                 catchable.y -= catchable.speed * modifier;
                 catchable.y_neg = true;
-                catchable.y_pos = true;
+                catchable.y_pos = false;
 
                 if (catchable.y < 0) {
                     catchable.y = 0;
+                    catchable.y_neg = false;
                 }
+            }
+            if(catchable.x === hero.x){
+                catchable.y_pos;
+                catchable.y_neg;
+            }
+            if(catchable.y === hero.y){
+                catchable.x_pos;
+                catchable.x_neg;
             }
 
             var elems = [monster, monster2, catchable];
@@ -558,8 +625,6 @@ window.onload = function () {
                 } else if (!elem.y_pos && !elem.y_neg && !elem.x_pos && !elem.x_neg) {
                     elem.image.src = "./img/" + elem.name + ".png";
                 }
-
-
             });
 
 
@@ -646,9 +711,6 @@ window.onload = function () {
                 } else {
                     monster = m_empty;
                 }
-
-
-
             }
 
             // If the hero touches the second monster
@@ -672,13 +734,12 @@ window.onload = function () {
                 hero.y <= (power_up.y + power_up.height) &&
                 power_up.y <= (hero.y + power_up.height)
             ) {
-                if (power_active.name !== 'lifes' && power_active.name !== 'red') {
+                if (power_active.name !== 'lifes' && power_active.name !== 'red' && power_active.name !== 'empty') {
                     power_active.src = "./img/" + power_up.name + ".png";
-
                 }
-                power_up.do();
                 power_up_text.className = power_up.name;
                 power_up_text.innerText = power_up.explanation;
+                power_up.do();
                 ctx.clearRect(power_up.x, power_up.y, power_up.width, power_up.height);
                 power_up = empty;
             }
@@ -712,15 +773,16 @@ window.onload = function () {
         //Draw hero and catchable
         ctx.drawImage(hero.image, hero.x, hero.y);
         ctx.drawImage(catchable.image, catchable.x, catchable.y);
-
         ctx.drawImage(monster.image, monster.x, monster.y);
 
         //Draw Power Up
         power_up.image.src = "./img/" + power_up.name + ".png";
         ctx.drawImage(power_up.image, power_up.x, power_up.y);
 
-
-        ctx.drawImage(monster2.image, monster2.x, monster2.y);
+        //Draw second monster
+        if(monster2 !== m_empty){
+            ctx.drawImage(monster2.image, monster2.x, monster2.y);
+        }
 
     }
 
