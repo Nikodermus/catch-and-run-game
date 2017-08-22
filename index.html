@@ -2,16 +2,136 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!--Meta must have-->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="index, follow" />
+    <meta name="googlebot-news" content="all" />
+    <meta name="googlebot" content="all" />
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="SLURP" content="all" />
+    <meta name="MSNBOT" content="all" />
+    <meta name="teoma" content="all" />
+    <meta name="google-site-verification" content="0000000000" />
+    <meta name="p:domain_verify" content="0000000000000" />
+
+
+    <!--Meta info-->
+    <meta name="keywords" content="nikodermus, javascrip, nicolas m pardo, dakio" />
+    <meta name="description" content="This is a solo project in order to learn better JS, DOM Manipulation and my first approach to canvas, I hope it's fun for you too!"
+    />
+    <meta name="date" content="2017" />
+    <meta name="author" content="Nicolas M. Pardo | Nikodermus" />
+    <meta name='generator' content='Nicolas M. Pardo | Nikodermus'>
+    <meta name="application-name" content="Catch and Run">
+
+
+    <!--Open Graph data -->
+    <meta property="fb:app_id" content="000000000" />
+    <meta property="og:title" content="Catch &amp; Run | Nikodermus" />
+    <meta property="og:site_name" content="Catch and Run" />
+    <meta property="og:url" content="http://www.game.dakio.co" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="http://www.game.dakio.co/assets/facebook-preview.jpg" />
+    <meta property="og:image:type" content="image/jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="en_US">
+    <meta property="og:description" content="This is a solo project in order to learn better JS, DOM Manipulation and my first approach to canvas, I hope it's fun for you too!"
+    />
+    <meta property="article:author" content="https://www.facebook.com/nikodermus/" />
+
+    <!--Google+ data-->
+    <meta itemprop="description" content="This is a solo project in order to learn better JS, DOM Manipulation and my first approach to canvas, I hope it's fun for you too!">
+    <meta itemprop="name" content="Catch &amp; Run | Nikodermus">
+
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@ndermus" />
+    <meta name="twitter:creator" content="@ndermus" />
+    <meta name="twitter:title" content="Catch &amp; Run | Nikodermus" />
+    <meta name="twitter:description" content="This is a solo project in order to learn better JS, DOM Manipulation and my first approach to canvas, I hope it's fun for you too!">
+    <meta name="twitter:image" content="http://www.game.dakio.co/assets/twitter-preview.jpg" />
+    <meta name="twitter:image:src" content="http://www.game.dakio.co/assets/twitter-preview.jpg" />
+    <meta name="twitter:image:width" content="870" />
+    <meta name="twitter:image:height" content="750" />
+    <meta name="twitter:image:alt" content="This is a solo project in order to learn better JS, DOM Manipulation and my first approach to canvas, I hope it's fun for you too!"
+    />
+
+
+    <!-- Windows 8 and Phone-->
+    <meta name="msapplication-TileImage" content="assets/favicon.png" />
+    <meta name="msapplication-TileColor" content="#9C1B00" />
+    <meta name="application-name" content="Catch and Run" />
+    <meta name="MobileOptimized" content="320" />
+    <meta name="msapplication-navbutton-color" content="#9C1B00" />
+
+    <!-- IE11 tiles -->
+    <meta name="msapplication-square150x150logo" content="assets/tile.png" />
+    <meta name="msapplication-wide310x150logo" content="assets/tile-wide.png" />
+
+    <!--Only use if needed
+         <link rel="canonical" href="http://www.game.dakio.co" />
+         -->
+
+    <!--Apple Meta Data-->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-traslucent" />
+
+    <!--Theming-->
+    <meta name="theme-color" content="#9C1B00" />
+    <link rel="mask-icon" href="assets/safari-pinned-tab.svg" color="#9C1B00" />
+
+    <!--Apple Touch Icon-->
+    <link rel="apple-touch-icon" sizes="57x57" href="assets/apple-touch-icon-57x57.png" />
+    <link rel="apple-touch-icon" sizes="60x60" href="assets/apple-touch-icon-60x60.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="assets/apple-touch-icon-72x72.png" />
+    <link rel="apple-touch-icon" sizes="76x76" href="assets/apple-touch-icon-76x76.png" />
+    <link rel="apple-touch-icon" sizes="114x114" href="assets/apple-touch-icon-114x114.png" />
+    <link rel="apple-touch-icon" sizes="120x120" href="assets/apple-touch-icon-120x120.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="assets/apple-touch-icon-144x144.png" />
+    <link rel="apple-touch-icon" sizes="152x152" href="assets/apple-touch-icon-152x152.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon-180x180.png" />
+
+    <!--Apple Load Image-->
+    <link rel="apple-touch-startup-image" href="http://www.game.dakio.co/assets/apple-touch-startup-image-320x460.png" media="(device-width: 320px) and (device-height: 480px) and (-webkit-device-pixel-ratio: 1)"
+    />
+    <link rel="apple-touch-startup-image" href="http://www.game.dakio.co/assets/apple-touch-startup-image-640x920.png" media="(device-width: 320px) and (device-height: 480px) and (-webkit-device-pixel-ratio: 2)"
+    />
+    <link rel="apple-touch-startup-image" href="http://www.game.dakio.co/assets/apple-touch-startup-image-640x1096.png" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)"
+    />
+    <link rel="apple-touch-startup-image" href="http://www.game.dakio.co/assets/apple-touch-startup-image-768x1004.png" media="(device-width: 768px) and (device-height: 1024px) and (orientation: portrait) and (-webkit-device-pixel-ratio: 1)"
+    />
+    <link rel="apple-touch-startup-image" href="http://www.game.dakio.co/assets/apple-touch-startup-image-1024x768.png" media="(device-width: 768px) and (device-height: 1024px) and (orientation: landscape) and (-webkit-device-pixel-ratio: 1)"
+    />
+    <link rel="apple-touch-startup-image" href="http://www.game.dakio.co/assets/apple-touch-startup-image-1536x2008.png" media="(device-width: 768px) and (device-height: 1024px) and (orientation: portrait) and (-webkit-device-pixel-ratio: 2)"
+    />
+    <link rel="apple-touch-startup-image" href="http://www.game.dakio.co/assets/apple-touch-startup-image-2048x1496.png" media="(device-width: 768px) and (device-height: 1024px) and (orientation: landscape) and (-webkit-device-pixel-ratio: 2)"
+    />
+
+    <!--Favicon-->
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="icon" type="image/png" href="assets/favicon-16x16.png" sizes="16x16" />
+    <link rel="icon" type="image/png" href="assets/favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="assets/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/png" href="assets/android-chrome-192x192.png" sizes="192x192" />
+
+    <!--[if lt IE 8]>
+         <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+         <![endif]-->
+
+
     <title>
-        Catch and Run Game | Nikodermus
+        Catch &amp; Run | Nikodermus
     </title>
-    <link rel="stylesheet" href="./css/reset.css">
-    <link rel="stylesheet" href="./css/fonts/fonts.css">
-    <link rel="stylesheet" href="./css/icons.css">
-    <link rel="stylesheet" href="./css/main.css">
+
+    <link rel="stylesheet" href="./css/reset.css" />
+    <link rel="stylesheet" href="./css/fonts/fonts.css" />
+    <link rel="stylesheet" href="./css/icons.css" />
+    <link rel="stylesheet" href="./css/main.css" />
     <script src="./js/actions.js"></script>
 </head>
 
