@@ -32,11 +32,15 @@ window.onload = function () {
     var menu_container = document.querySelector('.menu_container');
     var power_up_text = document.getElementById('PowerUpText');
     var main_menu = document.getElementById('MainMenu');
-    var count_down = document.getElementById('CountDown');    
+    var count_down = document.getElementById('CountDown');
     var easy_level = document.getElementById('EasyLevel');
     var normal_level = document.getElementById('NormalLevel');
     var hardcore_level = document.getElementById('HardcoreLevel');
-    
+    var game_over = document.getElementById('GameOver');
+    var restart_game = document.getElementById('RestartGame');
+    var reload_window = document.getElementById('ReloadWindow');
+
+
     //Create image
     var life_img = document.createElement('img');
 
@@ -44,6 +48,7 @@ window.onload = function () {
     life_img.src = './img/life.png';
     pause_menu.style.visibility = 'hidden';
     count_down.style.visibility = 'hidden';
+    game_over.style.visibility = 'hidden';
 
     //Generate canvas
     var canvas = document.createElement('canvas');
@@ -59,7 +64,6 @@ window.onload = function () {
         canvas.width = container.clientWidth - 128;
         canvas.height = container.clientHeight - 128;
     };
-
 
     game.safe_area = 0.2 / game.modifier;
 
@@ -218,7 +222,7 @@ window.onload = function () {
         width: 37,
         height: 33,
         explanation: "",
-        do: function () {},
+        do: function () { },
         image: new Image()
     };
 
@@ -254,7 +258,7 @@ window.onload = function () {
         a.y_pos = false;
         a.y_neg = false;
         monster2 = a;
-        red.explanation = monster2.name + " appeared" ;
+        red.explanation = monster2.name + " appeared";
         return monster2;
     };
 
@@ -307,60 +311,66 @@ window.onload = function () {
 
     }, false);
 
-    easy_level.addEventListener('click', function(){
+    easy_level.addEventListener('click', function () {
         loadGame(.7);
     });
-    normal_level.addEventListener('click', function(){
+    normal_level.addEventListener('click', function () {
         loadGame(1);
     });
-    hardcore_level.addEventListener('click', function(){
+    hardcore_level.addEventListener('click', function () {
         loadGame(1.3);
     });
 
 
     var drawables = [imp, revenant, baron, knight, cyberdemon, cacodemon, mancubus, spider, boss, hero, catchable];
     var images = [];
-    var images_url = [];        
+    var images_url = [];
     var images_ready = 0;
 
 
-    function loadGame(modifier){
+    function loadGame(modifier) {
         game.modifier = modifier;
-
-        
-
-        for(i of drawables){
-            images_url.push("./img/"+i.name+".png");
-            for(var j=1; j<9; j++){
-                images_url.push("./img/"+i.name+"_"+j+ ".png");
+        for (i of drawables) {
+            images_url.push("./img/" + i.name + ".png");
+            for (var j = 1; j < 9; j++) {
+                images_url.push("./img/" + i.name + "_" + j + ".png");
             }
         }
         imageLoader(startGame);
     }
 
-    function imageLoader(callback){
-        console.log(images_url)
-        for(i in images_url){
+    function imageLoader(callback) {
+        for (i in images_url) {
             let img = new Image();
             images.push(img);
-            main_menu.style.top = -i / images_url.length * 110+"%";
-            img.onload = function(){
+            main_menu.style.top = -i / images_url.length * 110 + "%";
+            img.onload = function () {
                 images_ready++;
-                if(images_ready >= images_url.length){
+                if (images_ready >= images_url.length) {
                     callback();
                 };
             };
             img.src = images_url[i];
         }
     }
-    
-    function startGame(){
-         // Let's play this game!
-    var then = Date.now();
+
+    function startGame() {
+        // Let's play this game!
         reset();
         main();
-
     }
+
+    function gameOver(key) {
+        if (key === 114) { location.reload(); };
+        if (game.lifes > 0) {
+            reset();
+        } else {
+            game_over.style.visibility = "visible";
+            game.playable = false;
+        }
+    }
+
+
 
     //Random for various purposes
     function getRandom(min, max) {
@@ -390,20 +400,23 @@ window.onload = function () {
     }
 
     //Show countdown
-   
+
 
     // Reset the game when the player catches a monster
     function reset() {
 
-       
+        //Clear values that might have been changing through the level
         monster2 = m_empty;
         hero.killable = true;
         game.playable = false;
         power_active.src = "";
         power_up_text.innerText = "";
+        pause_menu.style.visibility = 'hidden';
+        game_over.style.visibility = 'hidden';
         timeOut = 3;
         drawLives();
 
+        //Chose monster based on life count
         if (game.catches < 4) {
             monster = imp;
 
@@ -500,7 +513,7 @@ window.onload = function () {
 
         var x = 3;
         var interval = 700;
-        
+
         for (var i = 0; i < x; i++) {
             setTimeout(function () {
                 count_down.innerHTML = `<span>${time_out}</span>`;
@@ -508,16 +521,16 @@ window.onload = function () {
                 count_down.style.opacity -= .25;
             }, i * interval)
         }
-        setTimeout(function() {
+        setTimeout(function () {
             count_down.style.opacity = 0;
-            count_down.style.visibility = 'hidden'; 
+            count_down.style.visibility = 'hidden';
             game.playable = true;
             time_out = 3;
         }, 2101);
-        
-            
-            
-            
+
+
+
+
     }
 
     function update(modifier) {
@@ -560,11 +573,11 @@ window.onload = function () {
                     monster.y_neg = false;
                 }
             }
-            if(monster.x === hero.x){
+            if (monster.x === hero.x) {
                 monster.y_pos;
                 monster.y_neg;
             }
-            if(monster.y === hero.y){
+            if (monster.y === hero.y) {
                 monster.x_pos;
                 monster.x_neg;
             }
@@ -607,15 +620,15 @@ window.onload = function () {
                     monster2.y_neg = false;
                 }
             }
-            if(monster2.x === hero.x){
+            if (monster2.x === hero.x) {
                 monster2.y_pos;
                 monster2.y_neg;
             }
-            if(monster2.y === hero.y){
+            if (monster2.y === hero.y) {
                 monster2.x_pos;
                 monster2.x_neg;
             }
-        
+
 
             //Move catchable
             if (hero.x < catchable.x) {
@@ -656,11 +669,11 @@ window.onload = function () {
                     catchable.y_neg = false;
                 }
             }
-            if(catchable.x === hero.x){
+            if (catchable.x === hero.x) {
                 catchable.y_pos;
                 catchable.y_neg;
             }
-            if(catchable.y === hero.y){
+            if (catchable.y === hero.y) {
                 catchable.x_pos;
                 catchable.x_neg;
             }
@@ -750,6 +763,7 @@ window.onload = function () {
                 game.catches++;
                 hero.killable = true;
                 reset();
+
             }
 
             // If the hero touches the monster            
@@ -765,10 +779,8 @@ window.onload = function () {
                         player_status.src = `./img/3_lifes.gif`;
                     } else if (game.lifes > 0) {
                         player_status.src = `./img/${game.lifes}_lifes.gif`;
-                    } else {
-                        location.reload();
                     }
-                    reset();
+                    gameOver();
                 } else {
                     monster = m_empty;
                 }
@@ -782,8 +794,8 @@ window.onload = function () {
                 monster2.y <= (hero.y + monster2.height) && hero.killable
             ) {
                 game.lifes--;
-                if (game.lifes < 1) location.reload();
-                reset();
+                if (game.lifes < 1) { gameOver() }
+                else { reset(); }
                 player_status.src = `./img/${game.lifes}_lifes.gif`;
             }
 
@@ -841,7 +853,7 @@ window.onload = function () {
         ctx.drawImage(power_up.image, power_up.x, power_up.y);
 
         //Draw second monster
-        if(monster2 !== m_empty){
+        if (monster2 !== m_empty) {
             ctx.drawImage(monster2.image, monster2.x, monster2.y);
         }
 
@@ -878,7 +890,6 @@ window.onload = function () {
 
     //Close menu
     menu_container.addEventListener('click', function (e) {
-        //e.preventDefault();
         e.stopPropagation();
     }, false);
 
@@ -890,9 +901,22 @@ window.onload = function () {
     pause_game.addEventListener('click', openMenu, false);
     document.addEventListener('blur', openMenu, false);
 
+    //Restart Game
+    restart_game.addEventListener('click', function () {
+        game.lifes = 3;
+        game.catches = 0;
+        reset();
+    }, false);
+    reload_game.addEventListener('click', function () {
+        location.reload();
+    }, false);
+    reload_window.addEventListener('click', function () {
+        location.reload();
+    }, false);
+
     //Shortcuts
     document.addEventListener('keypress', function (e) {
-        var key = e.which ||  e.keyCode;
+        var key = e.which || e.keyCode;
         if (key === 112) {
             if (pause_menu.style.visibility !== 'visible') {
                 openMenu();
@@ -900,10 +924,8 @@ window.onload = function () {
                 closeMenu();
             }
         } else if (key === 114) {
-            location.reload();
+            gameOver(key);
         }
-
-
     }, false);
 
     //Reload if need
@@ -911,8 +933,8 @@ window.onload = function () {
 
     //Clear explanation text
     power_up_text.innerText = "";
+    var then = Date.now();
 
-   
 
 };
 
