@@ -12,11 +12,30 @@ var game = {
     y0: 0,
     catches: 0,
     modifier: 1,
-    power_up: ""
+    power_up: "",
+    pause_sound: new Howl({
+        src: ['./sounds/pause.mp3'],
+        volume: 0.3,
+    }),
+    play_sound: new Howl({
+        src: ['./sounds/play.mp3'],
+        volume: 0.3,
+    }),
+
 };
+
+var menu_sound = new Howl({
+    src: ['./sounds/menu.mp3'],
+    volume: 0.3,
+    autoplay: true
+});
+
+menu_sound.play();
+
 
 
 window.onload = function () {
+
 
     //Get Elements
     var container = document.getElementById('CanvasContainer');
@@ -80,9 +99,11 @@ window.onload = function () {
         x_neg: false,
         y_pos: false,
         y_neg: false,
-        image: new Image()
+        image: new Image(),
+        sound: new Howl({
+            src: ['./sounds/marine.wav']
+        }),
     };
-
     var time_out = 3;
 
     // Hero image
@@ -100,7 +121,10 @@ window.onload = function () {
         x_neg: false,
         y_pos: false,
         y_neg: false,
-        image: new Image()
+        image: new Image(),
+        sound: new Howl({
+            src: ['./sounds/lost_soul.wav']
+        }),
     };
 
     // Catchable image
@@ -121,6 +145,7 @@ window.onload = function () {
             y_pos: params.y_pos,
             y_neg: params.y_neg,
             image: new Image(),
+
         };
     };
 
@@ -147,6 +172,9 @@ window.onload = function () {
     imp.h_modifier = 0.6;
     imp.speed = hero.speed * imp.s_modifier * game.modifier;
     imp.image.src = "./img/imp.png";
+    imp.sound = new Howl({
+        src: ['./sounds/imp.wav']
+    });
 
     revenant.name = "revenant";
     revenant.width = 49;
@@ -155,6 +183,9 @@ window.onload = function () {
     revenant.h_modifier = 0.65;
     revenant.speed = hero.speed * revenant.s_modifier * game.modifier;
     revenant.image.src = "./img/revenant.png";
+    revenant.sound = new Howl({
+        src: ['./sounds/revenant.wav']
+    });
 
     baron.name = "baron";
     baron.width = 49;
@@ -163,6 +194,9 @@ window.onload = function () {
     baron.h_modifier = 0.8;
     baron.speed = hero.speed * baron.s_modifier * game.modifier;
     baron.image.src = "./img/baron.png";
+    baron.sound = new Howl({
+        src: ['./sounds/baron.wav']
+    });
 
     knight.name = "knight";
     knight.width = 52;
@@ -171,6 +205,9 @@ window.onload = function () {
     knight.h_modifier = 0.85;
     knight.speed = hero.speed * knight.s_modifier * game.modifier;
     knight.image.src = "./img/knight.png";
+    knight.sound = new Howl({
+        src: ['./sounds/knight.wav']
+    });
 
     cyberdemon.name = "cyberdemon";
     cyberdemon.width = 85;
@@ -179,6 +216,9 @@ window.onload = function () {
     cyberdemon.h_modifier = 0.9;
     cyberdemon.speed = hero.speed * knight.s_modifier * game.modifier;
     cyberdemon.image.src = "./img/cyberdemon.png";
+    cyberdemon.sound = new Howl({
+        src: ['./sounds/cyberdemon.wav']
+    });
 
     cacodemon.name = "cacodemon";
     cacodemon.width = 63;
@@ -187,6 +227,9 @@ window.onload = function () {
     cacodemon.h_modifier = 0.7;
     cacodemon.speed = hero.speed * cacodemon.s_modifier * game.modifier;
     cacodemon.image.src = "./img/cacodemon.png";
+    cacodemon.sound = new Howl({
+        src: ['./sounds/cacodemon.wav']
+    });
 
     mancubus.name = "mancubus";
     mancubus.width = 164;
@@ -195,6 +238,9 @@ window.onload = function () {
     mancubus.h_modifier = 1.4;
     mancubus.speed = hero.speed * mancubus.s_modifier * game.modifier;
     mancubus.image.src = "./img/mancubus.png";
+    mancubus.sound = new Howl({
+        src: ['./sounds/mancubus.wav']
+    });
 
     spider.name = "spider";
     spider.width = 194;
@@ -203,6 +249,9 @@ window.onload = function () {
     spider.h_modifier = 1.3;
     spider.speed = hero.speed * spider.s_modifier * game.modifier;
     spider.image.src = "./img/spider.png";
+    spider.sound = new Howl({
+        src: ['./sounds/spider.wav']
+    });
 
     boss.name = "final_boss";
     boss.width = canvas.width * 0.7;
@@ -211,6 +260,9 @@ window.onload = function () {
     boss.h_modifier = 3;
     boss.speed = hero.speed * boss.s_modifier * game.modifier;
     boss.image.src = "./img/final_boss.png";
+    boss.sound = new Howl({
+        src: ['./sounds/final_boss.wav']
+    });
 
     m_empty.name = "empty";
 
@@ -223,7 +275,11 @@ window.onload = function () {
         height: 33,
         explanation: "",
         do: function () { },
-        image: new Image()
+        image: new Image(),
+        sound: new Howl({
+            src: ['./sounds/power_up.wav']
+        })
+
     };
 
     //Create powerups
@@ -321,6 +377,14 @@ window.onload = function () {
         loadGame(1.3);
     });
 
+    game.play_sound.on('play', function () {
+        game.pause_sound.pause();
+    });
+
+    game.pause_sound.on('play', function () {
+        game.play_sound.pause();
+    });
+
 
     var drawables = [imp, revenant, baron, knight, cyberdemon, cacodemon, mancubus, spider, boss, hero, catchable];
     var images = [];
@@ -329,6 +393,7 @@ window.onload = function () {
 
 
     function loadGame(modifier) {
+        menu_sound.stop();
         game.modifier = modifier;
         for (i of drawables) {
             images_url.push("./img/" + i.name + ".png");
@@ -336,17 +401,16 @@ window.onload = function () {
                 images_url.push("./img/" + i.name + "_" + j + ".png");
             }
         }
-        imageLoader(startGame);
+        dataLoader(startGame);
     }
 
-    function imageLoader(callback) {
+    function dataLoader(callback) {
         for (i in images_url) {
             let img = new Image();
             images.push(img);
             img.onload = function () {
                 images_ready++;
                 main_menu.style.top = -images_ready / images_url.length * 110 + "%";
-                console.log('charged')
                 if (images_ready >= images_url.length) {
                     callback();
                 };
@@ -366,8 +430,11 @@ window.onload = function () {
         if (game.lifes > 0) {
             reset();
         } else {
+            hero.sound.play();
             game_over.style.visibility = "visible";
             game.playable = false;
+            game.pause_sound.play();
+
         }
     }
 
@@ -410,6 +477,7 @@ window.onload = function () {
         monster2 = m_empty;
         hero.killable = true;
         game.playable = false;
+        game.pause_sound.play();
         power_active.src = "";
         power_up_text.innerText = "";
         pause_menu.style.visibility = 'hidden';
@@ -508,6 +576,7 @@ window.onload = function () {
         }
 
         game.playable = false;
+        game.pause_sound.play();
         count_down.style.visibility = 'visible';
         count_down.style.opacity = 1;
 
@@ -526,6 +595,7 @@ window.onload = function () {
             count_down.style.opacity = 0;
             count_down.style.visibility = 'hidden';
             game.playable = true;
+            game.play_sound.play();
             time_out = 3;
         }, 2101);
 
@@ -762,6 +832,7 @@ window.onload = function () {
                 catchable.y <= (hero.y + catchable.height)
             ) {
                 game.catches++;
+                catchable.sound.play();
                 hero.killable = true;
                 reset();
 
@@ -775,6 +846,7 @@ window.onload = function () {
                 monster.y <= (hero.y + monster.height)
             ) {
                 if (hero.killable) {
+                    monster.sound.play();
                     game.lifes--;
                     if (game.lifes >= 3) {
                         player_status.src = `./img/3_lifes.gif`;
@@ -794,6 +866,7 @@ window.onload = function () {
                 hero.y <= (monster2.y + monster2.height) &&
                 monster2.y <= (hero.y + monster2.height) && hero.killable
             ) {
+                monster2.sound.play();
                 game.lifes--;
                 if (game.lifes < 1) { gameOver() }
                 else { reset(); }
@@ -811,6 +884,7 @@ window.onload = function () {
                 if (power_active.name !== 'lifes' && power_active.name !== 'red' && power_active.name !== 'empty') {
                     power_active.src = "./img/" + power_up.name + ".png";
                 }
+                catchable.sound.play();
                 power_up_text.className = power_up.name;
                 power_up_text.innerText = power_up.explanation;
                 power_up.do();
@@ -876,11 +950,13 @@ window.onload = function () {
     function closeMenu() {
         pause_menu.style.visibility = 'hidden';
         game.playable = true;
+        game.play_sound.play();
     }
 
     function openMenu() {
         pause_menu.style.visibility = 'visible';
         game.playable = false;
+        game.pause_sound.play();
     }
 
     // Cross-browser support for requestAnimationFrame
