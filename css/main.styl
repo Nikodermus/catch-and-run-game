@@ -9,6 +9,7 @@ vendor-prefixes = webkit moz o ms official mso xv wap khtml apple prince ah hp r
 $size = 16
 $red = #9C1B00
 $green = #10210B
+$gold = #AB730F
 
 
 //Mixins
@@ -82,7 +83,7 @@ span
     color $red
     text-shadow 1px 2px 0 #000000;
 
-button
+button.square
     border 0
     border-radius 10px
     position relative
@@ -364,6 +365,80 @@ button
     bottom unset 
     background-color alpha(black, .4)
     z-index 100
+#MainMenu
+    width 100%
+    height: 100%
+    position: fixed
+    top 0
+    left 0
+    right: unset 
+    bottom: unset
+    display: flex
+    justify-content: center
+    align-items: center
+    background-image: url(../img/main_bg.png)
+    z-index: 9999
+    &::after
+        content: ""
+        width: 100%
+        height: 70px
+        position: absolute
+        bottom: 0
+        left 0
+        right: unset 
+        top unset 
+        background: url('../img/blood_degrade.png')
+    .menu_container
+        width: 80%
+        max-width: 500px
+        position: relative
+        padding-bottom: 1rem
+        figure
+            display: flex
+            align-items: center
+            margin-bottom: 2rem
+            img
+                float: left
+                &:nth-child(1)
+                    width: 80%
+                &:nth-child(2)
+                    width: 17%
+                    margin-left: 3%
+        > button
+            width: 100%
+            background: transparent
+            color white  
+            font-size: 26px
+            border 0
+            margin-bottom: 1.5rem
+            &:hover
+                color $gold
+                cursor: pointer
+        > div
+            position absolute
+            bottom: 0
+            left: 0
+            width: 100%
+            top unset 
+            right unset 
+            button
+                background: transparent
+                font-size: 2rem
+                position: absolute
+                bottom: 0
+                border 0
+                z-index: 10
+                i
+                    color $gold !important
+                &:first-of-type
+                    left 0
+                &:last-of-type
+                    right: 0
+                &:hover
+                    filter brightness(1.3)
+                    cursor pointer
+
+
 
 
 

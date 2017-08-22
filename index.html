@@ -1,80 +1,144 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Catch and Run Game | Nikodermus</title>
-    <link rel="stylesheet" href="./css/reset.css">
-    <link rel="stylesheet" href="./css/fonts/fonts.css">
-    <link rel="stylesheet" href="./css/icons.css">
-    <link rel="stylesheet" href="./css/main.css">
-    <script src="./js/actions.js"></script>
-</head>
-
-<body>
-    <figure class="top">
-        <img src="./img/pause_icon.png" alt="">
-    </figure>
-    <div class="border">
-    </div>
-    <div class="border"></div>
-    <div class="border">
-        <div class="panel">
-
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta http-equiv="X-UA-Compatible" content="ie=edge">
+      <title>
+         Catch and Run Game | Nikodermus
+      </title>
+      <link rel="stylesheet" href="./css/reset.css">
+      <link rel="stylesheet" href="./css/fonts/fonts.css">
+      <link rel="stylesheet" href="./css/icons.css">
+      <link rel="stylesheet" href="./css/main.css">
+      <script src="./js/actions.js"></script>
+   </head>
+   <body>
+      <figure class="top">
+         <img src="./img/pause_icon.png" alt="">
+      </figure>
+      <div class="border">
+      </div>
+      <div class="border">
+      </div>
+      <div class="border">
+         <div class="panel">
             <div class="left">
-                <img src="./img/lost_soul.gif" alt="">
-                <span id="SoulsCount">00</span>
+               <img src="./img/lost_soul.gif" alt="">
+               <span id="SoulsCount">00
+               </span>
             </div>
             <div class="right">
-
-                <figure class="lives" id="LifeCount">
-
-                </figure>
-                <button id="PauseGame"> <div>II</div>       </button>
+               <figure class="lives" id="LifeCount">
+               </figure>
+               <button id="PauseGame">
+                  <div>II
+                  </div>
+               </button>
             </div>
             <figure>
-                <img src="./img/3_lifes.gif" alt="" id="PlayerStatus">
-                <img src="" alt="" id="PowerActive">
+               <img src="./img/3_lifes.gif" alt="" id="PlayerStatus">
+               <img src="" alt="" id="PowerActive">
             </figure>
-        </div>
-
-    </div>
-    <div class="border"></div>
-    <img src="./img/corner.png" alt="" class="corner">
-    <img src="./img/corner.png" alt="" class="corner">
-    <img src="./img/corner.png" alt="" class="corner">
-    <img src="./img/corner.png" alt="" class="corner">
-    <div id="CanvasContainer"></div>
-    <div id="PauseMenu">
-
-        <div class="menu_overlay">
+         </div>
+      </div>
+      <div class="border">
+      </div>
+      <img src="./img/corner.png" alt="" class="corner">
+      <img src="./img/corner.png" alt="" class="corner">
+      <img src="./img/corner.png" alt="" class="corner">
+      <img src="./img/corner.png" alt="" class="corner">
+      <div id="CanvasContainer">
+      </div>
+      <div id="PauseMenu">
+         <div class="menu_overlay">
             <div class="menu_container">
-                <h1>Menu</h1>
-
-                <div class="menu_buttons">
-                    <a href="javaScript:void(0);"><button class="square" id="CloseMenu"><div class="square-content"><i class="icon icon-cancel"></i></div></button></a>
-                    <a href="javaScript:void(0);"><button class="square" id="ReloadGame"><div class="square-content"><i class="icon icon-reset"></i></div></button></a>
-                    <a href=""><button class="square"><div class="square-content"><i class="icon icon-facebook"></i></div></button></a>
-                    <a href="http://github.com/Nikodermus/catch-and-run-game"><button class="square"><div class="square-content"><i class="icon icon-github"></i></div></button></a>
-                </div>
-
-                <h3><a href="https://www.idsoftware.com/en-gb" target="_blank">id Software</a></h3>
-                <h3><a href="http://github.com/Nikodermus" target="_blank">Nikodermus</a></h3>
-
-                <figure>
-                    <img src="./img/menu_img.png" alt="">
-                </figure>
+               <h1>Menu
+               </h1>
+               <div class="menu_buttons">
+                  <a href="javaScript:void(0);">
+                     <button class="square" id="CloseMenu">
+                        <div class="square-content">
+                           <i class="icon icon-cancel">
+                           </i>
+                        </div>
+                     </button>
+                  </a>
+                  <a href="javaScript:void(0);">
+                     <button class="square" id="ReloadGame">
+                        <div class="square-content">
+                           <i class="icon icon-reset">
+                           </i>
+                        </div>
+                     </button>
+                  </a>
+                  <a href="">
+                     <button class="square">
+                        <div class="square-content">
+                           <i class="icon icon-facebook">
+                           </i>
+                        </div>
+                     </button>
+                  </a>
+                  <a href="http://github.com/Nikodermus/catch-and-run-game">
+                     <button class="square">
+                        <div class="square-content">
+                           <i class="icon icon-github">
+                           </i>
+                        </div>
+                     </button>
+                  </a>
+               </div>
+               <h3>
+                  <a href="https://www.idsoftware.com/en-gb" target="_blank">id Software
+                  </a>
+               </h3>
+               <h3>
+                  <a href="http://github.com/Nikodermus" target="_blank">Nikodermus
+                  </a>
+               </h3>
+               <figure>
+                  <img src="./img/menu_img.png" alt="">
+               </figure>
             </div>
-        </div>
-    </div>
-    <div id="PowerUpText">
-
-    </div>
-    <div id="CountDown">
-        <span>3</span>
-    </div>
-</body>
-
+         </div>
+      </div>
+      <div id="PowerUpText">
+      </div>
+      <div id="CountDown">
+         <span>3
+         </span>
+      </div>
+      <div id="MainMenu">
+          <div class="menu_container">
+                <figure>
+                        <img src="./img/logo.png" alt="">
+                        <img src="./img/main.gif" alt="">
+                     </figure>
+                     <button id="#EasyLevel">I'm a baby
+                     </button>
+                     <button id="#NormalLevel">Brutal Warrior
+                     </button>
+                     <button id="#HardcoreLevel">Hell Overlord
+                     </button>
+                     <div>
+                        <button id="ReloadGame">
+                           <div class="square-content">
+                              <i class="icon icon-facebook">
+                              </i>
+                           </div>
+                        </button>
+                        <button id="ReloadGame">
+                        <a href="https://nikodermus.media/" target="_blank">
+                           <div class="square-content">
+                              <i class="icon icon-github">
+                              </i>
+                           </div>
+                        </a>
+                        </button>
+                     </div>
+                  </div>
+          </div>
+        
+   </body>
 </html>
