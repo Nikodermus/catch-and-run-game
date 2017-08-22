@@ -31,7 +31,13 @@ window.onload = function () {
     var menu_overlay = document.querySelector('.menu_overlay');
     var menu_container = document.querySelector('.menu_container');
     var power_up_text = document.getElementById('PowerUpText');
-    var count_down = document.getElementById('CountDown');
+    var main_menu = document.getElementById('MainMenu');
+    var count_down = document.getElementById('CountDown');    
+    var easy_level = document.getElementById('EasyLevel');
+    var normal_level = document.getElementById('NormalLevel');
+    var hardcore_level = document.getElementById('HardcoreLevel');
+    
+    //Create image
     var life_img = document.createElement('img');
 
     //Basic state of elements
