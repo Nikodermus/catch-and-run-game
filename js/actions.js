@@ -857,10 +857,7 @@ window.onload = function () {
     //Clear explanation text
     power_up_text.innerText = "";
 
-    // Let's play this game!
-    var then = Date.now();
-    reset();
-    main();
+   
 
 };
 
