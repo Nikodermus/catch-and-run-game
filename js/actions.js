@@ -316,10 +316,14 @@ window.onload = function () {
     hardcore_level.addEventListener('click', function(){
         loadGame(1.3);
     });
+
+
     var drawables = [imp, revenant, baron, knight, cyberdemon, cacodemon, mancubus, spider, boss, hero, catchable];
     var images = [];
     var images_url = [];        
     var images_ready = 0;
+
+
     function loadGame(modifier){
         game.modifier = modifier;
 
@@ -333,6 +337,23 @@ window.onload = function () {
         }
         imageLoader(startGame);
     }
+
+    function imageLoader(callback){
+        console.log(images_url)
+        for(i in images_url){
+            let img = new Image();
+            images.push(img);
+            main_menu.style.top = -i / images_url.length * 110+"%";
+            img.onload = function(){
+                images_ready++;
+                if(images_ready >= images_url.length){
+                    callback();
+                };
+            };
+            img.src = images_url[i];
+        }
+    }
+    
     function startGame(){
          // Let's play this game!
     var then = Date.now();
