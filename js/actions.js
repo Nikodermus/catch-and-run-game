@@ -316,6 +316,23 @@ window.onload = function () {
     hardcore_level.addEventListener('click', function(){
         loadGame(1.3);
     });
+    var drawables = [imp, revenant, baron, knight, cyberdemon, cacodemon, mancubus, spider, boss, hero, catchable];
+    var images = [];
+    var images_url = [];        
+    var images_ready = 0;
+    function loadGame(modifier){
+        game.modifier = modifier;
+
+        
+
+        for(i of drawables){
+            images_url.push("./img/"+i.name+".png");
+            for(var j=1; j<9; j++){
+                images_url.push("./img/"+i.name+"_"+j+ ".png");
+            }
+        }
+        imageLoader(startGame);
+    }
     //Random for various purposes
     function getRandom(min, max) {
         return Math.random() * (max - min) + min;
