@@ -8,7 +8,8 @@
 vendor-prefixes = webkit moz o ms official mso xv wap khtml apple prince ah hp ro rim tc
 $size = 16
 $red = #9C1B00
-$green = #10770B
+$green_light = #10770B
+$green = #10210B
 $gold = #AB730F
 
 
@@ -351,7 +352,7 @@ button.square
     &.white
         color white
     &.life
-        color $green
+        color $green_light
     &.green
         color #6CCF3F
 #CountDown
@@ -425,6 +426,7 @@ button.square
                     cursor pointer
 #GameOver
     fullFixed(alpha(black, .9))
+    visibility hidden
     z-index: 99999
     .game_container
         width: 300px
