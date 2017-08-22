@@ -333,6 +333,14 @@ window.onload = function () {
         }
         imageLoader(startGame);
     }
+    function startGame(){
+         // Let's play this game!
+    var then = Date.now();
+        reset();
+        main();
+
+    }
+
     //Random for various purposes
     function getRandom(min, max) {
         return Math.random() * (max - min) + min;
