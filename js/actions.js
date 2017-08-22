@@ -343,9 +343,10 @@ window.onload = function () {
         for (i in images_url) {
             let img = new Image();
             images.push(img);
-            main_menu.style.top = -i / images_url.length * 110 + "%";
             img.onload = function () {
                 images_ready++;
+                main_menu.style.top = -images_ready / images_url.length * 110 + "%";
+                console.log('charged')
                 if (images_ready >= images_url.length) {
                     callback();
                 };
