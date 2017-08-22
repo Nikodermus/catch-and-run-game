@@ -307,6 +307,15 @@ window.onload = function () {
 
     }, false);
 
+    easy_level.addEventListener('click', function(){
+        loadGame(.7);
+    });
+    normal_level.addEventListener('click', function(){
+        loadGame(1);
+    });
+    hardcore_level.addEventListener('click', function(){
+        loadGame(1.3);
+    });
     //Random for various purposes
     function getRandom(min, max) {
         return Math.random() * (max - min) + min;
