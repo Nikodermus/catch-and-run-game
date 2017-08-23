@@ -318,7 +318,7 @@ window.onload = function () {
         a.y_pos = false;
         a.y_neg = false;
         monster2 = a;
-        red.explanation = monster2.name + " appeared";
+        red.explanation = "New monster appeared";
         return monster2;
     };
 
