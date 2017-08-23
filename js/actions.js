@@ -16,11 +16,13 @@ var game = {
     pause_sound: new Howl({
         src: ['./sounds/pause.mp3'],
         volume: 0.3,
+        loop: true
     }),
     play_sound: new Howl({
         src: ['./sounds/play.mp3'],
         volume: 0.3,
-    }),
+        loop: true
+    })
 
 };
 
@@ -102,7 +104,7 @@ window.onload = function () {
         image: new Image(),
         sound: new Howl({
             src: ['./sounds/marine.wav']
-        }),
+        })
     };
     var time_out = 3;
 
@@ -124,7 +126,7 @@ window.onload = function () {
         image: new Image(),
         sound: new Howl({
             src: ['./sounds/lost_soul.wav']
-        }),
+        })
     };
 
     // Catchable image
@@ -144,10 +146,12 @@ window.onload = function () {
             x_neg: params.x_neg,
             y_pos: params.y_pos,
             y_neg: params.y_neg,
-            image: new Image(),
+            image: new Image()
 
         };
     };
+
+
 
     //Create monsters
     var imp = Monster({});
@@ -274,7 +278,7 @@ window.onload = function () {
         width: 37,
         height: 33,
         explanation: "",
-        do: function () { },
+        do: function () {},
         image: new Image(),
         sound: new Howl({
             src: ['./sounds/power_up.wav']
@@ -368,7 +372,7 @@ window.onload = function () {
     }, false);
 
     easy_level.addEventListener('click', function () {
-        loadGame(.7);
+        loadGame(0.7);
     });
     normal_level.addEventListener('click', function () {
         loadGame(1);
@@ -413,7 +417,7 @@ window.onload = function () {
                 main_menu.style.top = -images_ready / images_url.length * 110 + "%";
                 if (images_ready >= images_url.length) {
                     callback();
-                };
+                }
             };
             img.src = images_url[i];
         }
@@ -426,7 +430,9 @@ window.onload = function () {
     }
 
     function gameOver(key) {
-        if (key === 114) { location.reload(); };
+        if (key === 114) {
+            newGame();
+        };
         if (game.lifes > 0) {
             reset();
         } else {
@@ -436,6 +442,18 @@ window.onload = function () {
             game.pause_sound.play();
 
         }
+    }
+
+    function newGame() {
+        console.log('new game has started');
+        monster = m_empty;
+        game.catches = 0;
+        main_menu.style.visibility = 'visible';
+        main_menu.style.top = 0;
+        time_out = 3;
+        game_over.style.visibility = 'hidden';
+        //game.playable = false;
+
     }
 
 
@@ -588,8 +606,8 @@ window.onload = function () {
             setTimeout(function () {
                 count_down.innerHTML = `<span>${time_out}</span>`;
                 time_out--;
-                count_down.style.opacity -= .25;
-            }, i * interval)
+                count_down.style.opacity -= 0.25;
+            }, i * interval);
         }
         setTimeout(function () {
             count_down.style.opacity = 0;
@@ -645,12 +663,12 @@ window.onload = function () {
                 }
             }
             if (monster.x === hero.x) {
-                monster.y_pos;
-                monster.y_neg;
+                monster.x_pos = false;
+                monster.x_neg = false;
             }
             if (monster.y === hero.y) {
-                monster.x_pos;
-                monster.x_neg;
+                monster.y_pos = false;
+                monster.y_neg = false;
             }
 
             //Move second monster
@@ -692,12 +710,12 @@ window.onload = function () {
                 }
             }
             if (monster2.x === hero.x) {
-                monster2.y_pos;
-                monster2.y_neg;
+                monster2.x_pos = false;
+                monster2.x_neg = false;
             }
             if (monster2.y === hero.y) {
-                monster2.x_pos;
-                monster2.x_neg;
+                monster2.y_pos = false;
+                monster2.y_neg = false;
             }
 
 
@@ -741,12 +759,12 @@ window.onload = function () {
                 }
             }
             if (catchable.x === hero.x) {
-                catchable.y_pos;
-                catchable.y_neg;
+                catchable.x_pos = false;
+                catchable.x_neg = false;
             }
             if (catchable.y === hero.y) {
-                catchable.x_pos;
-                catchable.x_neg;
+                catchable.y_pos = false;
+                catchable.y_neg = false;
             }
 
             var elems = [monster, monster2, catchable];
@@ -868,8 +886,11 @@ window.onload = function () {
             ) {
                 monster2.sound.play();
                 game.lifes--;
-                if (game.lifes < 1) { gameOver() }
-                else { reset(); }
+                if (game.lifes < 1) {
+                    gameOver();
+                } else {
+                    reset();
+                }
                 player_status.src = `./img/${game.lifes}_lifes.gif`;
             }
 
@@ -985,10 +1006,10 @@ window.onload = function () {
         reset();
     }, false);
     reload_game.addEventListener('click', function () {
-        location.reload();
+        newGame();
     }, false);
     reload_window.addEventListener('click', function () {
-        location.reload();
+        newGame();
     }, false);
 
     //Shortcuts
