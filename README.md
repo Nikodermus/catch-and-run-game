@@ -1,7 +1,7 @@
 # catch-and-run-game
 Pure JS game, with DOOM 1993 Sprites and a lot of incoming fun! Play it [here](http://game.dakio.co)! 
 
-##MVP   
+## MVP   
 --- ✓ Hero can collect souls   
 --- ✓ Souls count decreases if the hero touches the monster   
 --- ✓ Make status panel   
@@ -16,30 +16,30 @@ Pure JS game, with DOOM 1993 Sprites and a lot of incoming fun! Play it [here](h
 --- ✓ Game will wait 3s once it has started a level
 --- ✓ Main Title Screen will load all the images and allow user to chose dificulty
 
-##Database
+## atabase   
 --- x Users will be able to play as guest if there's no logged in user    
 --- x User can sign up with e-mail, nickname, password     
 --- x User can log in with e-mail // password    
 
-    ###For signed up users
+    ### For signed up users
     --- x A profile menu will appear with: latest 10 gamescore, best 10 gamescore    
     --- x Each gamescore can be shared through Facebook // Twitter // Instagram?    
     --- x Gamescore can be deleted with a confirmation
     --- x Account can be deleted with password and captcha
 
-    ###On game
+    ### On game
     --- x Anybody can share on Facebook // Twitter // Instagram? an screenshot of the status of their game    
 
-    ###Once the game is over
+    ### Once the game is over
     --- x Guest user can sign up and save the played match  
     --- x Game can be saved (Max: 10 per user. If the user already had 10 games, the system will erase the last not top score user's game) to be shared afterwards
     --- x For logged in users, the gamescore will be saved on personal records with a max of 10 per user and starting by the latest (Max: 10 per user. If the user already had 10 games, the system will erase the last not top score user's game)     
 
-    ###Leaderboard
+    ### Leaderboard
     --- x Will show 10 best scores sorted by difficulty and score with session time, score, nickname, difficulty and game date 
 
 
-##Addons   
+## Addons   
 --- x Bind hero sprite to change based on the keys hold
 --- x Bind hero sprite to change based on the keys hold   
 --- x Bind monster sprite to change based on the keys hold   
@@ -52,5 +52,5 @@ Pure JS game, with DOOM 1993 Sprites and a lot of incoming fun! Play it [here](h
 --- x Skins can be sellected (Own, Megaman or MortalKombat)   
 --- ? Multiplayer 
 
-##by Nicolas M. Pardo, [Nikodermus](http://nikodermus.media)
-###Under the [Beerware](https://spdx.org/licenses/Beerware.html) Software License @2017
+## by Nicolas M. Pardo, [Nikodermus](http://nikodermus.media)
+### Under the [Beerware](https://spdx.org/licenses/Beerware.html) Software License @2017
