@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>CatchAndRunGame</title>
+    <%= csrf_meta_tags %>
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+
+    <link rel="stylesheet" href="/assets/stylesheets/reset.css" />
+    <link rel="stylesheet" href="/assets/stylesheets/fonts.css" />
+    <link rel="stylesheet" href="/assets/stylesheets/icons.css" />
+    <script src="/assets/javascripts/howler.min.js"></script>
+ 
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body>
+    <%= yield %>
+  </body>
+</html>
