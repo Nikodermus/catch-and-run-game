@@ -16,21 +16,21 @@ Pure JS game, with DOOM 1993 Sprites and a lot of incoming fun! Play it [here](h
 --- ✓ Game will wait 3s once it has started a level
 --- ✓ Main Title Screen will load all the images and allow user to chose dificulty
 
-## atabase   
+## Database   
 --- x Users will be able to play as guest if there's no logged in user    
 --- x User can sign up with e-mail, nickname, password     
 --- x User can log in with e-mail // password    
 
-    ### For signed up users
+### For signed up users
     --- x A profile menu will appear with: latest 10 gamescore, best 10 gamescore    
     --- x Each gamescore can be shared through Facebook // Twitter // Instagram?    
     --- x Gamescore can be deleted with a confirmation
     --- x Account can be deleted with password and captcha
 
-    ### On game
+### On game
     --- x Anybody can share on Facebook // Twitter // Instagram? an screenshot of the status of their game    
 
-    ### Once the game is over
+### Once the game is over
     --- x Guest user can sign up and save the played match  
     --- x Game can be saved (Max: 10 per user. If the user already had 10 games, the system will erase the last not top score user's game) to be shared afterwards
     --- x For logged in users, the gamescore will be saved on personal records with a max of 10 per user and starting by the latest (Max: 10 per user. If the user already had 10 games, the system will erase the last not top score user's game)     
