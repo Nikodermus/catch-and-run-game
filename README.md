@@ -35,7 +35,7 @@ Pure JS game, with DOOM 1993 Sprites and a lot of incoming fun! Play it [here](h
     --- x Game can be saved (Max: 10 per user. If the user already had 10 games, the system will erase the last not top score user's game) to be shared afterwards
     --- x For logged in users, the gamescore will be saved on personal records with a max of 10 per user and starting by the latest (Max: 10 per user. If the user already had 10 games, the system will erase the last not top score user's game)     
 
-    ### Leaderboard
+### Leaderboard
     --- x Will show 10 best scores sorted by difficulty and score with session time, score, nickname, difficulty and game date 
 
 

@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  score: 1
+  difficulty: MyString
+  image: MyString
+  duration: 2017-09-26 17:40:15
+  date: 2017-09-26
+  img: MyString
+
+two:
+  score: 1
+  difficulty: MyString
+  image: MyString
+  duration: 2017-09-26 17:40:15
+  date: 2017-09-26
+  img: MyString
