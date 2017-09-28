@@ -2,11 +2,10 @@ class CreateGames < ActiveRecord::Migration[5.1]
   def change
     create_table :games do |t|
       t.integer :score
-      t.string :difficulty
-      t.string :image
+      t.enum difficulty: [:easy, :normal, :hard]
       t.time :duration
       t.date :date
-      t.string :img
+      t.string :img_path
 
       t.timestamps
     end

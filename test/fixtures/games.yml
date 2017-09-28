@@ -2,16 +2,14 @@
 
 one:
   score: 1
-  difficulty: MyString
-  image: MyString
-  duration: 2017-09-26 17:40:15
+  difficulty: 
+  duration: 2017-09-26 21:55:17
   date: 2017-09-26
-  img: MyString
+  img_path: MyString
 
 two:
   score: 1
-  difficulty: MyString
-  image: MyString
-  duration: 2017-09-26 17:40:15
+  difficulty: 
+  duration: 2017-09-26 21:55:17
   date: 2017-09-26
-  img: MyString
+  img_path: MyString
