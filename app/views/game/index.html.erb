@@ -96,19 +96,16 @@
 <div id="MainMenu">
     <div class="menu_container">
     <% unless current_user %>
-  <%= link_to "Sign in with Facebook", user_facebook_omniauth_authorize_path %>
-  <%= link_to "Sign in with Facebook", user_twitter_omniauth_authorize_path %>
-<% else %>
-<%= current_user.name%>
-  <%= link_to "Logout", destroy_user_session_path, method: :delete %>
-  <%= %>
-<% end %>
+        <%= link_to "Sign in with Facebook", user_facebook_omniauth_authorize_path %>
+    <% else %>
+        <%= current_user.name %>
+        <%= link_to "Logout", destroy_user_session_path, method: :delete %>
+    <% end %>
         <figure>
             <img src="/assets/images/logo.png" alt="">
             <img src="/assets/images/main.gif" alt="">
         </figure>
         <button id="EasyLevel">I'm a baby
-        <%= root_url%>
                     </button>
         <button id="NormalLevel">Brutal Warrior
                     </button>
@@ -134,11 +131,12 @@
 </div>
 <div id="GameOver">
     <div class="game_container">
+        <h1></h1>
         <figure>
             <img src="/assets/images/marine.gif" alt="" id="DeathGif">
         </figure>
         <button id="RestartGame">Restart</button>
         <button id="ReloadWindow">Main Menu</button>
+
     </div>
 </div>
-<%= javascript_include_tag 'actions', 'data-turbolinks-track': 'reload' %>

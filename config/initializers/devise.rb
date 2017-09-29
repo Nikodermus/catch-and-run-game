@@ -276,5 +276,6 @@ Devise.setup do |config|
   # config.omniauth_path_prefix = '/my_engine/users/auth'
 
   config.omniauth :facebook, "580560009001960", "02a26babcb179f0678d9d26d5eec3d34", callback_url: "http://localhost:3000/users/auth/facebook/callback"
-  config.omniauth :twitter, "580560009001960", "02a26babcb179f0678d9d26d5eec3d34", callback_url: "http://localhost:3000/users/auth/facebook/callback"
+  config.omniauth :twitter, "580560009001960", "02a26babcb179f0678d9d26d5eec3d34", callback_url: "http://localhost:3000/users/auth/twitter/callback"
+  config.omniauth :github, "580560009001960", "02a26babcb179f0678d9d26d5eec3d34", callback_url: "http://localhost:3000/users/auth/github/callback"
 end
