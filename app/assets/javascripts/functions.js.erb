@@ -372,6 +372,50 @@ var images = [];
 var images_url = [];
 var images_ready = 0;
 
+var canv_img;
+function createCanvas() {
+	return html2canvas(document.body, {
+		onrendered: function (canvas) {
+			return canvas.toDataURL('image/png');
+		}
+	});
+
+}
+function ajaxStartGame() {
+
+	var difficulty_game;
+	switch (game.modifier) {
+		case 0.7:
+			difficulty_game = 'easy';
+			break;
+		case 1:
+			difficulty_game = 'normal';
+			break;
+		case 1.3:
+			difficulty_game = 'hard';
+			break;
+		default:
+			difficulty_game = 'normal';
+	}
+
+	var user_game = document.querySelector("[data-user-id]").getAttribute("data-user-id");
+
+	Rails.ajax({
+		type: "POST",
+		datatype: "json",
+		url: "/users/" + user_game + "/games",
+		data: {
+			"game": {
+				"difficulty": difficulty_game
+			}
+		}
+	});
+}
+
+function ajaxEndGame() {
+	var image_game = createCanvas();
+	var score_game = Number(soul_count.innerText);
+}
 
 function loadGame(modifier) {
 	menu_sound.stop();
@@ -1000,6 +1044,8 @@ document.addEventListener('keypress', function (e) {
 		}
 	} else if (key === 114) {
 		gameOver(key);
+	} else if (key === 115) {
+		createCanvas();
 	}
 }, false);
 

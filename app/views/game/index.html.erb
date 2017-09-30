@@ -99,7 +99,7 @@
         <%= link_to "Sign in with Facebook", user_facebook_omniauth_authorize_path %>
     <% else %>
         <%= current_user.name %>
-        <%= link_to "Logout", destroy_user_session_path, method: :delete %>
+        <%= link_to "Logout", destroy_user_session_path, method: :delete , "data-user-id": current_user.id %>
     <% end %>
         <figure>
             <img src="/assets/images/logo.png" alt="">
