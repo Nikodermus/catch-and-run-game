@@ -1,5 +1,14 @@
 
 class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
+
+
+	before_action :set_current_user
+	
+	def set_current_user
+	  User.current_user = current_user
+	  puts current_user
+	end
+
     def facebook
       @user = User.from_omniauth(request.env["omniauth.auth"])
   

@@ -4,7 +4,9 @@ class User < ApplicationRecord
   has_many :games, dependent: :destroy
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable,
-         :omniauthable, :omniauth_providers => [:facebook, :twitter]
+		 :omniauthable, :omniauth_providers => [:facebook, :twitter]
+	
+		 cattr_accessor :current_user
 
          def self.new_with_session(params, session)
           super.tap do |user|

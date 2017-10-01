@@ -255,7 +255,7 @@ var PowerUp = {
 	width: 37,
 	height: 33,
 	explanation: "",
-	do: function () { },
+	do: function () {},
 	image: new Image(),
 	sound: new Howl({
 		src: ['/assets/sounds/power_up.wav']
@@ -373,48 +373,85 @@ var images_url = [];
 var images_ready = 0;
 
 var canv_img;
+
 function createCanvas() {
+	var s_menu = pause_menu.style.visibility;
+	var s_countdown = count_down.style.visibility;
+	var s_game_over = game_over.style.visibility;
+
+	pause_menu.style.visibility = 'hidden';
+	count_down.style.visibility = 'hidden';
+	game_over.style.visibility = 'hidden';
 	return html2canvas(document.body, {
 		onrendered: function (canvas) {
-			return canvas.toDataURL('image/png');
+			return canvas;
 		}
 	});
 
-}
-function ajaxStartGame() {
 
-	var difficulty_game;
+}
+
+var user_game, difficulty_game;
+
+function getDifficultyGame() {
 	switch (game.modifier) {
 		case 0.7:
-			difficulty_game = 'easy';
+			return 'easy';
 			break;
 		case 1:
-			difficulty_game = 'normal';
+			return 'normal';
 			break;
 		case 1.3:
-			difficulty_game = 'hard';
+			return 'hard';
 			break;
 		default:
-			difficulty_game = 'normal';
+			return 'normal';
 	}
+}
 
-	var user_game = document.querySelector("[data-user-id]").getAttribute("data-user-id");
-
+function ajaxStartGame() {
+	user_game = document.querySelector("[data-user-id]").getAttribute("data-user-id");
+	difficulty_game = getDifficultyGame()
 	Rails.ajax({
 		type: "POST",
 		datatype: "json",
-		url: "/users/" + user_game + "/games",
+		url: "http://localhost:3000/users/" + user_game + "/games",
 		data: {
-			"game": {
-				"difficulty": difficulty_game
+			game: {
+				score: 0,
+				duration: 0,
+				img_path: "",
 			}
 		}
 	});
 }
 
 function ajaxEndGame() {
-	var image_game = createCanvas();
+	user_game = document.querySelector("[data-user-id]").getAttribute("data-user-id");
+	var image_game_promise = createCanvas();
+	var image_game;
+	difficulty_game = getDifficultyGame()
+
 	var score_game = Number(soul_count.innerText);
+	image_game_promise.then(
+		function (value) {
+			image_game = value;
+			image_game = image_game.toDataURL('image/png');
+			Rails.ajax({
+				type: "PATCH",
+				datatype: "json",
+				url: "/users/" + user_game + "/games",
+				data: {
+					"game": {
+						"difficulty": difficulty_game,
+						"img_path": image_game
+					}
+				}
+			});
+		}
+	)
+
+
 }
 
 function loadGame(modifier) {

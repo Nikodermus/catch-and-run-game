@@ -3,24 +3,24 @@ development:
   encoding: utf8
   database: catch_and_run_development
   pool: 5
-  username: cjc10
-  password: capcapcap
+  username: nikodermus
+  password: Detective1939!
 
 test: &TEST
   adapter: postgresql
   encoding: utf8
   database: catch_and_run_test
   pool: 5
-  username: cjc10
-  password: capcapcap
+  username: nikodermus
+  password: Detective1939!
 
 production:
   adapter: postgresql
   encoding: utf8
   database: catch_and_run_production
   pool: 5
-  username: cjc10
-  password: capcapcap
+  username: nikodermus
+  password: Detective1939!
 
 cucumber:
   <<: *TEST
