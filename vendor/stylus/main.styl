@@ -11,7 +11,8 @@ $red = #9C1B00
 $green_light = #10770B
 $green = #10210B
 $gold = #AB730F
-
+$master = rem(25)
+$master-big = rem(78)
 
 //Mixins
 rem(size)
@@ -31,6 +32,23 @@ fullFixed(n){
     justify-content center
     align-items center
 }
+
+.space-top
+    margin-top $master
+.space-bottom
+    margin-bottom $master
+.space-left
+    margin-left $master
+.space-right
+    margin-right $master
+.space-title-top
+    margin-top $master-big
+.space-title-bottom
+    margin-bottom $master-big
+.space-title-left
+    margin-left $master-big
+.space-title-right
+    margin-right $master-big
 
 //Preset
 @-ms-viewport

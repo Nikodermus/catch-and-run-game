@@ -124,7 +124,6 @@ var Monster = function (params) {
 		y_pos: params.y_pos,
 		y_neg: params.y_neg,
 		image: new Image()
-
 	};
 };
 
@@ -411,23 +410,23 @@ function getDifficultyGame() {
 
 function ajaxStartGame() {
 	user_game = document.querySelector("[data-user-id]").getAttribute("data-user-id");
-	difficulty_game = getDifficultyGame()
+	var difficulty_game = getDifficultyGame()
+	var aux_data = "game[score]=0&game[duration]=0";
 	Rails.ajax({
 		type: "POST",
-		datatype: "json",
-		url: "http://localhost:3000/users/" + user_game + "/games",
-		data: {
-			game: {
-				score: 0,
-				duration: 0,
-				img_path: "",
-			}
+		dataType: "json",
+		url: "http://localhost:3000/users/" + user_game + "/game",
+		data: aux_data,
+		success: function (response) {
+			console.log(response);
+			document.querySelector("[data-game-id]").setAttribute("data-game-id", response.game_id)
 		}
 	});
 }
 
 function ajaxEndGame() {
 	user_game = document.querySelector("[data-user-id]").getAttribute("data-user-id");
+	var game_id = document.querySelector("[data-game-id]").getAttribute("data-game-id");
 	var image_game_promise = createCanvas();
 	var image_game;
 	difficulty_game = getDifficultyGame()
@@ -437,15 +436,19 @@ function ajaxEndGame() {
 		function (value) {
 			image_game = value;
 			image_game = image_game.toDataURL('image/png');
+			aux_data = `game[score]=${score_game}&game[img_path]=${image_game}`;
 			Rails.ajax({
 				type: "PATCH",
-				datatype: "json",
-				url: "/users/" + user_game + "/games",
-				data: {
-					"game": {
-						"difficulty": difficulty_game,
-						"img_path": image_game
-					}
+				dataType: "json",
+				url: "http://localhost:3000/users/" + user_game + "/game/" + game_id,
+				data: aux_data,
+				success: function (response) {
+					console.log('yay');
+					game_over.style.visibility = 'visible'
+				},
+				error: function () {
+					console.log("paila");
+					game_over.style.visibility = 'visible'
 				}
 			});
 		}
@@ -485,6 +488,7 @@ function startGame() {
 	// Let's play this game!
 	reset();
 	main();
+	ajaxStartGame();
 }
 
 function gameOver(key) {
@@ -498,7 +502,7 @@ function gameOver(key) {
 		game_over.style.visibility = "visible";
 		game.playable = false;
 		game.pause_sound.play();
-
+		ajaxEndGame();
 	}
 }
 
