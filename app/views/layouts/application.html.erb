@@ -1,23 +1,14 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>CatchAndRunGame</title>
+    <title>CatchAndRun</title>
     <%= csrf_meta_tags %>
-	
-    <link rel="stylesheet" href="/assets/stylesheets/reset.css" />
-    <link rel="stylesheet" href="/assets/stylesheets/fonts.css" />
-	<link rel="stylesheet" href="/assets/stylesheets/icons.css" />
-	
+
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <script src="/assets/javascripts/howler.min.js"></script>
-    <script src="/assets/javascripts/html2canvas.min.js"></script>
- 
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
   <body>
-   <p class="notice"><%= notice %></p>
-       <p class="alert"><%= alert %></p>
     <%= yield %>
-    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </body>
 </html>

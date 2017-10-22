@@ -7,4 +7,4 @@ test:
 production:
   adapter: redis
   url: redis://localhost:6379/1
-  channel_prefix: catch-and-run-game_production
+  channel_prefix: catch-and-run_production

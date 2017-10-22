@@ -1,5 +1,13 @@
 {
-  "name": "catch-and-run-game",
-  "private": true,
-  "dependencies": {}
+	"name": "catch-and-run",
+	"private": true,
+	"dependencies": {
+		"commitizen": "^2.9.6",
+		"cz-conventional-changelog": "^2.0.0"
+	},
+	"config": {
+		"commitizen": {
+			"path": "./node_modules/cz-conventional-changelog"
+		}
+	}
 }

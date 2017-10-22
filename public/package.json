@@ -1,0 +1,29 @@
+{
+  "name": "catch-and-run",
+  "version": "1.0.0",
+  "description": "Catch and Run game! DOOM 1993 Inspired",
+  "main": "./app/javascripts/main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Nikodermus/catch-and-run-game.git"
+  },
+  "keywords": [
+    "game",
+    "doom",
+    "nikodermus"
+  ],
+  "author": "Nicolas M. Pardo | Nikodermus",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Nikodermus/catch-and-run-game/issues"
+  },
+  "homepage": "https://github.com/Nikodermus/catch-and-run-game#readme",
+  "dependencies": {
+    "howler": "^2.0.5",
+    "html2canvas": "^0.5.0-beta4",
+    "jquery": "^3.2.1"
+  }
+}
