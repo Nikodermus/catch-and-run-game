@@ -4,7 +4,15 @@
     Author: Nicolas M. Pardo
 */
 
-jQuery.noConflict();
+
+require('babel-plugin-transform-es2015-for-of');
+require('jquery');
+require('howler');
+require('html2canvas');
+
+//jQuery.noConflict();
+
+
 
 let game = {
 	playable: false,
@@ -28,6 +36,8 @@ let game = {
 
 };
 
+let a = `This is ${game.catches} difficulty`
+
 let menu_sound = new Howl({
 	src: ['./assets/sounds/menu.mp3'],
 	volume: 0.3,
@@ -37,6 +47,7 @@ let menu_sound = new Howl({
 menu_sound.play();
 
 
+let power_up;
 
 window.onload = function () {
 
@@ -450,7 +461,7 @@ window.onload = function () {
 	function loadGame(modifier) {
 		menu_sound.stop();
 		game.modifier = modifier;
-		for (i of drawables) {
+		for (let i of drawables) {
 			images_url.push("./assets/images/" + i.name + ".png");
 			for (let j = 1; j < 9; j++) {
 				images_url.push("./assets/images/" + i.name + "_" + j + ".png");
@@ -460,7 +471,7 @@ window.onload = function () {
 	}
 
 	function dataLoader(callback) {
-		for (i in images_url) {
+		for (let i in images_url) {
 			let img = new Image();
 			images.push(img);
 			img.onload = function () {
@@ -551,7 +562,7 @@ window.onload = function () {
 		power_up_text.innerText = "";
 		pause_menu.style.visibility = 'hidden';
 		game_over.style.visibility = 'hidden';
-		timeOut = 3;
+		time_out = 3;
 		drawLives();
 
 		//Chose monster based on life count
@@ -594,7 +605,6 @@ window.onload = function () {
 		//Chances of getting a Power Up
 		let fun_level = getRandom(0, 20);
 
-		//let power_up;
 		if (fun_level < 6) {
 			power_up = empty;
 		} else if (fun_level < 10) {
