@@ -1,156 +1,99 @@
-/*!
-    Project: Catch & Run
-    Date: 08/14/2017
-    Author: Nicolas M. Pardo
-*/
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
 
 
-
-
-// REQUIRE MODULES
-require('babel-plugin-transform-es2015-for-of');
-require('jQuery');
-require('howler');
-require('html2canvas');
-
-
-
-
-// EMPTY GLOBAL VARIABLES
-let container,
-	soul_count,
-	life_count,
-	player_status,
-	power_active,
-	pause_game,
-	reload_game,
-	close_menu,
-	pause_menu,
-	menu_overlay,
-	menu_container,
-	power_up_text,
-	main_menu,
-	count_down,
-	easy_level,
-	normal_level,
-	hardcore_level,
-	game_over,
-	restart_game,
-	life_img,
-	reload_window,
-	monster,
-	danger_level,
-	power_up,
-	canvas,
-	imp,
-	revenant,
-	baron,
-	knight,
-	cyberdemon,
-	cacodemon,
-	mancubus,
-	spider,
-	boss,
-	m_empty,
-	monster2,
-	time_out,
-	yellow,
-	red,
-	green,
-	blue,
-	white,
-	empty,
-	life;
-
-
-
-
-// GLOBAL OBJECTS
-let game = {
-	playable: false,
-	lifes: 3,
-	x0: 0,
-	y0: 0,
-	catches: 0,
-	score: 0,
-	modifier: 1,
-	power_up: "",
-	development: true,
-	pause_sound: new Howl({
-		src: ['./assets/sounds/pause.mp3'],
-		volume: 0.3,
-		loop: true
-	}),
-	play_sound: new Howl({
-		src: ['./assets/sounds/play.mp3'],
-		volume: 0.3,
-		loop: true
-	}),
-	menu_sound: new Howl({
-		src: ['./assets/sounds/menu.mp3'],
-		volume: 0.3,
-		autoplay: true
-	})
-
-};
-
-let hero = {
-	name: "marine",
-	speed: 256,
-	x: 0,
-	y: 0,
-	width: 38,
-	height: 56,
-	killable: true,
-	weapon_size: 20,
-	x_pos: false,
-	x_neg: false,
-	y_pos: false,
-	y_neg: false,
-	image: new Image(),
-	sound: new Howl({
-		src: ['./assets/sounds/marine.wav']
-	})
-};
-
-let catchable = {
-	name: "lost_soul",
-	x: 0,
-	y: 0,
-	width: 40,
-	height: 40,
-	speed: hero.speed * 0.3 * game.modifier,
-	x_pos: false,
-	x_neg: false,
-	y_pos: false,
-	y_neg: false,
-	image: new Image(),
-	sound: new Howl({
-		src: ['./assets/sounds/lost_soul.wav']
-	})
-};
-
-let PowerUp = {
-	name: "",
-	x: 0,
-	y: 0,
-	width: 37,
-	height: 33,
-	explanation: "",
-	do: function () {},
-	image: new Image(),
-	sound: new Howl({
-		src: ['./assets/sounds/power_up.wav']
-	})
-};
-
-
-
-
-// FUNCTIONS
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+exports.ajaxStartGame = ajaxStartGame;
+exports.createCanvas = createCanvas;
+exports.ajaxEndGame = ajaxEndGame;
+exports.Monster = Monster;
+exports.levelUp = levelUp;
+exports.loadGame = loadGame;
+exports.dataLoader = dataLoader;
+exports.startGame = startGame;
+exports.gameOver = gameOver;
+exports.newGame = newGame;
+exports.getRandom = getRandom;
+exports.getMonster = getMonster;
+exports.reset = reset;
+exports.update = update;
+exports.drawLives = drawLives;
+exports.render = render;
+exports.closeMenu = closeMenu;
+exports.openMenu = openMenu;
 function ajaxStartGame() {
 
-	let difficulty_game;
+	var difficulty_game = void 0;
 	switch (game.modifier) {
 		case 0.7:
 			difficulty_game = 'easy';
@@ -165,7 +108,7 @@ function ajaxStartGame() {
 			difficulty_game = 'normal';
 	}
 
-	let user_game = document.querySelector("[data-user-id]").getAttribute("data-user-id");
+	var user_game = document.querySelector("[data-user-id]").getAttribute("data-user-id");
 
 	jQuery.ajax({
 		type: "POST",
@@ -181,16 +124,15 @@ function ajaxStartGame() {
 
 function createCanvas() {
 	return html2canvas(document.body, {
-		onrendered: function (canvas) {
+		onrendered: function onrendered(canvas) {
 			return canvas.toDataURL('image/png');
 		}
 	});
-
 }
 
 function ajaxEndGame() {
-	let image_game = createCanvas();
-	let score_game = Number(soul_count.innerText);
+	var image_game = createCanvas();
+	var score_game = Number(soul_count.innerText);
 }
 //Enemy prototype
 function Monster(params) {
@@ -216,29 +158,42 @@ function levelUp(n) {
 }
 
 function loadGame(modifier) {
-	//Resources for loader
-	let drawables = [imp, revenant, baron, knight, cyberdemon, cacodemon, mancubus, spider, boss, hero, catchable];
-	let images = [];
-	let images_url = [];
-	let images_ready = 0;
-	time_out = 3;
-
-	game.menu_sound.stop()
+	menu_sound.stop();
 	game.modifier = modifier;
+	var _iteratorNormalCompletion = true;
+	var _didIteratorError = false;
+	var _iteratorError = undefined;
 
-	for (let i of drawables) {
-		images_url.push("./assets/images/" + i.name + ".png");
-		for (let j = 1; j < 9; j++) {
-			images_url.push("./assets/images/" + i.name + "_" + j + ".png");
+	try {
+		for (var _iterator = drawables[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+			var i = _step.value;
+
+			images_url.push("./assets/images/" + i.name + ".png");
+			for (var j = 1; j < 9; j++) {
+				images_url.push("./assets/images/" + i.name + "_" + j + ".png");
+			}
+		}
+	} catch (err) {
+		_didIteratorError = true;
+		_iteratorError = err;
+	} finally {
+		try {
+			if (!_iteratorNormalCompletion && _iterator.return) {
+				_iterator.return();
+			}
+		} finally {
+			if (_didIteratorError) {
+				throw _iteratorError;
+			}
 		}
 	}
 
-	dataLoader(startGame, images, images_ready, images_url);
+	dataLoader(startGame);
 }
 
-function dataLoader(callback, images, images_ready, images_url) {
-	for (let i in images_url) {
-		let img = new Image();
+function dataLoader(callback) {
+	for (var i in images_url) {
+		var img = new Image();
 		images.push(img);
 		img.onload = function () {
 			images_ready++;
@@ -268,7 +223,6 @@ function gameOver(key) {
 		game_over.style.visibility = "visible";
 		game.playable = false;
 		game.pause_sound.play();
-
 	}
 }
 
@@ -281,7 +235,6 @@ function newGame() {
 	time_out = 3;
 	game_over.style.visibility = 'hidden';
 	//game.playable = false;
-
 }
 
 //Random for various purposes
@@ -329,28 +282,20 @@ function reset() {
 	//Chose monster based on life count
 	if (game.catches < 4) {
 		monster = imp;
-
 	} else if (game.catches < 8) {
 		monster = revenant;
-
 	} else if (game.catches < 12) {
 		monster = baron;
-
 	} else if (game.catches < 15) {
 		monster = knight;
-
 	} else if (game.catches < 17) {
 		monster = cyberdemon;
-
 	} else if (game.catches < 21) {
 		monster = cacodemon;
-
 	} else if (game.catches < 26) {
 		monster = mancubus;
-
 	} else if (game.catches < 29) {
 		monster = spider;
-
 	} else {
 		monster = boss;
 	}
@@ -364,7 +309,7 @@ function reset() {
 	yellow.explanation = monster.name + " speed increased";
 
 	//Chances of getting a Power Up
-	let fun_level = getRandom(0, 20);
+	var fun_level = getRandom(0, 20);
 
 	if (fun_level < 6) {
 		power_up = empty;
@@ -387,32 +332,26 @@ function reset() {
 	hero.y = canvas.height / 2;
 
 	// Throw the monster somewhere on the screen randomly
-	monster.x = (monster.width / 2) + (Math.random() * (canvas.width - monster.width));
-	monster.y = (monster.width / 2) + (Math.random() * (canvas.height - monster.width));
+	monster.x = monster.width / 2 + Math.random() * (canvas.width - monster.width);
+	monster.y = monster.width / 2 + Math.random() * (canvas.height - monster.width);
 
 	//If the monster is too close, move it away
-	if (
-		monster.x > (canvas.width * 0.5 - canvas.width * game.safe_area) &&
-		monster.x < (canvas.width * 0.5 + canvas.width * game.safe_area)
-	) {
+	if (monster.x > canvas.width * 0.5 - canvas.width * game.safe_area && monster.x < canvas.width * 0.5 + canvas.width * game.safe_area) {
 		monster.x -= canvas.width * game.safe_area;
 	}
 
-	if (
-		monster.y > (canvas.height * 0.5 - canvas.height * game.safe_area) &&
-		monster.y < (canvas.height * 0.5 + canvas.height * game.safe_area)
-	) {
+	if (monster.y > canvas.height * 0.5 - canvas.height * game.safe_area && monster.y < canvas.height * 0.5 + canvas.height * game.safe_area) {
 		monster.y -= canvas.height * game.safe_area;
 	}
 
 	// Throw the catchable somewhere on the screen randomly
-	catchable.x = 32 + (Math.random() * (canvas.width - 64));
-	catchable.y = 32 + (Math.random() * (canvas.height - 64));
+	catchable.x = 32 + Math.random() * (canvas.width - 64);
+	catchable.y = 32 + Math.random() * (canvas.height - 64);
 
 	// Throw the powerup somewhere on the screen randomly
 	if (fun_level > 6) {
-		power_up.x = (power_up.width / 2) + (Math.random() * (canvas.width - power_up.width));
-		power_up.y = (power_up.width / 2) + (Math.random() * (canvas.height - power_up.width));
+		power_up.x = power_up.width / 2 + Math.random() * (canvas.width - power_up.width);
+		power_up.y = power_up.width / 2 + Math.random() * (canvas.height - power_up.width);
 	}
 
 	game.playable = false;
@@ -420,13 +359,12 @@ function reset() {
 	count_down.style.visibility = 'visible';
 	count_down.style.opacity = 1;
 
+	var x = 3;
+	var interval = 700;
 
-	let x = 3;
-	let interval = 700;
-
-	for (let i = 0; i < x; i++) {
+	for (var i = 0; i < x; i++) {
 		setTimeout(function () {
-			count_down.innerHTML = `<span>${time_out}</span>`;
+			count_down.innerHTML = '<span>' + time_out + '</span>';
 			time_out--;
 			count_down.style.opacity -= 0.25;
 		}, i * interval);
@@ -438,10 +376,6 @@ function reset() {
 		game.play_sound.play();
 		time_out = 3;
 	}, 2101);
-
-
-
-
 }
 
 function update(modifier) {
@@ -540,7 +474,6 @@ function update(modifier) {
 			monster2.y_neg = false;
 		}
 
-
 		//Move catchable
 		if (hero.x < catchable.x) {
 			catchable.x += catchable.speed * modifier;
@@ -559,7 +492,6 @@ function update(modifier) {
 				catchable.x = 0;
 				catchable.x_neg = false;
 			}
-
 		}
 		if (hero.y < catchable.y) {
 			catchable.y += catchable.speed * modifier;
@@ -589,7 +521,7 @@ function update(modifier) {
 			catchable.y_neg = false;
 		}
 
-		let elems = [monster, monster2, catchable];
+		var elems = [monster, monster2, catchable];
 		elems.forEach(function (elem, i) {
 			if (elem.y_pos && elem.x_pos) {
 				elem.image.src = "./assets/images/" + elem.name + "_2.png";
@@ -612,30 +544,33 @@ function update(modifier) {
 			}
 		});
 
-
 		//Move user
-		if (38 in keysDown) { // Player holding up
+		if (38 in keysDown) {
+			// Player holding up
 			hero.y -= hero.speed * modifier;
 			hero.y_pos = true;
 			if (hero.y < 0) {
 				hero.y = 0;
 			}
 		}
-		if (40 in keysDown) { // Player holding down
+		if (40 in keysDown) {
+			// Player holding down
 			hero.y += hero.speed * modifier;
 			hero.y_neg = true;
 			if (hero.y > canvas.height - hero.height) {
 				hero.y = canvas.height - hero.height;
 			}
 		}
-		if (37 in keysDown) { // Player holding left
+		if (37 in keysDown) {
+			// Player holding left
 			hero.x -= hero.speed * modifier;
 			hero.x_neg = true;
 			if (hero.x < 0) {
 				hero.x = 0;
 			}
 		}
-		if (39 in keysDown) { // Player holding right
+		if (39 in keysDown) {
+			// Player holding right
 			hero.x += hero.speed * modifier;
 			hero.x_pos = true;
 			if (hero.x > canvas.width - hero.width) {
@@ -665,12 +600,7 @@ function update(modifier) {
 		}
 
 		// If the hero touches the catchable
-		if (
-			hero.x <= (catchable.x + catchable.width) &&
-			catchable.x <= (hero.x + catchable.width) &&
-			hero.y <= (catchable.y + catchable.height) &&
-			catchable.y <= (hero.y + catchable.height)
-		) {
+		if (hero.x <= catchable.x + catchable.width && catchable.x <= hero.x + catchable.width && hero.y <= catchable.y + catchable.height && catchable.y <= hero.y + catchable.height) {
 			game.catches++;
 			if (monster2 != m_empty) {
 				game.score += 100 * game.modifier;
@@ -679,23 +609,17 @@ function update(modifier) {
 			catchable.sound.play();
 			hero.killable = true;
 			reset();
-
 		}
 
 		// If the hero touches the monster            
-		if (
-			hero.x <= (monster.x + monster.width) &&
-			monster.x <= (hero.x + monster.width) &&
-			hero.y <= (monster.y + monster.height) &&
-			monster.y <= (hero.y + monster.height)
-		) {
+		if (hero.x <= monster.x + monster.width && monster.x <= hero.x + monster.width && hero.y <= monster.y + monster.height && monster.y <= hero.y + monster.height) {
 			if (hero.killable) {
 				monster.sound.play();
 				game.lifes--;
 				if (game.lifes >= 3) {
-					player_status.src = `./assets/images/3_lifes.gif`;
+					player_status.src = './assets/images/3_lifes.gif';
 				} else if (game.lifes > 0) {
-					player_status.src = `./assets/images/${game.lifes}_lifes.gif`;
+					player_status.src = './assets/images/' + game.lifes + '_lifes.gif';
 				}
 				gameOver();
 			} else {
@@ -704,12 +628,7 @@ function update(modifier) {
 		}
 
 		// If the hero touches the second monster
-		if (
-			hero.x <= (monster2.x + monster2.width) &&
-			monster2.x <= (hero.x + monster2.width) &&
-			hero.y <= (monster2.y + monster2.height) &&
-			monster2.y <= (hero.y + monster2.height) && hero.killable
-		) {
+		if (hero.x <= monster2.x + monster2.width && monster2.x <= hero.x + monster2.width && hero.y <= monster2.y + monster2.height && monster2.y <= hero.y + monster2.height && hero.killable) {
 			monster2.sound.play();
 			game.lifes--;
 			if (game.lifes < 1) {
@@ -717,17 +636,11 @@ function update(modifier) {
 			} else {
 				reset();
 			}
-			player_status.src = `./assets/images/${game.lifes}_lifes.gif`;
+			player_status.src = './assets/images/' + game.lifes + '_lifes.gif';
 		}
 
-
 		//Allow user to catch the PowerUp
-		if (
-			hero.x <= (power_up.x + power_up.width) &&
-			power_up.x <= (hero.x + power_up.width) &&
-			hero.y <= (power_up.y + power_up.height) &&
-			power_up.y <= (hero.y + power_up.height)
-		) {
+		if (hero.x <= power_up.x + power_up.width && power_up.x <= hero.x + power_up.width && hero.y <= power_up.y + power_up.height && power_up.y <= hero.y + power_up.height) {
 			if (power_active.name !== 'lifes' && power_active.name !== 'red' && power_active.name !== 'empty') {
 				power_active.src = "./assets/images/" + power_up.name + ".png";
 			}
@@ -738,9 +651,6 @@ function update(modifier) {
 			ctx.clearRect(power_up.x, power_up.y, power_up.width, power_up.height);
 			power_up = empty;
 		}
-
-
-
 	}
 }
 
@@ -748,8 +658,8 @@ function update(modifier) {
 function drawLives() {
 	life_count.innerHTML = "";
 	if (game.lifes > 5) game.lifes = 5;
-	for (let i = 0; i < game.lifes; i++) {
-		let clone_img = life_img.cloneNode();
+	for (var i = 0; i < game.lifes; i++) {
+		var clone_img = life_img.cloneNode();
 		life_count.appendChild(clone_img);
 	}
 }
@@ -785,7 +695,6 @@ function render() {
 	ctx.rect(monster.x, monster.y, monster.width, monster.height);
 	ctx.stroke();
 
-
 	//Draw hero and catchable
 	ctx.drawImage(hero.image, hero.x, hero.y);
 	ctx.drawImage(catchable.image, catchable.x, catchable.y);
@@ -806,13 +715,11 @@ function render() {
 		ctx.rect(monster2.x, monster2.y, monster2.width, monster2.height);
 		ctx.stroke();
 	}
-
 }
 
-//Call initial functions
 function main() {
-	let now = Date.now();
-	let delta = now - then;
+	var now = Date.now();
+	var delta = now - then;
 
 	update(delta / 1000);
 	render();
@@ -835,342 +742,30 @@ function openMenu() {
 	game.pause_sound.play();
 }
 
+// module.exports = {
+// 	ajaxStartGame,
+// 	closeMenu,
+// 	main,
+// 	render,
+// 	drawLives,
+// 	update,
+// 	reset,
+// 	ajaxStartGame,
+// 	createCanvas,
+// 	ajaxEndGame,
+// 	Monster,
+// 	levelUp,
+// 	loadGame,
+// 	dataLoader
+// 	startGame,
+// 	gameOver,
+// 	newGame,
+// 	getRandom,
+// 	getMonster,
 
-// RESIZE CANVAS
-window.onresize = function () {
-	canvas.width = container.clientWidth - 128;
-	canvas.height = container.clientHeight - 128;
-};
+// }
 
+// pues amor porque aplicaste en primer lugar.Dale por lo menos un tiempo al trabajo y piensa que quieres hacer
 
-// FUNCTION FOR LOADED PAGE
-window.onload = function () {
-	//Create monsters
-	imp = Monster({});
-	revenant = Monster({});
-	baron = Monster({});
-	knight = Monster({});
-	cyberdemon = Monster({});
-	cacodemon = Monster({});
-	mancubus = Monster({});
-	spider = Monster({});
-	boss = Monster({});
-	m_empty = Monster({});
-	monster2 = m_empty;
-
-	// Create powerups
-	let yellow = Object.create(PowerUp);
-	let red = Object.create(PowerUp);
-	let green = Object.create(PowerUp);
-	let blue = Object.create(PowerUp);
-	let white = Object.create(PowerUp);
-	let empty = Object.create(PowerUp);
-	let life = Object.create(PowerUp);
-
-	game.menu_sound.play();
-
-	//Get Elements
-	container = document.getElementById('CanvasContainer');
-	soul_count = document.getElementById('SoulsCount');
-	life_count = document.getElementById('LifeCount');
-	player_status = document.getElementById('PlayerStatus');
-	power_active = document.getElementById('PowerActive');
-	pause_game = document.getElementById('PauseGame');
-	reload_game = document.getElementById('ReloadGame');
-	close_menu = document.getElementById('CloseMenu');
-	pause_menu = document.getElementById('PauseMenu');
-	menu_overlay = document.querySelector('.menu_overlay');
-	menu_container = document.querySelector('.menu_container');
-	power_up_text = document.getElementById('PowerUpText');
-	main_menu = document.getElementById('MainMenu');
-	count_down = document.getElementById('CountDown');
-	easy_level = document.getElementById('EasyLevel');
-	normal_level = document.getElementById('NormalLevel');
-	hardcore_level = document.getElementById('HardcoreLevel');
-	game_over = document.getElementById('GameOver');
-	restart_game = document.getElementById('RestartGame');
-	reload_window = document.getElementById('ReloadWindow');
-
-
-	//Create image
-	life_img = document.createElement('img');
-
-	//Basic state of elements
-	life_img.src = './assets/images/life.png';
-	pause_menu.style.visibility = 'hidden';
-	count_down.style.visibility = 'hidden';
-	game_over.style.visibility = 'hidden';
-
-	//Generate canvas
-	canvas = document.createElement('canvas');
-	let ctx = canvas.getContext('2d');
-
-	//Set canvas size as window size
-	canvas.width = container.clientWidth - 128;
-	canvas.height = container.clientHeight - 128;
-	container.appendChild(canvas);
-
-	game.safe_area = 0.2 / game.modifier;
-
-
-
-	// Hero image
-	hero.image.src = "./assets/images/" + hero.name + ".png";
-	catchable.image.src = "./assets/images/lost_soul.png";
-
-
-	//Add data to each monster
-	imp.name = "imp";
-	imp.width = 41;
-	imp.height = 57;
-	imp.s_modifier = 0.3;
-	imp.h_modifier = 0.6;
-	imp.speed = hero.speed * imp.s_modifier * game.modifier;
-	imp.image.src = "./assets/images/imp.png";
-	imp.sound = new Howl({
-		src: ['./assets/sounds/imp.wav']
-	});
-
-	revenant.name = "revenant";
-	revenant.width = 49;
-	revenant.height = 71;
-	revenant.s_modifier = 0.35;
-	revenant.h_modifier = 0.65;
-	revenant.speed = hero.speed * revenant.s_modifier * game.modifier;
-	revenant.image.src = "./assets/images/revenant.png";
-	revenant.sound = new Howl({
-		src: ['./assets/sounds/revenant.wav']
-	});
-
-	baron.name = "baron";
-	baron.width = 49;
-	baron.height = 74;
-	baron.s_modifier = 0.4;
-	baron.h_modifier = 0.8;
-	baron.speed = hero.speed * baron.s_modifier * game.modifier;
-	baron.image.src = "./assets/images/baron.png";
-	baron.sound = new Howl({
-		src: ['./assets/sounds/baron.wav']
-	});
-
-	knight.name = "knight";
-	knight.width = 52;
-	knight.height = 74;
-	knight.s_modifier = 0.45;
-	knight.h_modifier = 0.85;
-	knight.speed = hero.speed * knight.s_modifier * game.modifier;
-	knight.image.src = "./assets/images/knight.png";
-	knight.sound = new Howl({
-		src: ['./assets/sounds/knight.wav']
-	});
-
-	cyberdemon.name = "cyberdemon";
-	cyberdemon.width = 85;
-	cyberdemon.height = 109;
-	cyberdemon.s_modifier = 0.55;
-	cyberdemon.h_modifier = 0.9;
-	cyberdemon.speed = hero.speed * knight.s_modifier * game.modifier;
-	cyberdemon.image.src = "./assets/images/cyberdemon.png";
-	cyberdemon.sound = new Howl({
-		src: ['./assets/sounds/cyberdemon.wav']
-	});
-
-	cacodemon.name = "cacodemon";
-	cacodemon.width = 63;
-	cacodemon.height = 65;
-	cacodemon.s_modifier = 0.65;
-	cacodemon.h_modifier = 0.7;
-	cacodemon.speed = hero.speed * cacodemon.s_modifier * game.modifier;
-	cacodemon.image.src = "./assets/images/cacodemon.png";
-	cacodemon.sound = new Howl({
-		src: ['./assets/sounds/cacodemon.wav']
-	});
-
-	mancubus.name = "mancubus";
-	mancubus.width = 164;
-	mancubus.height = 140;
-	mancubus.s_modifier = 0.6;
-	mancubus.h_modifier = 1.4;
-	mancubus.speed = hero.speed * mancubus.s_modifier * game.modifier;
-	mancubus.image.src = "./assets/images/mancubus.png";
-	mancubus.sound = new Howl({
-		src: ['./assets/sounds/mancubus.wav']
-	});
-
-	spider.name = "spider";
-	spider.width = 194;
-	spider.height = 106;
-	spider.s_modifier = 0.7;
-	spider.h_modifier = 1.3;
-	spider.speed = hero.speed * spider.s_modifier * game.modifier;
-	spider.image.src = "./assets/images/spider.png";
-	spider.sound = new Howl({
-		src: ['./assets/sounds/spider.wav']
-	});
-
-	boss.name = "final_boss";
-	boss.width = canvas.width * 0.7;
-	boss.height = boss.width * 0.415549598;
-	boss.s_modifier = 0.5;
-	boss.h_modifier = 3;
-	boss.speed = hero.speed * boss.s_modifier * game.modifier;
-	boss.image.src = "./assets/images/final_boss.png";
-	boss.sound = new Howl({
-		src: ['./assets/sounds/final_boss.wav']
-	});
-
-	m_empty.name = "empty";
-
-
-
-
-
-	//PowerUp Names
-	yellow.name = "yellow";
-	white.name = "white";
-	red.name = "red";
-	blue.name = "blue";
-	green.name = "green";
-	life.name = "life";
-	empty.name = "empty";
-
-	//PowerUp Effects
-	yellow.do = function () {
-		monster.speed *= 1.3;
-	};
-
-	red.do = function () {
-		let random_monster = getMonster();
-		random_monster.x = 0;
-		random_monster.y = 0;
-		random_monster.x_neg = false;
-		random_monster.x_pos = false;
-		random_monster.y_pos = false;
-		random_monster.y_neg = false;
-		monster2 = random_monster;
-		red.explanation = "New monster appeared";
-		return monster2;
-	};
-
-	white.do = function () {
-		hero.killable = false;
-	};
-
-	blue.do = function () {
-		hero.speed *= 1.2;
-	};
-
-	green.do = function () {
-		monster.speed *= 0.8;
-	};
-
-	life.do = function () {
-		game.lifes++;
-		drawLives();
-	};
-
-
-	// Handle keyboard controls
-	let keysDown = {};
-
-	addEventListener("keydown", function (e) {
-		keysDown[e.keyCode] = true;
-	}, false);
-
-	addEventListener("keyup", function (e) {
-		delete keysDown[e.keyCode];
-		//Reset X-
-		if (e.keyCode === 37) {
-			hero.x_neg = false;
-		}
-
-		//Reset X+
-		if (e.keyCode === 39) {
-			hero.x_pos = false;
-		}
-
-		//Reset Y-
-		if (e.keyCode === 40) {
-			hero.y_neg = false;
-		}
-
-		//Reset Y+
-		if (e.keyCode === 38) {
-			hero.y_pos = false;
-		}
-
-	}, false);
-
-	easy_level.addEventListener('click', function () {
-		loadGame(0.7);
-	});
-	normal_level.addEventListener('click', function () {
-		loadGame(1);
-	});
-	hardcore_level.addEventListener('click', function () {
-		loadGame(1.3);
-	});
-
-	game.play_sound.on('play', function () {
-		game.pause_sound.pause();
-	});
-
-	game.pause_sound.on('play', function () {
-		game.play_sound.pause();
-	});
-
-
-	// Cross-browser support for requestAnimationFrame
-	let w = window;
-	requestAnimationFrame = w.requestAnimationFrame || w.webkitRequestAnimationFrame || w.msRequestAnimationFrame || w.mozRequestAnimationFrame;
-
-
-
-	//Close menu
-	menu_container.addEventListener('click', function (e) {
-		e.stopPropagation();
-	}, false);
-	close_menu.addEventListener('click', closeMenu, false);
-	menu_overlay.addEventListener('click', closeMenu, false);
-
-	//Show Menu
-	pause_game.addEventListener('click', openMenu, false);
-	document.addEventListener('blur', openMenu, false);
-
-	//Restart Game
-	restart_game.addEventListener('click', function () {
-		game.lifes = 3;
-		game.catches = 0;
-		reset();
-	}, false);
-	reload_game.addEventListener('click', function () {
-		newGame();
-	}, false);
-	reload_window.addEventListener('click', function () {
-		newGame();
-	}, false);
-
-	//Shortcuts
-	document.addEventListener('keypress', function (e) {
-		let key = e.which || e.keyCode;
-		if (key === 112) {
-			if (pause_menu.style.visibility !== 'visible') {
-				openMenu();
-			} else {
-				closeMenu();
-			}
-		} else if (key === 114) {
-			gameOver(key);
-		}
-	}, false);
-
-	//Reload if need
-	pause_game.addEventListener('click', openMenu, false);
-
-	//Clear explanation text
-	power_up_text.innerText = "";
-	let then = Date.now();
-
-	console.log('Loaded all');
-
-};
+/***/ })
+/******/ ]);
