@@ -60,7 +60,12 @@ let container,
 	blue,
 	white,
 	empty,
-	life;
+	life,
+	then,
+	ctx;
+
+let keysDown = {};
+
 
 
 
@@ -148,8 +153,15 @@ let PowerUp = {
 
 
 // FUNCTIONS
-function ajaxStartGame() {
 
+function devLog(string) {
+	if (game.development) {
+		console.log(string);
+	}
+}
+
+function ajaxStartGame() {
+	devLog('ajax start game')
 	let difficulty_game;
 	switch (game.modifier) {
 		case 0.7:
@@ -180,6 +192,7 @@ function ajaxStartGame() {
 }
 
 function createCanvas() {
+	devLog('create canvas');
 	return html2canvas(document.body, {
 		onrendered: function (canvas) {
 			return canvas.toDataURL('image/png');
@@ -189,6 +202,7 @@ function createCanvas() {
 }
 
 function ajaxEndGame() {
+	devLog('ajax end game');
 	let image_game = createCanvas();
 	let score_game = Number(soul_count.innerText);
 }
@@ -211,11 +225,9 @@ function Monster(params) {
 	};
 }
 
-function levelUp(n) {
-	game.catches += n;
-}
 
 function loadGame(modifier) {
+
 	//Resources for loader
 	let drawables = [imp, revenant, baron, knight, cyberdemon, cacodemon, mancubus, spider, boss, hero, catchable];
 	let images = [];
@@ -237,6 +249,7 @@ function loadGame(modifier) {
 }
 
 function dataLoader(callback, images, images_ready, images_url) {
+	devLog('load game');
 	for (let i in images_url) {
 		let img = new Image();
 		images.push(img);
@@ -252,7 +265,6 @@ function dataLoader(callback, images, images_ready, images_url) {
 }
 
 function startGame() {
-	// Let's play this game!
 	reset();
 	main();
 }
@@ -273,15 +285,13 @@ function gameOver(key) {
 }
 
 function newGame() {
-	console.log('new game has started');
+	devLog('new game')
 	monster = m_empty;
 	game.catches = 0;
 	main_menu.style.visibility = 'visible';
 	main_menu.style.top = 0;
 	time_out = 3;
 	game_over.style.visibility = 'hidden';
-	//game.playable = false;
-
 }
 
 //Random for various purposes
@@ -313,6 +323,7 @@ function getMonster() {
 
 // Reset the game when the player catches a monster
 function reset() {
+	devLog('reseted game');
 
 	//Clear values that might have been changing through the level
 	monster2 = m_empty;
@@ -362,6 +373,42 @@ function reset() {
 	green.explanation = monster.name + " speed decreased";
 	life.explanation = "Life added";
 	yellow.explanation = monster.name + " speed increased";
+
+	//PowerUp Effects
+	yellow.do = function () {
+		monster.speed *= 1.3;
+	};
+
+	red.do = function () {
+		let random_monster = getMonster();
+		random_monster.x = 0;
+		random_monster.y = 0;
+		random_monster.x_neg = false;
+		random_monster.x_pos = false;
+		random_monster.y_pos = false;
+		random_monster.y_neg = false;
+		monster2 = random_monster;
+		red.explanation = "New monster appeared";
+		return monster2;
+	};
+
+	white.do = function () {
+		hero.killable = false;
+	};
+
+	blue.do = function () {
+		hero.speed *= 1.2;
+	};
+
+	green.do = function () {
+		monster.speed *= 0.8;
+	};
+
+	life.do = function () {
+		game.lifes++;
+		drawLives();
+	};
+
 
 	//Chances of getting a Power Up
 	let fun_level = getRandom(0, 20);
@@ -859,13 +906,15 @@ window.onload = function () {
 	monster2 = m_empty;
 
 	// Create powerups
-	let yellow = Object.create(PowerUp);
-	let red = Object.create(PowerUp);
-	let green = Object.create(PowerUp);
-	let blue = Object.create(PowerUp);
-	let white = Object.create(PowerUp);
-	let empty = Object.create(PowerUp);
-	let life = Object.create(PowerUp);
+	yellow = Object.create(PowerUp);
+	red = Object.create(PowerUp);
+	green = Object.create(PowerUp);
+	blue = Object.create(PowerUp);
+	white = Object.create(PowerUp);
+	empty = Object.create(PowerUp);
+	life = Object.create(PowerUp);
+
+
 
 	game.menu_sound.play();
 
@@ -903,7 +952,7 @@ window.onload = function () {
 
 	//Generate canvas
 	canvas = document.createElement('canvas');
-	let ctx = canvas.getContext('2d');
+	ctx = canvas.getContext('2d');
 
 	//Set canvas size as window size
 	canvas.width = container.clientWidth - 128;
@@ -1034,44 +1083,9 @@ window.onload = function () {
 	life.name = "life";
 	empty.name = "empty";
 
-	//PowerUp Effects
-	yellow.do = function () {
-		monster.speed *= 1.3;
-	};
-
-	red.do = function () {
-		let random_monster = getMonster();
-		random_monster.x = 0;
-		random_monster.y = 0;
-		random_monster.x_neg = false;
-		random_monster.x_pos = false;
-		random_monster.y_pos = false;
-		random_monster.y_neg = false;
-		monster2 = random_monster;
-		red.explanation = "New monster appeared";
-		return monster2;
-	};
-
-	white.do = function () {
-		hero.killable = false;
-	};
-
-	blue.do = function () {
-		hero.speed *= 1.2;
-	};
-
-	green.do = function () {
-		monster.speed *= 0.8;
-	};
-
-	life.do = function () {
-		game.lifes++;
-		drawLives();
-	};
 
 
 	// Handle keyboard controls
-	let keysDown = {};
 
 	addEventListener("keydown", function (e) {
 		keysDown[e.keyCode] = true;
@@ -1169,8 +1183,8 @@ window.onload = function () {
 
 	//Clear explanation text
 	power_up_text.innerText = "";
-	let then = Date.now();
+	then = Date.now();
 
-	console.log('Loaded all');
+	devLog('game fully laoded');
 
 };
