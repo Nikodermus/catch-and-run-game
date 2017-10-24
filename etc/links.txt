@@ -6,3 +6,6 @@ http://doomfansite.synthasite.com/doom-sprites.php
 
 TEXTURES
 http://www.bghq.com/textures.php?game=doom
+
+MUSIC
+http://www.wolfensteingoodies.com/archives/olddoom/music.htm

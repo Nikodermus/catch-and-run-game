@@ -4,9 +4,8 @@
 	"description": "Catch and Run game! DOOM 1993 Inspired",
 	"main": "./app/javascripts/main.js",
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1",
-		"build": "webpack --progress -p",
-		"watch": "webpack --progress --watch",
+		"build": "webpack --progress -p | stylus -u nib -c ./app/stylus/ --out ./assets/stylesheets",
+		"watch": "webpack --progress --watch | stylus -u nib -w ./app/stylus/ --out ./assets/stylesheets",
 		"server": "webpack-dev-server --open"
 	},
 	"repository": {
@@ -27,14 +26,16 @@
 	"dependencies": {
 		"howler": "^2.0.5",
 		"html2canvas": "^0.5.0-beta4",
-		"jquery": "^3.2.1"
+		"jquery": "^3.2.1",
+		"js-cookie": "^2.1.4"
 	},
 	"devDependencies": {
 		"babel-core": "^6.26.0",
 		"babel-loader": "^7.1.2",
-		"babel-plugin-transform-es2015-for-of": "^6.23.0",
 		"babel-polyfill": "^6.26.0",
 		"babel-preset-env": "^1.6.1",
+		"nib": "^1.1.2",
+		"stylus": "^0.54.5",
 		"webpack": "^3.8.1",
 		"webpack-dev-server": "^2.9.3"
 	}
