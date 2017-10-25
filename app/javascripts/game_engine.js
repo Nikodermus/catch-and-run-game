@@ -1,5 +1,5 @@
 /*!
-    Project: Catch & Run
+    Project: Catch & Run X
     Date: 08/14/2017
     Author: Nicolas M. Pardo
 */
@@ -8,7 +8,6 @@
 
 
 // REQUIRE MODULES
-require('babel-plugin-transform-es2015-for-of');
 require('jQuery');
 require('howler');
 require('html2canvas');
@@ -99,6 +98,12 @@ let game = {
 
 };
 
+let projectile_rule = {
+	name: "shoot",
+	speed: 300 / game.modifier,
+	damage: 10 / game.modifier,
+}
+
 let hero = {
 	name: "marine",
 	speed: 256,
@@ -112,11 +117,16 @@ let hero = {
 	x_neg: false,
 	y_pos: false,
 	y_neg: false,
+	projectiles: [],
+
 	image: new Image(),
 	sound: new Howl({
 		src: ['./assets/sounds/marine.wav']
 	})
 };
+
+
+
 
 let catchable = {
 	name: "lost_soul",
@@ -155,8 +165,27 @@ let PowerUp = {
 // FUNCTIONS
 
 function devLog(string) {
+	string = string.toString();
+	let string_array = string.split(',');
 	if (game.development) {
-		console.log(string);
+		let content = "";
+		string_array.forEach((elem) => {
+			content += elem.toString();
+		});
+		console.log(content);
+	}
+}
+
+function detectCollition(object_1, object_2) {
+	if (
+		object_1.x <= (object_2.x + object_2.width) &&
+		object_2.x <= (object_1.x + object_1.width) &&
+		object_1.y <= (object_2.y + object_2.height) &&
+		object_2.y <= (object_1.y + object_1.height)
+	) {
+		return true;
+	} else {
+		return false;
 	}
 }
 
@@ -368,7 +397,7 @@ function reset() {
 
 	//Add explanation texts
 	white.explanation = "Indestructible";
-	red.explanation = monster2.name + " appeared";
+	red.explanation = "New monster appeared";
 	blue.explanation = "Hero speed increased";
 	green.explanation = monster.name + " speed decreased";
 	life.explanation = "Life added";
@@ -409,6 +438,23 @@ function reset() {
 		drawLives();
 	};
 
+	//Hero Functions
+	hero.midpoint = () => {
+		return {
+			x: hero.x + hero.width / 2,
+			y: hero.y + hero.height / 2
+		}
+	};
+	hero.shoot = () => {
+		let bullet_position = hero.midpoint;
+		hero.projectiles.push(Projectile({
+			speed: projectile_rule.speed,
+			x: bullet_position.x,
+			y: bullet_position.y,
+		}));
+		devLog(hero.projectiles);
+	};
+
 
 	//Chances of getting a Power Up
 	let fun_level = getRandom(0, 20);
@@ -432,6 +478,7 @@ function reset() {
 	//Hero will start in the middle of the canvas
 	hero.x = canvas.width / 2;
 	hero.y = canvas.height / 2;
+
 
 	// Throw the monster somewhere on the screen randomly
 	monster.x = (monster.width / 2) + (Math.random() * (canvas.width - monster.width));
@@ -491,8 +538,25 @@ function reset() {
 
 }
 
+setInterval(() => {
+	if (game.playable) {
+		hero.shoot();
+		devLog('shoot added');
+	}
+}, 1000);
+
+
 function update(modifier) {
 	if (game.playable) {
+		//Move Bullets
+		if (hero.projectiles.length > 0) {
+			hero.projectiles.forEach(function (projectile) {
+				projectile.update();
+			});
+		}
+		hero.projectiles = hero.projectiles.filter(function (projectile) {
+			return projectile.active;
+		});
 
 		//Move monster
 		if (hero.x > monster.x) {
@@ -636,6 +700,8 @@ function update(modifier) {
 			catchable.y_neg = false;
 		}
 
+
+
 		let elems = [monster, monster2, catchable];
 		elems.forEach(function (elem, i) {
 			if (elem.y_pos && elem.x_pos) {
@@ -661,28 +727,30 @@ function update(modifier) {
 
 
 		//Move user
-		if (38 in keysDown) { // Player holding up
+
+
+		if (38 in keysDown || 87 in keysDown) { // Player holding up
 			hero.y -= hero.speed * modifier;
 			hero.y_pos = true;
 			if (hero.y < 0) {
 				hero.y = 0;
 			}
 		}
-		if (40 in keysDown) { // Player holding down
+		if (40 in keysDown || 83 in keysDown) { // Player holding down
 			hero.y += hero.speed * modifier;
 			hero.y_neg = true;
 			if (hero.y > canvas.height - hero.height) {
 				hero.y = canvas.height - hero.height;
 			}
 		}
-		if (37 in keysDown) { // Player holding left
+		if (37 in keysDown || 65 in keysDown) { // Player holding left
 			hero.x -= hero.speed * modifier;
 			hero.x_neg = true;
 			if (hero.x < 0) {
 				hero.x = 0;
 			}
 		}
-		if (39 in keysDown) { // Player holding right
+		if (39 in keysDown || 68 in keysDown) { // Player holding right
 			hero.x += hero.speed * modifier;
 			hero.x_pos = true;
 			if (hero.x > canvas.width - hero.width) {
@@ -713,10 +781,7 @@ function update(modifier) {
 
 		// If the hero touches the catchable
 		if (
-			hero.x <= (catchable.x + catchable.width) &&
-			catchable.x <= (hero.x + catchable.width) &&
-			hero.y <= (catchable.y + catchable.height) &&
-			catchable.y <= (hero.y + catchable.height)
+			detectCollition(hero, catchable)
 		) {
 			game.catches++;
 			if (monster2 != m_empty) {
@@ -731,10 +796,7 @@ function update(modifier) {
 
 		// If the hero touches the monster            
 		if (
-			hero.x <= (monster.x + monster.width) &&
-			monster.x <= (hero.x + monster.width) &&
-			hero.y <= (monster.y + monster.height) &&
-			monster.y <= (hero.y + monster.height)
+			detectCollition(hero, monster)
 		) {
 			if (hero.killable) {
 				monster.sound.play();
@@ -752,10 +814,7 @@ function update(modifier) {
 
 		// If the hero touches the second monster
 		if (
-			hero.x <= (monster2.x + monster2.width) &&
-			monster2.x <= (hero.x + monster2.width) &&
-			hero.y <= (monster2.y + monster2.height) &&
-			monster2.y <= (hero.y + monster2.height) && hero.killable
+			detectCollition(hero, monster2)
 		) {
 			monster2.sound.play();
 			game.lifes--;
@@ -770,12 +829,10 @@ function update(modifier) {
 
 		//Allow user to catch the PowerUp
 		if (
-			hero.x <= (power_up.x + power_up.width) &&
-			power_up.x <= (hero.x + power_up.width) &&
-			hero.y <= (power_up.y + power_up.height) &&
-			power_up.y <= (hero.y + power_up.height)
+			detectCollition(hero, power_up)
 		) {
-			if (power_active.name !== 'lifes' && power_active.name !== 'red' && power_active.name !== 'empty') {
+			if (power_active.name === 'white' ||
+				power_active.name === 'blue') {
 				power_active.src = "./assets/images/" + power_up.name + ".png";
 			}
 			catchable.sound.play();
@@ -810,33 +867,40 @@ function render() {
 	//Place the souls count
 	soul_count.innerText = game.score < 10 ? '0' + game.score : game.score;
 
-	// TODO: Check boxes for items so they all make sense
+
 	// Hero rectangle
-	ctx.beginPath();
-	ctx.lineWidth = "3";
-	ctx.strokeStyle = "blue";
-	ctx.rect(hero.x, hero.y, hero.width, hero.height);
-	ctx.stroke();
+	if (game.development) {
+		ctx.beginPath();
+		ctx.lineWidth = "3";
+		ctx.strokeStyle = "blue";
+		ctx.rect(hero.x, hero.y, hero.width, hero.height);
+		ctx.stroke();
 
-	//Catchable Rectangle
-	ctx.beginPath();
-	ctx.lineWidth = "3";
-	ctx.strokeStyle = "green";
-	ctx.rect(catchable.x, catchable.y, catchable.width, catchable.height);
-	ctx.stroke();
+		//Catchable Rectangle
+		ctx.beginPath();
+		ctx.lineWidth = "3";
+		ctx.strokeStyle = "green";
+		ctx.rect(catchable.x, catchable.y, catchable.width, catchable.height);
+		ctx.stroke();
 
-	//Monster Rectangle
-	ctx.beginPath();
-	ctx.lineWidth = "3";
-	ctx.strokeStyle = "red";
-	ctx.rect(monster.x, monster.y, monster.width, monster.height);
-	ctx.stroke();
-
+		//Monster Rectangle
+		ctx.beginPath();
+		ctx.lineWidth = "3";
+		ctx.strokeStyle = "red";
+		ctx.rect(monster.x, monster.y, monster.width, monster.height);
+		ctx.stroke();
+	}
 
 	//Draw hero and catchable
 	ctx.drawImage(hero.image, hero.x, hero.y);
 	ctx.drawImage(catchable.image, catchable.x, catchable.y);
 	ctx.drawImage(monster.image, monster.x, monster.y);
+
+	if (hero.projectiles.length > 0) {
+		hero.projectiles.forEach(function (projectile) {
+			projectile.draw();
+		});
+	}
 
 	//Draw Power Up
 	power_up.image.src = "./assets/images/" + power_up.name + ".png";
@@ -882,6 +946,41 @@ function openMenu() {
 	game.pause_sound.play();
 }
 
+
+function Projectile(I) {
+	I.active = true;
+
+	I.xVelocity = 0;
+	I.yVelocity = -I.speed;
+	I.width = 3;
+	I.height = 3;
+	I.color = "#66BF38";
+
+	I.insideCanvas = function () {
+		if (
+			I.x >= 0 &&
+			I.x <= canvas.width &&
+			I.y >= 0 &&
+			I.y <= canvas.height) {
+			return true;
+		} else {
+			return false;
+		}
+	};
+
+	I.draw = function () {
+		ctx.fillStyle = this.color;
+		ctx.fillRect(this.x, this.y, this.width, this.height);
+	};
+
+	I.update = function () {
+		I.x += I.xVelocity;
+		I.y += I.yVelocity;
+
+		I.active = I.active && I.insideCanvas();
+	};
+
+}
 
 // RESIZE CANVAS
 window.onresize = function () {
