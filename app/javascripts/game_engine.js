@@ -582,7 +582,7 @@ function update(modifier) {
 	if (game.playable) {
 		//Move Bullets
 		hero.projectiles.forEach(function (projectile) {
-			projectile.update(mouseLocation());
+			projectile.update();
 			if (detectCollition(projectile, monster)) {
 				monster.health -= projectile_rule.damage;
 				devLog(monster.health)
@@ -983,13 +983,15 @@ function openMenu() {
 }
 
 
-function Projectile(I) {
+function Projectile(new_i) {
+	let I = Object.create(new_i);
 	I.active = true;
 
 	I.velocity = projectile_rule.speed;
 	I.width = 3;
 	I.height = 3;
 	I.color = "#66BF38";
+	I.flag = mouseLocation();
 
 	I.insideCanvas = function () {
 		if (
@@ -1009,27 +1011,27 @@ function Projectile(I) {
 
 	};
 
-	I.update = function (flag) {
-		if (flag.y_pos && flag.x_pos) {
+	I.update = function () {
+		if (this.flag.y_pos && this.flag.x_pos) {
 			I.x += I.velocity;
 			I.y += I.velocity;
-		} else if (flag.x_pos && flag.y_neg) {
+		} else if (this.flag.x_pos && this.flag.y_neg) {
 			I.x += I.velocity;
 			I.y -= I.velocity;
-		} else if (flag.x_neg && flag.y_neg) {
+		} else if (this.flag.x_neg && this.flag.y_neg) {
 			I.x -= I.velocity;
 			I.y -= I.velocity;
-		} else if (flag.x_neg && flag.y_pos) {
+		} else if (this.flag.x_neg && this.flag.y_pos) {
 			I.x -= I.velocity;
 			I.y += I.velocity;
-		} else if (flag.y_pos && !flag.x_pos && !flag.x_neg) {
+		} else if (this.flag.y_pos && !this.flag.x_pos && !this.flag.x_neg) {
 			I.x += I.velocity;
 			I.y -= I.velocity;
-		} else if (flag.x_pos && !flag.y_pos && !flag.y_neg && !flag.x_neg) {
+		} else if (this.flag.x_pos && !this.flag.y_pos && !this.flag.y_neg && !this.flag.x_neg) {
 			I.y += I.velocity;
-		} else if (flag.x_neg && !flag.y_pos && !flag.y_neg && !flag.x_pos) {
+		} else if (this.flag.x_neg && !this.flag.y_pos && !this.flag.y_neg && !this.flag.x_pos) {
 			I.x += I.velocity;
-		} else if (flag.y_neg && !flag.x_pos && !flag.x_neg && !flag.y_pos) {
+		} else if (this.flag.y_neg && !this.flag.x_pos && !this.flag.x_neg && !this.flag.y_pos) {
 			I.y -= I.velocity;
 		} else {
 			I.x -= I.velocity;
@@ -1053,7 +1055,19 @@ window.onresize = function () {
 // FUNCTION FOR LOADED PAGE
 window.onload = function () {
 	//Create monsters
-	imp = Monster({});
+	imp = Monster({
+		name: "imp",
+		width: 41,
+		height: 57,
+		s_modifier: 0.3,
+		health: 300,
+		// speed: hero.speed * imp.s_modifier * game.modifier,
+		sound: new Howl({
+			src: ['./assets/sounds/imp.wav']
+		})
+	});
+	imp.image.src = "./assets/images/imp.png";
+
 	revenant = Monster({});
 	baron = Monster({});
 	knight = Monster({});
@@ -1129,16 +1143,7 @@ window.onload = function () {
 
 
 	//Add data to each monster
-	imp.name = "imp";
-	imp.width = 41;
-	imp.height = 57;
-	imp.s_modifier = 0.3;
-	imp.health = 300;
-	imp.speed = hero.speed * imp.s_modifier * game.modifier;
-	imp.image.src = "./assets/images/imp.png";
-	imp.sound = new Howl({
-		src: ['./assets/sounds/imp.wav']
-	});
+
 
 	revenant.name = "revenant";
 	revenant.width = 49;
