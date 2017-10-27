@@ -38,7 +38,8 @@
 	--- x Weapons available will be three:
 		1. Firegun: Damage x2
 		2. Fist: No projectiles will be shot until the player pick-up another weapon
-		3. Laser-gun: Projectiles shot each half second   
+		3. Laser-gun: Shoot twice as large projectiles   
+
 
 
 

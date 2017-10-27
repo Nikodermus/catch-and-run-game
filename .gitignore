@@ -63,3 +63,4 @@ bower.json
 /.vscode
 .byebug_history
 
+npm-debug.log

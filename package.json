@@ -34,9 +34,16 @@
 		"babel-loader": "^7.1.2",
 		"babel-polyfill": "^6.26.0",
 		"babel-preset-env": "^1.6.1",
+		"commitizen": "^2.9.6",
+		"cz-conventional-changelog": "^2.0.0",
 		"nib": "^1.1.2",
 		"stylus": "^0.54.5",
 		"webpack": "^3.8.1",
 		"webpack-dev-server": "^2.9.3"
+	},
+	"config": {
+		"commitizen": {
+			"path": "node_modules/cz-conventional-changelog"
+		}
 	}
 }

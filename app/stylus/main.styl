@@ -1,5 +1,5 @@
 /*!
-    Project: Catch & Run
+    Project: Catch & Run X
     Date: 08/14/2017
     Author: Nicolas M. Pardo
 */
@@ -33,6 +33,14 @@ fullFixed(n){
     justify-content center
     align-items center
 }
+
+no-select()
+	user-select none
+	-webkit-touch-callout none
+	-webkit-user-select none
+	-khtml-user-select none
+	-moz-user-select none
+	-ms-user-select none
 
 //Preset
 @-ms-viewport
@@ -75,8 +83,17 @@ h6
 
 img 
     object-fit contain
+	no-select()
 
 //Custom Styles
+.no-select
+	user-select none
+	-webkit-touch-callout none
+	-webkit-user-select none
+	-khtml-user-select none
+	-moz-user-select none
+	-ms-user-select none
+	
 
 html
 body
@@ -99,7 +116,7 @@ p
 span
     font-family 'doomregular', sans-serif
     color $red
-    text-shadow 1px 2px 0 #000000;
+    text-shadow 1px 2px 0 #000000
 
 button.square
     border 0
@@ -444,11 +461,11 @@ button.square
             margin: auto auto 1rem auto
             font-size: 21px
             border-radius: 10px
-            background: url('../../assets/images/blood_degrade.png');
+            background: url('../../assets/images/blood_degrade.png')
             background-size: contain
             color white
             border 0
             filter: blur(1px)
             &:hover
-                filter: blur(0);
+                filter: blur(0)
                 cursor pointer
