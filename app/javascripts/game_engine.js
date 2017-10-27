@@ -4,6 +4,7 @@
     Author: Nicolas M. Pardo
 */
 
+/*jshint esversion: 6 */
 
 
 
@@ -11,8 +12,6 @@
 require('jQuery');
 require('howler');
 require('html2canvas');
-
-
 
 
 // EMPTY GLOBAL VARIABLES
@@ -37,33 +36,37 @@ let container,
 	restart_game,
 	life_img,
 	reload_window,
-	monster,
 	danger_level,
-	power_up,
 	canvas,
-	imp,
-	revenant,
-	baron,
-	knight,
-	cyberdemon,
-	cacodemon,
-	mancubus,
-	spider,
-	boss,
-	m_empty,
 	monster2,
 	time_out,
-	yellow,
-	red,
-	green,
-	blue,
-	white,
-	empty,
 	life,
 	then,
-	ctx;
+	ctx,
+	mouse_x,
+	mouse_y;
 
+
+//EMPTY GLOBAL OBJECTS
 let keysDown = {};
+let yellow = {};
+let red = {};
+let green = {};
+let blue = {};
+let white = {};
+let empty = {};
+let imp = {};
+let revenant = {};
+let baron = {};
+let knight = {};
+let cyberdemon = {};
+let cacodemon = {};
+let mancubus = {};
+let spider = {};
+let boss = {};
+let m_empty = {};
+let power_up = {};
+let monster = {};
 
 
 
@@ -72,6 +75,7 @@ let keysDown = {};
 // GLOBAL OBJECTS
 let game = {
 	playable: false,
+	development: false,
 	lifes: 3,
 	x0: 0,
 	y0: 0,
@@ -79,7 +83,6 @@ let game = {
 	score: 0,
 	modifier: 1,
 	power_up: "",
-	development: true,
 	pause_sound: new Howl({
 		src: ['./assets/sounds/pause.mp3'],
 		volume: 0.3,
@@ -94,19 +97,25 @@ let game = {
 		src: ['./assets/sounds/menu.mp3'],
 		volume: 0.3,
 		autoplay: true
-	})
-
+	}),
+	loaded: false,
+	monster_rules: {
+		speed: 1,
+		health: 1
+	},
+	projectile_rule: {
+		name: "shoot",
+		speed: 2,
+		damage: 10,
+		width: 5,
+		height: 5,
+		color: '#66BF38',
+		sound: new Howl({
+			src: ['./assets/sounds/shoot.wav'],
+			volume: 0.2
+		})
+	}
 };
-
-let projectile_rule = {
-	name: "shoot",
-	speed: 10 / game.modifier,
-	damage: 10 / game.modifier,
-	sound: new Howl({
-		src: ['./assets/sounds/shoot.wav'],
-		volume: 0.2
-	})
-}
 
 let hero = {
 	name: "marine",
@@ -115,6 +124,7 @@ let hero = {
 	y: 0,
 	width: 38,
 	height: 56,
+	health: 400,
 	killable: true,
 	weapon_size: 20,
 	x_pos: false,
@@ -122,14 +132,11 @@ let hero = {
 	y_pos: false,
 	y_neg: false,
 	projectiles: [],
-
 	image: new Image(),
 	sound: new Howl({
 		src: ['./assets/sounds/marine.wav']
 	})
 };
-
-
 
 
 let catchable = {
@@ -149,25 +156,149 @@ let catchable = {
 	})
 };
 
-let PowerUp = {
-	name: "",
-	x: 0,
-	y: 0,
-	width: 37,
-	height: 33,
-	explanation: "",
-	do: function () {},
-	image: new Image(),
-	sound: new Howl({
-		src: ['./assets/sounds/power_up.wav']
-	})
-};
 
+
+//CONSTRUCTORS
+function Monster(new_monster) {
+	if (!new_monster) {
+		new_monster = {};
+	}
+	let params = Object.create(new_monster);
+	params.name = params.name;
+	params.x = params.x;
+	params.y = params.x;
+	params.width = params.width;
+	params.height = params.height;
+	params.s_modifier = params.s_modifier;
+	params.health = params.s_modifier * hero.health * game.modifier;
+	params.x_pos = params.x_pos;
+	params.x_neg = params.x_neg;
+	params.y_pos = params.y_pos;
+	params.y_neg = params.y_neg;
+	params.image = new Image();
+	params.sound = new Howl({
+		src: [`./assets/sounds/${params.name}.wav`]
+	});
+	params.death = new Howl({
+		src: [`./assets/sounds/${params.name}_death.wav`]
+	});
+	params.die = function () {
+		this.death.play();
+		power_up = empty;
+		game.score += Math.floor(50 * game.catches * game.modifier);
+		if (monster.health <= 0) {
+			monster = m_empty;
+		}
+		if (monster2.health <= 0) {
+			monster2 = m_empty;
+		}
+	};
+	return params;
+}
+
+
+function PowerUp(new_power_up) {
+	if (!new_power_up) {
+		new_power_up = {};
+	}
+	let params = Object.create(new_power_up);
+
+	params.name = params.name;
+	params.x = params.x;
+	params.y = params.y;
+	params.width = 37;
+	params.height = 33;
+	params.explanation = params.explanation;
+	params.do = params.do;
+	params.image = new Image();
+	params.sound = new Howl({
+		src: ['./assets/sounds/power_up.wav']
+	});
+
+	return params;
+}
+
+function Projectile(new_projectile) {
+	let params = Object.create(new_projectile);
+	params.active = true;
+	params.damage = game.projectile_rule.damage;
+	params.velocity = game.projectile_rule.speed;
+	params.width = game.projectile_rule.width;
+	params.height = game.projectile_rule.height;
+	params.color = game.projectile_rule.color;
+	params.flag = mouseLocation();
+
+	params.impact = new Howl({
+		src: [`./assets/sounds/impact.wav`]
+	});
+
+	params.insideCanvas = function () {
+		if (
+			params.x >= 0 &&
+			params.x <= canvas.width &&
+			params.y >= 0 &&
+			params.y <= canvas.height) {
+			return true;
+		} else {
+			return false;
+		}
+	};
+
+	params.draw = function () {
+		ctx.fillStyle = this.color;
+		ctx.fillRect(this.x, this.y, this.width, this.height);
+	};
+
+	params.update = function () {
+		if (this.flag.y_pos && this.flag.x_pos) { //Top right
+			params.x += params.velocity;
+			params.y += params.velocity;
+		} else if (this.flag.x_neg && this.flag.y_pos) { //Top left
+			params.x -= params.velocity;
+			params.y += params.velocity;
+		} else if (this.flag.x_pos && this.flag.y_neg) { //Bottom right
+			params.x += params.velocity;
+			params.y -= params.velocity;
+		} else if (this.flag.x_neg && this.flag.y_neg) { //Bottom left
+			params.x -= params.velocity;
+			params.y -= params.velocity;
+		} else if (this.flag.x_pos && !this.flag.y_pos && !this.flag.y_neg && !this.flag.x_neg) { //Right
+			params.x += params.velocity;
+		} else if (this.flag.x_neg && !this.flag.y_pos && !this.flag.y_neg && !this.flag.x_pos) { //left
+			params.x -= params.velocity;
+		} else if (this.flag.y_pos && !this.flag.x_pos && !this.flag.x_neg && !this.flag.y_neg) { // Top
+			params.y += params.velocity;
+		} else { // Bottom
+			params.y -= params.velocity;
+		}
+		params.active = params.active && params.insideCanvas();
+	};
+
+	params.explotion = function () {
+		self = this;
+		self.impact.play();
+		self.damage = 0;
+		self.velocity = 0;
+		for (let i = 0; i < 5; i++) {
+			setTimeout(function () {
+				this.x -= ((this.width * 1.01) - this.width) / 2;
+				this.y -= ((this.height * 1.01) - this.height) / 2;
+				self.color = blendColors(self.color, '#b02626', i / 10);
+				self.width *= 1.01;
+				self.height *= 1.01;
+			}, 50);
+		}
+		setTimeout(function () {
+			self.active = false;
+		}, 251);
+	};
+	return params;
+
+}
 
 
 
 // FUNCTIONS
-
 function devLog(object) {
 	if (game.development) {
 		console.log(object);
@@ -188,7 +319,7 @@ function detectCollition(object_1, object_2) {
 }
 
 function ajaxStartGame() {
-	devLog('ajax start game')
+	devLog('ajax start game');
 	let difficulty_game;
 	switch (game.modifier) {
 		case 0.7:
@@ -233,28 +364,6 @@ function ajaxEndGame() {
 	let image_game = createCanvas();
 	let score_game = Number(soul_count.innerText);
 }
-//Enemy prototype
-function Monster(params) {
-	if (!params) {
-		params = {}
-	}
-	return {
-		name: params.name,
-		x: params.x,
-		y: params.x,
-		width: params.width,
-		height: params.height,
-		s_modifier: params.s_modifier,
-		health: params.health,
-		x_pos: params.x_pos,
-		x_neg: params.x_neg,
-		y_pos: params.y_pos,
-		y_neg: params.y_neg,
-		image: new Image()
-
-	};
-}
-
 
 function loadGame(modifier) {
 
@@ -265,7 +374,7 @@ function loadGame(modifier) {
 	let images_ready = 0;
 	time_out = 3;
 
-	game.menu_sound.stop()
+	game.menu_sound.stop();
 	game.modifier = modifier;
 
 	for (let i of drawables) {
@@ -283,7 +392,7 @@ function dataLoader(callback, images, images_ready, images_url) {
 	for (let i in images_url) {
 		let img = new Image();
 		images.push(img);
-		img.onload = function () {
+		img.onload = () => {
 			images_ready++;
 			main_menu.style.top = -images_ready / images_url.length * 110 + "%";
 			if (images_ready >= images_url.length) {
@@ -302,7 +411,7 @@ function startGame() {
 function gameOver(key) {
 	if (key === 114) {
 		newGame();
-	};
+	}
 	if (game.lifes > 0) {
 		reset();
 	} else {
@@ -315,13 +424,14 @@ function gameOver(key) {
 }
 
 function newGame() {
-	devLog('new game')
+	ctx.restore();
 	monster = m_empty;
 	game.catches = 0;
 	main_menu.style.visibility = 'visible';
 	main_menu.style.top = 0;
 	time_out = 3;
 	game_over.style.visibility = 'hidden';
+	devLog('new game');
 }
 
 //Random for various purposes
@@ -333,21 +443,21 @@ function getRandom(min, max) {
 function getMonster() {
 	danger_level = getRandom(0, 30);
 	if (danger_level < 7) {
-		return monster !== imp ? imp : revenant;
+		return monster.name !== 'imp' ? Object.create(imp) : Object.create(revenant);
 	} else if (danger_level < 13) {
-		return monster !== revenant ? revenant : baron;
+		return monster.name !== 'revenant' ? Object.create(revenant) : Object.create(baron);
 	} else if (danger_level < 18) {
-		return monster !== baron ? baron : knight;
+		return monster.name !== 'baron' ? Object.create(baron) : Object.create(knight);
 	} else if (danger_level < 22) {
-		return monster !== knight ? knight : cyberdemon;
+		return monster.name !== 'knight' ? Object.create(knight) : Object.create(cyberdemon);
 	} else if (danger_level < 25) {
-		return monster !== cyberdemon ? cyberdemon : cacodemon;
+		return monster.name !== 'cyberdemon' ? Object.create(cyberdemon) : Object.create(cacodemon);
 	} else if (danger_level < 27) {
-		return monster !== cacodemon ? cacodemon : mancubus;
+		return monster.name !== 'cacodemon' ? Object.create(cacodemon) : Object.create(mancubus);
 	} else if (danger_level < 30) {
-		return monster !== mancubus ? mancubus : spider;
+		return monster.name !== 'mancubus' ? Object.create(mancubus) : Object.create(spider);
 	} else {
-		return monster !== spider ? spider : imp;
+		return monster.name !== 'spider' ? Object.create(spider) : Object.create(imp);
 	}
 }
 
@@ -365,90 +475,46 @@ function reset() {
 	pause_menu.style.visibility = 'hidden';
 	game_over.style.visibility = 'hidden';
 	time_out = 3;
+	hero.projectiles = [];
 	drawLives();
 
 	//Chose monster based on life count
 	if (game.catches < 4) {
-		monster = imp;
-
+		monster = Object.create(imp);
 	} else if (game.catches < 8) {
-		monster = revenant;
+		monster = Object.create(revenant);
 
 	} else if (game.catches < 12) {
-		monster = baron;
+		monster = Object.create(baron);
 
 	} else if (game.catches < 15) {
-		monster = knight;
+		monster = Object.create(knight);
 
 	} else if (game.catches < 17) {
-		monster = cyberdemon;
+		monster = Object.create(cyberdemon);
 
 	} else if (game.catches < 21) {
-		monster = cacodemon;
+		monster = Object.create(cacodemon);
 
 	} else if (game.catches < 26) {
-		monster = mancubus;
+		monster = Object.create(mancubus);
 
 	} else if (game.catches < 29) {
-		monster = spider;
+		monster = Object.create(spider);
 
 	} else {
-		monster = boss;
+		monster = Object.create(boss);
 	}
 
-	//Add explanation texts
-	white.explanation = "Indestructible";
-	red.explanation = "New monster appeared";
-	blue.explanation = "Hero speed increased";
-	green.explanation = monster.name + " speed decreased";
-	life.explanation = "Life added";
-	yellow.explanation = monster.name + " speed increased";
-
-	//PowerUp Effects
-	yellow.do = function () {
-		monster.speed *= 1.3;
-	};
-
-	red.do = function () {
-		let random_monster = getMonster();
-		random_monster.x = 0;
-		random_monster.y = 0;
-		random_monster.x_neg = false;
-		random_monster.x_pos = false;
-		random_monster.y_pos = false;
-		random_monster.y_neg = false;
-		monster2 = random_monster;
-		red.explanation = "New monster appeared";
-		return monster2;
-	};
-
-	white.do = function () {
-		hero.killable = false;
-	};
-
-	blue.do = function () {
-		hero.speed *= 1.2;
-	};
-
-	green.do = function () {
-		monster.speed *= 0.8;
-	};
-
-	life.do = function () {
-		game.lifes++;
-		drawLives();
-	};
-
 	//Hero Functions
-
 	hero.shoot = () => {
 		hero.projectiles.push(Projectile({
-			speed: projectile_rule.speed,
+			speed: game.projectile_rule.speed,
 			x: hero.x + hero.width / 2,
 			y: hero.y + hero.height / 2
 		}));
 
-		projectile_rule.sound.play();
+		game.projectile_rule.sound.play();
 	};
 
 
@@ -515,7 +581,7 @@ function reset() {
 	let interval = 700;
 
 	for (let i = 0; i < x; i++) {
-		setTimeout(function () {
+		setTimeout(() => {
 			count_down.innerHTML = `<span>${time_out}</span>`;
 			time_out--;
 			count_down.style.opacity -= 0.25;
@@ -534,19 +600,14 @@ function reset() {
 
 }
 
-setInterval(() => {
+document.onclick = () => {
 	if (game.playable) {
 		hero.shoot();
 	}
-}, 500);
+};
 
-let mouse_x;
-let mouse_y;
 
-document.onmousemove = function (e) {
-	mouse_x = e.pageX;
-	mouse_y = e.pageY;
-}
+
 
 function mouseLocation() {
 
@@ -574,24 +635,66 @@ function mouseLocation() {
 		flag.y_pos = false;
 	}
 
+	if (mouse_y > hero.y && mouse_y < hero.y + hero.height) {
+		flag.y_neg = false;
+		flag.y_pos = false;
+	}
+
+	if (mouse_x > hero.x && mouse_x < hero.x + hero.width) {
+		flag.x_neg = false;
+		flag.x_pos = false;
+	}
+
 	return flag;
 
 }
 
+
+function canYouPlay() {
+	return (
+		game.playable &&
+		pause_menu.style.visibility === 'hidden' &&
+		game_over.style.visibility === 'hidden' &&
+		count_down.style.visibility === 'hidden'
+	);
+}
+
+function blendColors(c0, c1, p) {
+	let f = parseInt(c0.slice(1), 16),
+		t = parseInt(c1.slice(1), 16),
+		R1 = f >> 16,
+		G1 = f >> 8 & 0x00FF,
+		B1 = f & 0x0000FF,
+		R2 = t >> 16,
+		G2 = t >> 8 & 0x00FF,
+		B2 = t & 0x0000FF;
+	return "#" + (0x1000000 + (Math.round((R2 - R1) * p) + R1) * 0x10000 + (Math.round((G2 - G1) * p) + G1) * 0x100 + (Math.round((B2 - B1) * p) + B1)).toString(16).slice(1);
+}
+
 function update(modifier) {
-	if (game.playable) {
+	if (canYouPlay()) {
 		//Move Bullets
 		hero.projectiles.forEach(function (projectile) {
 			projectile.update();
 			if (detectCollition(projectile, monster)) {
-				monster.health -= projectile_rule.damage;
-				devLog(monster.health)
+				monster.health -= projectile.damage;
+				devLog(monster.health);
+				projectile.explotion();
+				if (monster.health <= 0) {
+					monster2.die();
+				}
 			}
 			if (detectCollition(projectile, monster2)) {
-				monster.health -= projectile_rule.damage;
-				devLog(monster2.health)
+				monster2.health -= projectile.damage;
+				devLog(monster2.health);
+				projectile.explotion();
+				if (monster2.health <= 0) {
+					monster2.die();
+				}
 			}
 		});
+
+		//Only active bullets to avoid overloading the canvas
 		hero.projectiles = hero.projectiles.filter(function (projectile) {
 			return projectile.active;
 		});
@@ -767,30 +870,34 @@ function update(modifier) {
 		//Move user
 
 
-		if (38 in keysDown || 87 in keysDown) { // Player holding up
+		if (87 in keysDown) { // Player holding up
 			hero.y -= hero.speed * modifier;
 			hero.y_pos = true;
+			hero.y_neg = false;
 			if (hero.y < 0) {
 				hero.y = 0;
 			}
 		}
-		if (40 in keysDown || 83 in keysDown) { // Player holding down
+		if (83 in keysDown) { // Player holding down
 			hero.y += hero.speed * modifier;
 			hero.y_neg = true;
+			hero.y_pos = false;
 			if (hero.y > canvas.height - hero.height) {
 				hero.y = canvas.height - hero.height;
 			}
 		}
-		if (37 in keysDown || 65 in keysDown) { // Player holding left
+		if (65 in keysDown) { // Player holding left
 			hero.x -= hero.speed * modifier;
 			hero.x_neg = true;
+			hero.x_pos = false;
 			if (hero.x < 0) {
 				hero.x = 0;
 			}
 		}
-		if (39 in keysDown || 68 in keysDown) { // Player holding right
+		if (68 in keysDown) { // Player holding right
 			hero.x += hero.speed * modifier;
 			hero.x_pos = true;
+			hero.x_neg = false;
 			if (hero.x > canvas.width - hero.width) {
 				hero.x = canvas.width - hero.width;
 			}
@@ -813,7 +920,7 @@ function update(modifier) {
 			hero.image.src = "./assets/images/" + hero.name + "_7.png";
 		} else if (hero.y_neg && !hero.x_pos && !hero.x_neg && !hero.y_pos) {
 			hero.image.src = "./assets/images/" + hero.name + "_5.png";
-		} else if (!hero.y_pos && !hero.y_neg && !hero.x_pos && !hero.x_neg) {
+		} else {
 			hero.image.src = "./assets/images/" + hero.name + ".png";
 		}
 
@@ -828,6 +935,7 @@ function update(modifier) {
 			game.score += 100 * game.modifier;
 			catchable.sound.play();
 			hero.killable = true;
+
 			reset();
 
 		}
@@ -846,7 +954,8 @@ function update(modifier) {
 				}
 				gameOver();
 			} else {
-				monster = m_empty;
+				monster.health = 0;
+				monster.die();
 			}
 		}
 
@@ -854,14 +963,19 @@ function update(modifier) {
 		if (
 			detectCollition(hero, monster2)
 		) {
-			monster2.sound.play();
-			game.lifes--;
-			if (game.lifes < 1) {
-				gameOver();
+			if (hero.killable) {
+				monster2.sound.play();
+				game.lifes--;
+				if (game.lifes < 1) {
+					gameOver();
+				} else {
+					reset();
+				}
+				player_status.src = `./assets/images/${game.lifes}_lifes.gif`;
 			} else {
-				reset();
+				monster2.health = 0;
+				monster2.die();
 			}
-			player_status.src = `./assets/images/${game.lifes}_lifes.gif`;
 		}
 
 
@@ -874,9 +988,9 @@ function update(modifier) {
 				power_active.src = "./assets/images/" + power_up.name + ".png";
 			}
 			catchable.sound.play();
-			power_up_text.className = power_up.name;
-			power_up_text.innerText = power_up.explanation;
+			power_up_text.classList.add(power_up.name);
 			power_up.do();
+			power_up_text.innerText = power_up.explanation(hero, monster, monster2);
 			ctx.clearRect(power_up.x, power_up.y, power_up.width, power_up.height);
 			power_up = empty;
 		}
@@ -929,14 +1043,16 @@ function render() {
 		ctx.stroke();
 	}
 
+	hero.projectiles.forEach(function (projectile) {
+		projectile.draw();
+	});
+
 	//Draw hero and catchable
 	ctx.drawImage(hero.image, hero.x, hero.y);
 	ctx.drawImage(catchable.image, catchable.x, catchable.y);
 	ctx.drawImage(monster.image, monster.x, monster.y);
 
-	hero.projectiles.forEach(function (projectile) {
-		projectile.draw();
-	});
+
 
 	//Draw Power Up
 	power_up.image.src = "./assets/images/" + power_up.name + ".png";
@@ -946,12 +1062,14 @@ function render() {
 	if (monster2 !== m_empty) {
 		ctx.drawImage(monster2.image, monster2.x, monster2.y);
 
-		//Monster Rectangle
-		ctx.beginPath();
-		ctx.lineWidth = "3";
-		ctx.strokeStyle = "red";
-		ctx.rect(monster2.x, monster2.y, monster2.width, monster2.height);
-		ctx.stroke();
+		if (game.development) {
+			//Monster Rectangle
+			ctx.beginPath();
+			ctx.lineWidth = "3";
+			ctx.strokeStyle = "red";
+			ctx.rect(monster2.x, monster2.y, monster2.width, monster2.height);
+			ctx.stroke();
+		}
 	}
 
 }
@@ -982,111 +1100,166 @@ function openMenu() {
 	game.pause_sound.play();
 }
 
+// Add Document Listeners
 
-function Projectile(new_i) {
-	let I = Object.create(new_i);
-	I.active = true;
-
-	I.velocity = projectile_rule.speed;
-	I.width = 3;
-	I.height = 3;
-	I.color = "#66BF38";
-	I.flag = mouseLocation();
-
-	I.insideCanvas = function () {
-		if (
-			I.x >= 0 &&
-			I.x <= canvas.width &&
-			I.y >= 0 &&
-			I.y <= canvas.height) {
-			return true;
-		} else {
-			return false;
-		}
-	};
-
-	I.draw = function () {
-		ctx.fillStyle = this.color;
-		ctx.fillRect(this.x, this.y, this.width, this.height);
-
-	};
-
-	I.update = function () {
-		if (this.flag.y_pos && this.flag.x_pos) {
-			I.x += I.velocity;
-			I.y += I.velocity;
-		} else if (this.flag.x_pos && this.flag.y_neg) {
-			I.x += I.velocity;
-			I.y -= I.velocity;
-		} else if (this.flag.x_neg && this.flag.y_neg) {
-			I.x -= I.velocity;
-			I.y -= I.velocity;
-		} else if (this.flag.x_neg && this.flag.y_pos) {
-			I.x -= I.velocity;
-			I.y += I.velocity;
-		} else if (this.flag.y_pos && !this.flag.x_pos && !this.flag.x_neg) {
-			I.x += I.velocity;
-			I.y -= I.velocity;
-		} else if (this.flag.x_pos && !this.flag.y_pos && !this.flag.y_neg && !this.flag.x_neg) {
-			I.y += I.velocity;
-		} else if (this.flag.x_neg && !this.flag.y_pos && !this.flag.y_neg && !this.flag.x_pos) {
-			I.x += I.velocity;
-		} else if (this.flag.y_neg && !this.flag.x_pos && !this.flag.x_neg && !this.flag.y_pos) {
-			I.y -= I.velocity;
-		} else {
-			I.x -= I.velocity;
-		}
-
-
-
-		//TODO UNCOMMENT I.active = I.active && I.insideCanvas();
-	};
-	return I;
-
-}
+// Listen for mouse movement
+document.onmousemove = function (e) {
+	mouse_x = e.pageX - 64;
+	mouse_y = e.pageY - 64;
+};
 
 // RESIZE CANVAS
 window.onresize = function () {
-	canvas.width = container.clientWidth - 128;
-	canvas.height = container.clientHeight - 128;
+	if (game.loaded) {
+		canvas.width = container.clientWidth - 128;
+		canvas.height = container.clientHeight - 128;
+	}
 };
 
 
 // FUNCTION FOR LOADED PAGE
 window.onload = function () {
+	game.loaded = true;
 	//Create monsters
 	imp = Monster({
 		name: "imp",
 		width: 41,
 		height: 57,
 		s_modifier: 0.3,
-		health: 300,
-		// speed: hero.speed * imp.s_modifier * game.modifier,
-		sound: new Howl({
-			src: ['./assets/sounds/imp.wav']
-		})
+		health: 300
 	});
-	imp.image.src = "./assets/images/imp.png";
 
-	revenant = Monster({});
-	baron = Monster({});
-	knight = Monster({});
-	cyberdemon = Monster({});
-	cacodemon = Monster({});
-	mancubus = Monster({});
-	spider = Monster({});
-	boss = Monster({});
+
+	revenant = Monster({
+		name: "revenant",
+		width: 49,
+		height: 71,
+		s_modifier: 0.35,
+		h_modifier: 0.65
+	});
+	baron = Monster({
+		name: "baron",
+		width: 49,
+		height: 74,
+		s_modifier: 0.4,
+		h_modifier: 0.8
+	});
+	knight = Monster({
+		name: "knight",
+		width: 52,
+		height: 74,
+		s_modifier: 0.45,
+		h_modifier: 0.85
+	});
+	cyberdemon = Monster({
+		name: "cyberdemon",
+		width: 85,
+		height: 109,
+		s_modifier: 0.55,
+		h_modifier: 0.9
+	});
+	cacodemon = Monster({
+		name: "cacodemon",
+		width: 63,
+		height: 65,
+		s_modifier: 0.65,
+		h_modifier: 0.7
+	});
+	mancubus = Monster({
+		name: "mancubus",
+		width: 164,
+		height: 140,
+		s_modifier: 0.6,
+		h_modifier: 1.4
+	});
+	spider = Monster({
+		name: "spider",
+		width: 194,
+		height: 106,
+		s_modifier: 0.7,
+		h_modifier: 1.3
+	});
+	boss = Monster({
+		name: "final_boss",
+		width: 746,
+		height: 310,
+		s_modifier: 0.5,
+		h_modifier: 3
+	});
 	m_empty = Monster({});
 	monster2 = m_empty;
 
 	// Create powerups
-	yellow = Object.create(PowerUp);
-	red = Object.create(PowerUp);
-	green = Object.create(PowerUp);
-	blue = Object.create(PowerUp);
-	white = Object.create(PowerUp);
-	empty = Object.create(PowerUp);
-	life = Object.create(PowerUp);
+	yellow = PowerUp({
+		name: "yellow",
+		explanation: (hero, monster, monster2) => {
+			return monster.name + " speed increased";
+		},
+		do: () => {
+			game.monster_rules.speed *= 1.3;
+		}
+	});
+	white = PowerUp({
+		name: "white",
+		explanation: (hero, monster, monster2) => {
+			return "Indestructible";
+		},
+		do: () => {
+			hero.killable = false;
+		}
+	});
+	red = PowerUp({
+		name: "red",
+		explanation: (hero, monster, monster2) => {
+			return `${monster2.name} appeared`;
+		},
+		do: () => {
+			let random_monster = getMonster();
+			random_monster.x = 0;
+			random_monster.y = 0;
+			random_monster.x_neg = false;
+			random_monster.x_pos = false;
+			random_monster.y_pos = false;
+			random_monster.y_neg = false;
+			monster2 = random_monster;
+			return monster2;
+		}
+	});
+	blue = PowerUp({
+		name: "blue",
+		explanation: (hero, monster, monster2) => {
+			return "Hero speed increased";
+		},
+		do: () => {
+			hero.speed *= 1.2;
+		}
+	});
+	green = PowerUp({
+		name: "green",
+		explanation: (hero, monster, monster2) => {
+			return `${monster.name} speed decreased`;
+		},
+		do: () => {
+			game.monster_rules.speed *= 0.8;
+		}
+	});
+
+	life = PowerUp({
+		name: "life",
+		explanation: (hero, monster, monster2) => {
+			return "Life added";
+		},
+		do: () => {
+			game.lifes++;
+			drawLives();
+		}
+	});
+	empty = PowerUp({
+		name: "empty",
+		explanation: (hero, monster, monster2) => {
+			return "";
+		},
+	});
 
 
 
@@ -1135,149 +1308,79 @@ window.onload = function () {
 
 	game.safe_area = 0.2 / game.modifier;
 
-
-
 	// Hero image
 	hero.image.src = "./assets/images/" + hero.name + ".png";
 	catchable.image.src = "./assets/images/lost_soul.png";
 
 
 	//Add data to each monster
+	imp.speed = hero.speed * imp.s_modifier * game.modifier * game.monster_rules.speed;
+	imp.image.src = "./assets/images/imp.png";
 
-
-	revenant.name = "revenant";
-	revenant.width = 49;
-	revenant.height = 71;
-	revenant.s_modifier = 0.35;
-	revenant.h_modifier = 0.65;
-	revenant.speed = hero.speed * revenant.s_modifier * game.modifier;
+	revenant.speed = hero.speed * revenant.s_modifier * game.modifier * game.monster_rules.speed;
 	revenant.image.src = "./assets/images/revenant.png";
-	revenant.sound = new Howl({
-		src: ['./assets/sounds/revenant.wav']
-	});
 
-	baron.name = "baron";
-	baron.width = 49;
-	baron.height = 74;
-	baron.s_modifier = 0.4;
-	baron.h_modifier = 0.8;
-	baron.speed = hero.speed * baron.s_modifier * game.modifier;
+	baron.speed = hero.speed * baron.s_modifier * game.modifier * game.monster_rules.speed;
 	baron.image.src = "./assets/images/baron.png";
-	baron.sound = new Howl({
-		src: ['./assets/sounds/baron.wav']
-	});
 
-	knight.name = "knight";
-	knight.width = 52;
-	knight.height = 74;
-	knight.s_modifier = 0.45;
-	knight.h_modifier = 0.85;
-	knight.speed = hero.speed * knight.s_modifier * game.modifier;
+	knight.speed = hero.speed * knight.s_modifier * game.modifier * game.monster_rules.speed;
 	knight.image.src = "./assets/images/knight.png";
-	knight.sound = new Howl({
-		src: ['./assets/sounds/knight.wav']
-	});
 
-	cyberdemon.name = "cyberdemon";
-	cyberdemon.width = 85;
-	cyberdemon.height = 109;
-	cyberdemon.s_modifier = 0.55;
-	cyberdemon.h_modifier = 0.9;
-	cyberdemon.speed = hero.speed * knight.s_modifier * game.modifier;
+	cyberdemon.speed = hero.speed * knight.s_modifier * game.modifier * game.monster_rules.speed;
 	cyberdemon.image.src = "./assets/images/cyberdemon.png";
-	cyberdemon.sound = new Howl({
-		src: ['./assets/sounds/cyberdemon.wav']
-	});
 
-	cacodemon.name = "cacodemon";
-	cacodemon.width = 63;
-	cacodemon.height = 65;
-	cacodemon.s_modifier = 0.65;
-	cacodemon.h_modifier = 0.7;
-	cacodemon.speed = hero.speed * cacodemon.s_modifier * game.modifier;
+	cacodemon.speed = hero.speed * cacodemon.s_modifier * game.modifier * game.monster_rules.speed;
 	cacodemon.image.src = "./assets/images/cacodemon.png";
-	cacodemon.sound = new Howl({
-		src: ['./assets/sounds/cacodemon.wav']
-	});
 
-	mancubus.name = "mancubus";
-	mancubus.width = 164;
-	mancubus.height = 140;
-	mancubus.s_modifier = 0.6;
-	mancubus.h_modifier = 1.4;
-	mancubus.speed = hero.speed * mancubus.s_modifier * game.modifier;
+	mancubus.speed = hero.speed * mancubus.s_modifier * game.modifier * game.monster_rules.speed;
 	mancubus.image.src = "./assets/images/mancubus.png";
-	mancubus.sound = new Howl({
-		src: ['./assets/sounds/mancubus.wav']
-	});
 
-	spider.name = "spider";
-	spider.width = 194;
-	spider.height = 106;
-	spider.s_modifier = 0.7;
-	spider.h_modifier = 1.3;
-	spider.speed = hero.speed * spider.s_modifier * game.modifier;
+	spider.speed = hero.speed * spider.s_modifier * game.modifier * game.monster_rules.speed;
 	spider.image.src = "./assets/images/spider.png";
-	spider.sound = new Howl({
-		src: ['./assets/sounds/spider.wav']
-	});
 
-	boss.name = "final_boss";
-	boss.width = canvas.width * 0.7;
-	boss.height = boss.width * 0.415549598;
-	boss.s_modifier = 0.5;
-	boss.h_modifier = 3;
-	boss.speed = hero.speed * boss.s_modifier * game.modifier;
+	boss.speed = hero.speed * boss.s_modifier * game.modifier * game.monster_rules.speed;
 	boss.image.src = "./assets/images/final_boss.png";
-	boss.sound = new Howl({
-		src: ['./assets/sounds/final_boss.wav']
-	});
 
 	m_empty.name = "empty";
 	m_empty.health = 0;
 
 
 
-
-
-	//PowerUp Names
-	yellow.name = "yellow";
-	white.name = "white";
-	red.name = "red";
-	blue.name = "blue";
-	green.name = "green";
-	life.name = "life";
-	empty.name = "empty";
-
-
-
 	// Handle keyboard controls
-
 	addEventListener("keydown", function (e) {
 		keysDown[e.keyCode] = true;
 	}, false);
 
 	addEventListener("keyup", function (e) {
 		delete keysDown[e.keyCode];
+
+		if (Object.keys(keysDown).length <= 0) {
+			hero.y_pos = false;
+			hero.y_neg = false;
+			hero.x_pos = false;
+			hero.x_neg = false;
+		}
+
 		//Reset X-
-		if (e.keyCode === 37) {
+		if (e.keycode === 65) {
 			hero.x_neg = false;
 		}
 
 		//Reset X+
-		if (e.keyCode === 39) {
+		if (e.keycode === 68) {
 			hero.x_pos = false;
 		}
 
 		//Reset Y-
-		if (e.keyCode === 40) {
+		if (e.keycode === 83) {
 			hero.y_neg = false;
 		}
 
 		//Reset Y+
-		if (e.keyCode === 38) {
+		if (e.keycode === 87) {
 			hero.y_pos = false;
 		}
+
 
 	}, false);
 
