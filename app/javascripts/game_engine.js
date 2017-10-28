@@ -1,6 +1,7 @@
 /*!
     Project: Catch & Run X
-    Date: 08/14/2017
+	Date: 08/14/2017
+	
     Author: Nicolas M. Pardo
 */
 
@@ -9,9 +10,11 @@
 
 
 // REQUIRE MODULES
-require('jQuery');
+import jQuery from 'jquery'
 require('howler');
 require('html2canvas');
+
+jQuery.noConflict();
 
 
 // EMPTY GLOBAL VARIABLES
@@ -75,7 +78,7 @@ let monster = {};
 // GLOBAL OBJECTS
 let game = {
 	playable: false,
-	development: false,
+	development: true,
 	lifes: 3,
 	x0: 0,
 	y0: 0,
@@ -299,11 +302,7 @@ function Projectile(new_projectile) {
 
 
 // FUNCTIONS
-function devLog(object) {
-	if (game.development) {
-		console.log(object);
-	}
-}
+
 
 function detectCollition(object_1, object_2) {
 	if (

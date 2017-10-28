@@ -1,6 +1,7 @@
 module.exports = {
 	entry: {
 		bundle: './app/javascripts/game_engine.js',
+		sessions: './app/javascripts/sessions.js'
 	},
 	output: {
 		filename: '[name].js',
