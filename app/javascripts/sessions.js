@@ -27,7 +27,7 @@ console.log(window.Cookies);
 const BACK_URL = 'http://localhost:3000/';
 
 window.onload = function () {
-	checkTokens();
+	//checkTokens();
 }
 
 function devLog(object) {
