@@ -142,6 +142,12 @@ body {
   background-repeat: repeat;
   overflow: hidden;
 }
+table {
+  width: 100%;
+  max-width: 100%;
+  border-collapse: collapse;
+  table-layout: auto;
+}
 *,
 h1,
 h2,
@@ -742,4 +748,92 @@ button.square:hover > * {
 #game_over .game_container button:hover {
   filter: blur(0);
   cursor: pointer;
+}
+.content {
+  padding: 4rem;
+}
+.content .btn_container {
+  padding: 2rem;
+}
+.content .btn_container >div {
+  width: 50%;
+  float: left;
+}
+.content .btn_container >div button {
+  font-size: 1rem;
+  background: #9c1b00;
+  padding: 0.25rem 0.5rem;
+  border: 0;
+  color: #313131;
+  text-shadow: none;
+}
+.content .btn_container .left {
+  text-align: left;
+}
+.content .btn_container .right {
+  text-align: right;
+}
+.content .profile_container {
+  overflow: auto;
+  padding-top: 1rem;
+  width: 70%;
+  margin: auto;
+}
+.content .profile_container >div {
+  float: left;
+}
+.content .profile_container .profile_data {
+  width: calc(100% - 130px);
+  padding-top: 2.5rem;
+}
+.content .profile_container .profile_data * {
+  text-align: center;
+  color: #fff;
+}
+.content .profile_container .profile_pic {
+  width: 8.125rem;
+}
+.content .profile_container .profile_pic figure {
+  background: url("../../assets/images/button_bg.png");
+  padding: 10px;
+}
+.content .profile_container .profile_pic figure img {
+  width: 100%;
+}
+.content .scores_container {
+  padding-top: 2rem;
+  height: auto;
+}
+.content .scores_container > div {
+  width: 50%;
+  float: left;
+  padding: 0 1rem;
+}
+.content .scores_container > div table {
+  text-transform: uppercase;
+}
+.content .scores_container > div table thead {
+  font-size: 0.75rem;
+}
+.content .scores_container > div table thead th {
+  padding: 1rem 0;
+  text-align: center;
+}
+.content .scores_container > div table tbody {
+  font-size: 0.875rem;
+}
+.content .scores_container > div table tbody td,
+.content .scores_container > div table tbody td i {
+  color: #fff;
+  text-align: center;
+}
+.content .scores_container > div table tbody td {
+  padding: 0.5rem 0;
+}
+.content .scores_container > div table tbody i:hover {
+  color: #9c1b00;
+}
+.content .scores_container h3 {
+  text-align: center;
+  padding-bottom: 1rem;
 }

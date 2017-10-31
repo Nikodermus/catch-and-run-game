@@ -110,6 +110,13 @@ body
 	background-size 80px 80px
 	background-repeat  repeat
 	overflow hidden
+table
+	width 100%
+	max-width 100%
+	border-collapse collapse
+	table-layout auto
+	
+
 
 //Global classed
 *
@@ -442,7 +449,6 @@ button.square
             width 100%
             text-align center
             padding 2rem
-			
         button
             display block
             text-align center
@@ -459,3 +465,70 @@ button.square
             &:hover
                 filter blur(0)
                 cursor pointer
+.content
+	padding rem(64)
+	.btn_container
+		padding 2rem
+		>div
+			width 50%
+			float left
+			button
+				font-size 1rem
+				background $red
+				padding .25rem .5rem
+				border 0
+				color $gray
+				text-shadow none
+		.left	
+			text-align left
+		.right
+			text-align right
+	.profile_container
+		overflow auto
+		padding-top 1rem
+		width 70%
+		margin auto
+		>div
+			float left
+		.profile_data
+			width calc(100% - 130px)
+			padding-top 2.5rem
+			*
+				text-align center
+				color white
+		.profile_pic
+			width rem(130)
+			figure
+				background url('../../assets/images/button_bg.png')
+				padding 10px
+				img
+					width 100%
+	.scores_container
+		padding-top 2rem
+		height auto
+		> div
+			width 50%
+			float left
+			padding 0 1rem
+			table
+				text-transform uppercase
+				thead
+					font-size rem(12)
+					th
+						padding 1rem 0
+						text-align center
+				tbody
+					font-size rem(14)
+					td, td i
+						color white
+						text-align center
+					td
+						padding .5rem 0
+					i:hover
+						color $red
+		h3
+			text-align center
+			padding-bottom 1rem
+	
+
+
