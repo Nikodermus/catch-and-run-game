@@ -9,8 +9,8 @@
 
 
 // REQUIRE MODULES
-import jQuery from 'jquery'
-import Cookies from 'js-cookie'
+import jQuery from 'jquery';
+import Cookies from 'js-cookie';
 // require('js-cookie');
 
 
@@ -22,13 +22,10 @@ let global = {
 	headers: {}
 };
 
-console.log(window.Cookies);
 //Constants
 const BACK_URL = 'http://localhost:3000/';
 
-window.onload = function () {
-	//checkTokens();
-}
+
 
 function devLog(object) {
 	if (global.development) {
@@ -61,7 +58,7 @@ function getHeaders() {
 		success: function (data) {
 			return_value = {
 				"APP-TOKEN": data
-			}
+			};
 		}
 	});
 	return return_value;

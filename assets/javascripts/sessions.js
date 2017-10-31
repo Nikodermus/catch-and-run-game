@@ -10364,13 +10364,8 @@ var global = {
 	headers: {}
 };
 
-console.log(window.Cookies);
 //Constants
 var BACK_URL = 'http://localhost:3000/';
-
-window.onload = function () {
-	//checkTokens();
-};
 
 function devLog(object) {
 	if (global.development) {

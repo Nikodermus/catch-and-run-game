@@ -10464,8 +10464,8 @@ var game = {
 	},
 	projectile_rule: {
 		name: "shoot",
-		speed: 2,
-		damage: 10,
+		speed: 4,
+		damage: 5,
 		width: 5,
 		height: 5,
 		color: '#66BF38',
@@ -10660,7 +10660,11 @@ function Projectile(new_projectile) {
 }
 
 // FUNCTIONS
-
+function devLog(object) {
+	if (game.development) {
+		console.log(object);
+	}
+}
 
 function detectCollition(object_1, object_2) {
 	if (object_1.x <= object_2.x + object_2.width && object_2.x <= object_1.x + object_1.width && object_1.y <= object_2.y + object_2.height && object_2.y <= object_1.y + object_1.height) {
@@ -11422,7 +11426,7 @@ function openMenu() {
 	game.pause_sound.play();
 }
 
-// Add Document Listeners
+devLog('i');
 
 // Listen for mouse movement
 document.onmousemove = function (e) {
@@ -11584,26 +11588,26 @@ window.onload = function () {
 	game.menu_sound.play();
 
 	//Get Elements
-	container = document.getElementById('CanvasContainer');
-	soul_count = document.getElementById('SoulsCount');
-	life_count = document.getElementById('LifeCount');
-	player_status = document.getElementById('PlayerStatus');
-	power_active = document.getElementById('PowerActive');
-	pause_game = document.getElementById('PauseGame');
-	reload_game = document.getElementById('ReloadGame');
-	close_menu = document.getElementById('CloseMenu');
-	pause_menu = document.getElementById('PauseMenu');
+	container = document.getElementById('canvas_container');
+	soul_count = document.getElementById('souls_count');
+	life_count = document.getElementById('life_count');
+	player_status = document.getElementById('player_status');
+	power_active = document.getElementById('power_active');
+	pause_game = document.getElementById('pause_game');
+	reload_game = document.getElementById('reload_game');
+	close_menu = document.getElementById('close_menu');
+	pause_menu = document.getElementById('pause_menu');
 	menu_overlay = document.querySelector('.menu_overlay');
 	menu_container = document.querySelector('.menu_container');
-	power_up_text = document.getElementById('PowerUpText');
-	main_menu = document.getElementById('MainMenu');
-	count_down = document.getElementById('CountDown');
-	easy_level = document.getElementById('EasyLevel');
-	normal_level = document.getElementById('NormalLevel');
-	hardcore_level = document.getElementById('HardcoreLevel');
-	game_over = document.getElementById('GameOver');
-	restart_game = document.getElementById('RestartGame');
-	reload_window = document.getElementById('ReloadWindow');
+	power_up_text = document.getElementById('power_up_text');
+	main_menu = document.getElementById('main_menu');
+	count_down = document.getElementById('count_down');
+	easy_level = document.getElementById('easy_level');
+	normal_level = document.getElementById('normal_level');
+	hardcore_level = document.getElementById('hardcore_level');
+	game_over = document.getElementById('game_over');
+	restart_game = document.getElementById('restart_game');
+	reload_window = document.getElementById('reload_window');
 
 	//Create image
 	life_img = document.createElement('img');

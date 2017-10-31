@@ -1,7 +1,7 @@
 /*
-    Project: Catch & Run X
-    Date: 08/14/2017
-    Author: Nicolas M. Pardo
+    Project Catch & Run X
+    Date 08/14/2017
+    Author Nicolas M. Pardo
 */
 html,
 body,
@@ -99,8 +99,8 @@ html {
   font-size: 16px;
 }
 *,
-*:after,
-*:before {
+*::after,
+*::before {
   margin: 0;
   padding: 0;
   -webkit-box-sizing: border-box;
@@ -120,7 +120,6 @@ a:focus:hover {
   color: inherit;
 }
 body {
-  font-family: 'doomregular';
   font-size: 1em;
   width: 100%;
   max-width: 100vw;
@@ -129,15 +128,6 @@ overflow-x hidden,
 img {
   object-fit: contain;
 }
--webkit-user-select: none;
--moz-user-select: none;
--ms-user-select: none;
-user-select: none;
--webkit-touch-callout: none;
--webkit-user-select: none;
--khtml-user-select: none;
--moz-user-select: none;
--ms-user-select: none;
 html,
 body {
   -webkit-box-sizing: border-box;
@@ -152,17 +142,6 @@ body {
   background-repeat: repeat;
   overflow: hidden;
 }
-.no-select {
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-}
 *,
 h1,
 h2,
@@ -173,6 +152,7 @@ h6,
 p,
 span {
   color: #9c1b00;
+  font-family: 'doomregular';
   text-shadow: 1px 2px 0 #000;
 }
 button.square {
@@ -183,7 +163,7 @@ button.square {
   -webkit-box-shadow: inset 2px 2px transparent, 2px 2px 0 1px #10210b;
   box-shadow: inset 2px 2px transparent, 2px 2px 0 1px #10210b;
 }
-button.square::after {
+button.square:after {
   content: '';
   padding-bottom: 100%;
   display: block;
@@ -229,11 +209,11 @@ button.square:hover > * {
   filter: none;
   color: #9c1b00;
 }
-#CanvasContainer {
+#canvas_container {
   width: 100%;
   height: 100%;
 }
-#CanvasContainer canvas {
+#canvas_container canvas {
   background: transparent;
   position: absolute;
   top: 64px;
@@ -342,12 +322,12 @@ button.square:hover > * {
   justify-content: center;
   position: relative;
 }
-.border .panel > figure #PlayerStatus {
+.border .panel > figure #player_status {
   position: relative;
   z-index: 3;
   left: 2px;
 }
-.border .panel > figure #PowerActive {
+.border .panel > figure #power_active {
   position: absolute;
   margin: auto;
   top: 50%;
@@ -412,12 +392,12 @@ button.square:hover > * {
   font-size: 1.6rem;
   line-height: 40px;
 }
-#PauseMenu {
+#pause_menu {
   visibility: hidden;
   height: 100%;
   width: 100%;
 }
-#PauseMenu .menu_overlay {
+#pause_menu .menu_overlay {
   display: -webkit-box;
   display: -moz-box;
   display: -webkit-flex;
@@ -449,7 +429,7 @@ button.square:hover > * {
   -webkit-align-items: center;
   align-items: center;
 }
-#PauseMenu .menu_overlay .menu_container {
+#pause_menu .menu_overlay .menu_container {
   position: relative;
   z-index: 1001;
   min-width: 200px;
@@ -483,7 +463,7 @@ button.square:hover > * {
   border-image-repeat: repeat;
   border-image-slice: 15;
 }
-#PauseMenu .menu_overlay .menu_container h1 {
+#pause_menu .menu_overlay .menu_container h1 {
   text-align: center;
   text-transform: uppercase;
   font-size: 22px;
@@ -495,7 +475,7 @@ button.square:hover > * {
   right: unset;
   bottom: unset;
 }
-#PauseMenu .menu_overlay .menu_container h3 {
+#pause_menu .menu_overlay .menu_container h3 {
   position: absolute;
   bottom: 15px;
   top: unset;
@@ -503,18 +483,18 @@ button.square:hover > * {
   text-transform: uppercase;
   font-size: 12px;
 }
-#PauseMenu .menu_overlay .menu_container h3:first-of-type {
+#pause_menu .menu_overlay .menu_container h3:first-of-type {
   left: 15px;
   right: unset;
 }
-#PauseMenu .menu_overlay .menu_container h3:last-of-type {
+#pause_menu .menu_overlay .menu_container h3:last-of-type {
   left: unset;
   right: 15px;
 }
-#PauseMenu .menu_overlay .menu_container h3:hover {
+#pause_menu .menu_overlay .menu_container h3:hover {
   cursor: pointer;
 }
-#PauseMenu .menu_overlay .menu_container figure {
+#pause_menu .menu_overlay .menu_container figure {
   width: 100%;
   position: absolute;
   z-index: -2;
@@ -525,24 +505,24 @@ button.square:hover > * {
   text-align: center;
   padding: 0;
 }
-#PauseMenu .menu_overlay .menu_container figure img {
+#pause_menu .menu_overlay .menu_container figure img {
   margin-bottom: -3px;
 }
-#PauseMenu .menu_overlay .menu_container .menu_buttons {
+#pause_menu .menu_overlay .menu_container .menu_buttons {
   width: 100%;
   text-align: center;
 }
-#PauseMenu .menu_overlay .menu_container .menu_buttons a button {
+#pause_menu .menu_overlay .menu_container .menu_buttons a button {
   width: 40px;
   margin-right: 1rem;
 }
-#PauseMenu .menu_overlay .menu_container .menu_buttons a button:hover i {
+#pause_menu .menu_overlay .menu_container .menu_buttons a button:hover i {
   color: #9c1b00;
 }
-#PauseMenu .menu_overlay .menu_container .menu_buttons a:last-of-type button {
+#pause_menu .menu_overlay .menu_container .menu_buttons a:last-of-type button {
   margin-right: 0;
 }
-#PauseMenu .menu_overlay .menu_container .menu_buttons a i {
+#pause_menu .menu_overlay .menu_container .menu_buttons a i {
   text-align: center;
   color: #10210b;
   vertical-align: middle;
@@ -550,11 +530,11 @@ button.square:hover > * {
   line-height: 21px;
   text-shadow: none;
 }
-#PauseMenu .menu_overlay .menu_container .menu_buttons a i.icon-nikodermus {
+#pause_menu .menu_overlay .menu_container .menu_buttons a i.icon-nikodermus {
   font-size: 16px;
   line-height: 16px;
 }
-#PowerUpText {
+#power_up_text {
   position: fixed;
   top: 64px;
   left: 64px;
@@ -563,22 +543,22 @@ button.square:hover > * {
   z-index: 40;
   text-transform: uppercase;
 }
-#PowerUpText.blue {
+#power_up_text.blue {
   color: #0000d3;
 }
-#PowerUpText.yellow {
+#power_up_text.yellow {
   color: #ff5;
 }
-#PowerUpText.white {
+#power_up_text.white {
   color: #fff;
 }
-#PowerUpText.life {
+#power_up_text.life {
   color: #10770b;
 }
-#PowerUpText.green {
+#power_up_text.green {
   color: #6ccf3f;
 }
-#CountDown {
+#count_down {
   font-size: 80px;
   display: -webkit-box;
   display: -moz-box;
@@ -612,7 +592,7 @@ button.square:hover > * {
   align-items: center;
   z-index: 100;
 }
-#MainMenu {
+#main_menu {
   display: -webkit-box;
   display: -moz-box;
   display: -webkit-flex;
@@ -643,105 +623,65 @@ button.square:hover > * {
   -ms-flex-align: center;
   -webkit-align-items: center;
   align-items: center;
-  z-index: 9999;
-  -webkit-transition: 0.3s ease all;
-  -moz-transition: 0.3s ease all;
-  -o-transition: 0.3s ease all;
-  -ms-transition: 0.3s ease all;
-  transition: 0.3s ease all;
-  -apple-transition: 0.3s ease all;
 }
-#MainMenu::after {
-  content: "";
-  width: 100%;
-  height: 70px;
+#main_menu .btn-container {
   position: absolute;
-  bottom: 0;
+  top: 0;
   left: 0;
-  right: unset;
-  top: unset;
-  background: url("../../assets/images/blood_degrade.png");
+  width: 100%;
+  padding: 1rem;
 }
-#MainMenu .menu_container {
-  width: 80%;
-  max-width: 500px;
-  position: relative;
-  padding-bottom: 1rem;
-}
-#MainMenu .menu_container figure {
-  display: -webkit-box;
-  display: -moz-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: box;
-  display: flex;
-  -webkit-box-align: center;
-  -moz-box-align: center;
-  -o-box-align: center;
-  -apple-box-align: center;
-  -ms-flex-align: center;
-  -webkit-align-items: center;
-  align-items: center;
-  margin-bottom: 2rem;
-}
-#MainMenu .menu_container figure img {
+#main_menu .btn-container > div {
+  width: 50%;
   float: left;
 }
-#MainMenu .menu_container figure img:nth-child(1) {
-  width: 17%;
-  margin-left: 3%;
+#main_menu .btn-container > div.left button {
+  font-size: 1rem;
+  background: #9c1b00;
+  padding: 0.25rem 0.5rem;
+  border: 0;
+  color: #313131;
+  text-shadow: none;
 }
-#MainMenu .menu_container figure img:nth-child(2) {
-  width: 80%;
+#main_menu .btn-container > div.right {
+  text-align: right;
 }
-#MainMenu .menu_container > button {
+#main_menu .btn-container > div.right button {
+  font-size: 1.5rem;
+  background: transparent;
+  border: 0;
+}
+#main_menu .menu_content {
+  max-width: 62.5rem;
+}
+#main_menu .menu_content .logo {
+  width: 100%;
+  margin-bottom: 2rem;
+}
+#main_menu .menu_content .logo >figure {
+  display: inline-block;
+}
+#main_menu .menu_content .logo >figure img {
+  height: 6.25rem;
+}
+#main_menu .menu_content >button {
   width: 100%;
   background: transparent;
+  border: 0;
+  font-size: 1.5rem;
+  padding: 0.5rem 0;
+  color: #8f8f8e;
+  cursor: pointer;
+}
+#main_menu .menu_content >button:hover {
+  color: #90908f;
+}
+#main_menu .menu_content >button:focus {
+  outline: 0;
+  border: 0;
   color: #fff;
-  font-size: 26px;
-  border: 0;
-  margin-bottom: 1.5rem;
 }
-#MainMenu .menu_container > button:hover {
-  color: #ab730f;
-  cursor: pointer;
-}
-#MainMenu .menu_container > div {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  top: unset;
-  right: unset;
-}
-#MainMenu .menu_container > div button {
-  left: 0;
-  font-size: 2rem;
-}
-#MainMenu .menu_container > div a {
-  right: 0;
-}
-#MainMenu .menu_container > div a button {
-  font-size: 1.7rem;
-}
-#MainMenu .menu_container > div a,
-#MainMenu .menu_container > div button {
-  background: transparent;
-  position: absolute;
-  bottom: 0;
-  border: 0;
-  z-index: 10;
-}
-#MainMenu .menu_container > div a i,
-#MainMenu .menu_container > div button i {
-  color: #ab730f !important;
-}
-#MainMenu .menu_container > div a:hover,
-#MainMenu .menu_container > div button:hover {
-  filter: brightness(1.3);
-  cursor: pointer;
-}
-#GameOver {
+#game_over {
   display: -webkit-box;
   display: -moz-box;
   display: -webkit-flex;
@@ -775,15 +715,15 @@ button.square:hover > * {
   visibility: hidden;
   z-index: 99999;
 }
-#GameOver .game_container {
+#game_over .game_container {
   width: 300px;
 }
-#GameOver .game_container figure {
+#game_over .game_container figure {
   width: 100%;
   text-align: center;
   padding: 2rem;
 }
-#GameOver .game_container button {
+#game_over .game_container button {
   display: block;
   text-align: center;
   padding: 0.5rem 1rem;
@@ -799,7 +739,7 @@ button.square:hover > * {
   border: 0;
   filter: blur(1px);
 }
-#GameOver .game_container button:hover {
+#game_over .game_container button:hover {
   filter: blur(0);
   cursor: pointer;
 }

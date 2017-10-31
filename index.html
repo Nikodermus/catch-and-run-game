@@ -118,20 +118,20 @@
 		<div class="panel" class="no-select">
 			<div class="left">
 				<img src="./assets/images/lost_soul.gif" alt="">
-				<span id="SoulsCount">00
+				<span id="souls_count">00
 				</span>
 			</div>
 			<div class="right">
-				<figure class="lives" id="LifeCount">
+				<figure class="lives" id="life_count">
 				</figure>
-				<button id="PauseGame" class="square">
+				<button id="pause_game" class="square">
 					<div>II
 					</div>
 				</button>
 			</div>
 			<figure>
-				<img src="./assets/images/3_lifes.gif" alt="" id="PlayerStatus">
-				<img src="" alt="" id="PowerActive">
+				<img src="./assets/images/3_lifes.gif" alt="" id="player_status">
+				<img src="" alt="" id="power_active">
 			</figure>
 		</div>
 	</div>
@@ -141,16 +141,16 @@
 	<img src="./assets/images/corner.png" alt="" class="corner">
 	<img src="./assets/images/corner.png" alt="" class="corner">
 	<img src="./assets/images/corner.png" alt="" class="corner">
-	<div id="CanvasContainer">
+	<div id="canvas_container">
 	</div>
-	<div id="PauseMenu">
+	<div id="pause_menu">
 		<div class="menu_overlay">
 			<div class="menu_container">
 				<h1>Menu
 				</h1>
 				<div class="menu_buttons">
 					<a href="javaScript:void(0);">
-						<button class="square" id="CloseMenu">
+						<button class="square" id="close_menu">
 							<div class="square-content">
 								<i class="icon icon-cancel">
 								</i>
@@ -158,7 +158,7 @@
 						</button>
 					</a>
 					<a href="javaScript:void(0);">
-						<button class="square" id="ReloadGame">
+						<button class="square" id="reload_game">
 							<div class="square-content">
 								<i class="icon icon-reset">
 								</i>
@@ -196,49 +196,52 @@
 			</div>
 		</div>
 	</div>
-	<div id="PowerUpText" class="no-select">
+	<div id="power_up_text" class="no-select">
 	</div>
-	<div id="CountDown" class="no-select">
+	<div id="count_down" class="no-select">
 		<span>3
 		</span>
 	</div>
-	<div id="MainMenu">
-		<div class="menu_container no-select">
-			<figure>
-				<img src="./assets/images/main.gif" alt="">
-				<img src="./assets/images/logo.png" alt="">
-			</figure>
-			<button id="EasyLevel">I'm a baby
-			</button>
-			<button id="NormalLevel">Brutal Warrior
-			</button>
-			<button id="HardcoreLevel">Hell Overlord
-			</button>
-			<div>
+	<div id="main_menu">
+		<div class="btn-container">
+			<div class="left">
+				<button id="login_btn">Login</button>
+				<button id="sign_up_btn">Sign Up</button>
+			</div>
+			<div class="right">
 				<button>
-					<div class="square-content">
-						<i class="icon icon-facebook">
-						</i>
-					</div>
+					<i class="icon icon-nikodermus">
+					</i>
 				</button>
-				<a href="http://nikodermus.media/" target="_blank">
-					<button>
-						<div class="square-content">
-							<i class="icon icon-nikodermus">
-							</i>
-						</div>
-					</button>
-				</a>
+				<button>
+					<i class="icon icon-facebook">
+					</i>
+				</button>
 			</div>
 		</div>
+		<div class="menu_content">
+			<div class="logo">
+				<figure>
+					<img src="./assets/images/main.gif" alt="">
+				</figure>
+				<figure>
+					<img src="./assets/images/logo.png" alt="">
+				</figure>
+
+			</div>
+			<button id="easy_level">I'm a baby</button>
+			<button id="normal_level">Hurt me</button>
+			<button id="hardcore_level">Hell Overlord</button>
+		</div>
+
 	</div>
-	<div id="GameOver">
+	<div id="game_over">
 		<div class="game_container">
 			<figure>
-				<img src="./assets/images/marine.gif" alt="" id="DeathGif">
+				<img src="./assets/images/marine.gif" alt="" id="death_gif">
 			</figure>
-			<button id="RestartGame">Restart</button>
-			<button id="ReloadWindow">Main Menu</button>
+			<button id="restart_game">Restart</button>
+			<button id="reload_window">Main Menu</button>
 		</div>
 	</div>
 
