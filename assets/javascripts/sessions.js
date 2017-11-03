@@ -10358,14 +10358,25 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 // REQUIRE MODULES
 _jquery2.default.noConflict();
 
+//Global Variables
+var sign_up_form = void 0,
+    login_form = void 0,
+    sign_up_btn = void 0,
+    login_btn = void 0,
+    login_container = void 0,
+    sign_up_container = void 0,
+    close_btn = void 0;
+
 //Global Objects
 var global = {
 	development: true,
 	headers: {}
 };
 
+var fifteen_minutes = new Date(new Date().getTime() + 15 * 60 * 1000);
+
 //Constants
-var BACK_URL = 'http://localhost:3000/';
+var BACK_URL = global.development ? 'http://localhost:3000' : 'http://heroku.bla.bla';
 
 function devLog(object) {
 	if (global.development) {
@@ -10373,36 +10384,106 @@ function devLog(object) {
 	}
 }
 
-function checkTokens() {
-	global_headers = getHeaders();
+function isToken() {
 	if (_jsCookie2.default.get('token')) {
-		_jsCookie2.default.set('token', token);
-		global_headers = getHeaders();
-		return {
-			success: true,
-			data: {
-				headers: global[headers],
-				token: token
-			}
+		return function (request) {
+			request.setRequestHeader('HTTP_APP_TOKEN', _jsCookie2.default.get('token'));
 		};
 	} else {
-		devLog('no token');
+		return '';
 	}
 }
 
-function getHeaders() {
-	var return_value = void 0;
-	_jquery2.default.get({
-		url: BACK_URL + 'get_headers',
-		data: '',
-		success: function success(data) {
-			return_value = {
-				"APP-TOKEN": data
-			};
-		}
-	});
-	return return_value;
+function isDeviceToken() {
+	if (_jsCookie2.default.get('device_token')) {
+		return function (request) {
+			request.setRequestHeader('HTTP_APP_device_TOKEN', _jsCookie2.default.get('device_token'));
+		};
+	} else {
+		return '';
+	}
 }
+
+// Window Ready (Using jQuery to avoid conflicts)
+(0, _jquery2.default)(document).ready(function () {
+
+	// Load Elements
+	sign_up_form = document.getElementById('sign_up_form');
+	login_form = document.getElementById('login_form');
+	sign_up_container = document.getElementById('sign_up_container');
+	login_container = document.getElementById('login_container');
+
+	//Load HTMLSelections
+	sign_up_btn = document.querySelectorAll('.sign_up_btn');
+	login_btn = document.querySelectorAll('.login_btn');
+	close_btn = document.querySelectorAll('.close_btn');
+
+	//Create User
+	(0, _jquery2.default)(sign_up_form).submit(function (e) {
+		e.preventDefault();
+		var form_data = (0, _jquery2.default)(sign_up_form).serialize();
+		_jquery2.default.ajax({
+			type: 'POST',
+			url: BACK_URL + '/users',
+			data: form_data,
+			success: function success(data, status, info) {
+				devLog(data);
+			},
+			error: function error(data, status, info) {
+				devLog(data);
+			}
+		});
+	});
+	devLog(isDeviceToken());
+
+	//Create Session
+	(0, _jquery2.default)(login_form).submit(function (e) {
+		e.preventDefault();
+		var form_data = (0, _jquery2.default)(login_form).serialize();
+		_jquery2.default.ajax({
+			type: 'POST',
+			url: BACK_URL + '/sessions/create',
+			data: form_data,
+			beforeSend: isDeviceToken(),
+			success: function success(data, status, info) {
+				devLog(data);
+				_jsCookie2.default.set('token', data.meta.token, {
+					expires: fifteen_minutes
+				});
+				_jsCookie2.default.set('device_token', data.meta.device_token, {
+					expires: 365
+				});
+			},
+			error: function error(data, status, info) {
+				devLog(data);
+			}
+		});
+	});
+
+	login_btn.forEach(function (element) {
+		element.addEventListener('click', function () {
+			login_container.style.visibility = 'visible';
+			sign_up_container.style.visibility = 'hidden';
+			devLog('login!');
+		});
+	});
+
+	sign_up_btn.forEach(function (element) {
+		element.addEventListener('click', function () {
+			login_container.style.visibility = 'hidden';
+			sign_up_container.style.visibility = 'visible';
+			devLog('sign up!');
+		});
+	});
+
+	close_btn.forEach(function (element) {
+		element.addEventListener('click', function () {
+			login_container.style.visibility = 'hidden';
+			sign_up_container.style.visibility = 'hidden';
+			devLog('closed!');
+		});
+	});
+});
 
 /***/ }),
 /* 6 */

@@ -58,14 +58,7 @@ fullFixed(n)
     justify-content center
     align-items center
 
-no-select()
-	user-select none
-	-webkit-touch-callout none
-	-webkit-user-select none
-	-khtml-user-select none
-	-moz-user-select none
-	-ms-user-select none
-
+	
 
 
 //Preset
@@ -79,10 +72,27 @@ html
 *
 *::after
 *::before
-    margin 0
-    padding 0
-    box-sizing border-box
-
+	margin 0
+	padding 0
+	box-sizing border-box
+	outline none $i
+	outline-style none
+	box-shadow none
+	border-color transparent
+	user-select none $i
+	-webkit-touch-callout none
+	-webkit-user-select none
+	-khtml-user-select none
+	-moz-user-select none
+	-ms-user-select none
+	&:focus
+		outline none $i
+		user-select none $i
+		-webkit-touch-callout none
+		-webkit-user-select none
+		-khtml-user-select none
+		-moz-user-select none
+		-ms-user-select none
 a
 a:visited
 a:focus
@@ -131,6 +141,11 @@ span
     color $red
     font-family 'doomregular' 	
     text-shadow 1px 2px 0 #000000
+	&:focus
+	&:active
+	&:hover
+		outline 0 $i
+
 
 button.square
     border 0
@@ -358,7 +373,6 @@ button.square
                     &:last-of-type
                         button
                             margin-right 0
-                    
                     i
                         text-align center
                         color $green
@@ -529,6 +543,62 @@ button.square
 		h3
 			text-align center
 			padding-bottom 1rem
-	
+.fancybox
+	fullFixed(alpha(black, 0.5))
+	display flex
+	justify-content center
+	align-items center
+	z-index 9999
+	visibility hidden
+	.fancybox_content
+		background url('../../assets/images/main_bg.png')
+		width 80%
+		max-width rem(600)
+		padding 1rem
+		position relative
+		.close_btn
+			absolute top 1rem right 1rem
+			color alpha(white, .75)
+			background transparent 
+			border 0
+			font-size 0.7rem
+			cursor pointer
+		form
+			overflow auto
+			font-size 0
+			.column
+				width 50%
+				display inline-block
+				padding 1rem
+				font-size 1rem
+			label
+			input 
+				width 100%
+			input
+				margin .5rem 0 1rem 0
+				border-radius 5px
+				box-shadow inset 0 1px 3px 0 rgba(0,0,0,0.50)
+				padding .25rem .5rem
+				text-shadow none
+				&[type="submit"]
+					width auto
+					background $red
+					padding .25rem .5rem
+					border 0
+					color $gray
+					display block
+					text-align center
+					margin auto
+					font-size 1.2rem
+
+			label
+				white-space nowrap
+.clearfix
+	clearfix 
+	text-align center
+
+[hidden]
+	display none
+
 
 

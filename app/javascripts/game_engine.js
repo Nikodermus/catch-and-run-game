@@ -11,8 +11,8 @@
 
 // REQUIRE MODULES
 import jQuery from 'jquery';
-require('howler');
 require('html2canvas');
+require('howler');
 
 jQuery.noConflict();
 
@@ -411,20 +411,6 @@ function startGame() {
 	main();
 }
 
-function gameOver(key) {
-	if (key === 114) {
-		newGame();
-	}
-	if (game.lifes > 0) {
-		reset();
-	} else {
-		hero.sound.play();
-		game_over.style.visibility = "visible";
-		game.playable = false;
-		game.pause_sound.play();
-
-	}
-}
 
 function newGame() {
 	ctx.restore();
@@ -1387,6 +1373,8 @@ window.onload = function () {
 
 	}, false);
 
+
+
 	easy_level.addEventListener('click', function () {
 		loadGame(0.7);
 	});
@@ -1436,19 +1424,7 @@ window.onload = function () {
 		newGame();
 	}, false);
 
-	//Shortcuts
-	document.addEventListener('keypress', function (e) {
-		let key = e.which || e.keyCode;
-		if (key === 112) {
-			if (pause_menu.style.visibility !== 'visible') {
-				openMenu();
-			} else {
-				closeMenu();
-			}
-		} else if (key === 114) {
-			gameOver(key);
-		}
-	}, false);
+
 
 	//Reload if need
 	pause_game.addEventListener('click', openMenu, false);
