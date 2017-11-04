@@ -24,7 +24,9 @@ let
 	login_btn,
 	login_container,
 	sign_up_container,
-	close_btn;
+	close_btn,
+	hide_anonymous,
+	hide_user;
 
 //Global Objects
 let global = {
@@ -45,49 +47,49 @@ function devLog(object) {
 	}
 }
 
-function isToken() {
-	if (Cookies.get('token')) {
-		return (request) => {
-			request.setRequestHeader(
-				'HTTP_APP_TOKEN', Cookies.get('token')
-			);
-		};
+
+
+
+function refreshToken(params) {
+
+}
+
+function currentUser() {
+	let return_value = false;
+	jQuery.ajax({
+		type: 'GET',
+		url: `${BACK_URL}/current_user`,
+		data: '',
+		success: (data, status, info) => {
+			devLog(data);
+			return_value = true;
+		},
+		error: (data, status, info) => {
+			devLog(data);
+		}
+	});
+	return return_value;
+}
+
+function hideShowOnUser() {
+	if (currentUser()) {
+		hide_user.forEach((element) => {
+			element.classList.remove = 'hidden';
+		});
+		hide_anonymous.forEach((element) => {
+			element.classList.add = 'hidden';
+		});
 	} else {
-		return '';
+		hide_user.forEach((element) => {
+			element.classList.remove = 'hidden';
+		});
+		hide_anonymous.forEach((element) => {
+			element.classList.add = 'hidden';
+		});
 	}
 }
 
-function isDeviceToken() {
-	if (Cookies.get('device_token')) {
-		return (request) => {
-			request.setRequestHeader(
-				'HTTP_APP_device_TOKEN', Cookies.get('device_token')
-			);
-		};
-	} else {
-		return '';
-	}
-}
-
-
-
-// Window Ready (Using jQuery to avoid conflicts)
-jQuery(document).ready(() => {
-
-	// Load Elements
-	sign_up_form = document.getElementById('sign_up_form');
-	login_form = document.getElementById('login_form');
-	sign_up_container = document.getElementById('sign_up_container');
-	login_container = document.getElementById('login_container');
-
-	//Load HTMLSelections
-	sign_up_btn = document.querySelectorAll('.sign_up_btn');
-	login_btn = document.querySelectorAll('.login_btn');
-	close_btn = document.querySelectorAll('.close_btn');
-
-
-
-	//Create User
+function signUp() {
 	jQuery(sign_up_form).submit((e) => {
 		e.preventDefault();
 		let form_data = jQuery(sign_up_form).serialize();
@@ -103,36 +105,71 @@ jQuery(document).ready(() => {
 			}
 		});
 	});
-	devLog(isDeviceToken());
+}
 
-	//Create Session
-	jQuery(login_form).submit((e) => {
-		e.preventDefault();
-		let form_data = jQuery(login_form).serialize();
-		jQuery.ajax({
-			type: 'POST',
-			url: `${BACK_URL}/sessions/create`,
-			data: form_data,
-			beforeSend: isDeviceToken(),
-			success: (data, status, info) => {
-				devLog(data);
-				Cookies.set('token', data.meta.token, {
-					expires: fifteen_minutes
-				});
-				Cookies.set('device_token', data.meta.device_token, {
-					expires: 365
-				});
-			},
-			error: (data, status, info) => {
-				devLog(data);
-			}
-		});
+function login(e) {
+	e.preventDefault();
+	let form_data = jQuery(login_form).serialize();
+	jQuery.ajax({
+		type: 'POST',
+		url: `${BACK_URL}/sessions/create`,
+		data: form_data,
+		success: (data, status, info) => {
+			devLog(data);
+			Cookies.set('token', data.meta.token, {
+				expires: fifteen_minutes
+			});
+			Cookies.set('device_token', data.meta.device_token, {
+				expires: 365
+			});
+			hideShowOnUser();
+		},
+		error: (data, status, info) => {
+			devLog(data);
+		}
 	});
 
+}
 
+// Set Headers if the cookies exist
+jQuery(document).ajaxSend((event, request) => {
+
+	if (Cookies.get('device_token')) {
+		request.setRequestHeader(
+			'APP-DEVICE-TOKEN', Cookies.get('device_token')
+		);
+	}
+	if (Cookies.get('token')) {
+		request.setRequestHeader(
+			'APP-TOKEN', Cookies.get('token')
+		);
+	}
+});
+
+
+
+// Window Ready (Using jQuery to avoid conflicts)
+jQuery(document).ready(() => {
+
+
+	// Load Elements
+	sign_up_form = document.getElementById('sign_up_form');
+	login_form = document.getElementById('login_form');
+	sign_up_container = document.getElementById('sign_up_container');
+	login_container = document.getElementById('login_container');
+
+	//Load HTMLCollections
+	sign_up_btn = document.querySelectorAll('.sign_up_btn');
+	login_btn = document.querySelectorAll('.login_btn');
+	close_btn = document.querySelectorAll('.close_btn');
+	hide_user = document.querySelectorAll('hide_user');
+	hide_anonymous = document.querySelectorAll('hide_anonymous');
+
+
+	//Event Listeners
 	login_btn.forEach((element) => {
 		element.addEventListener('click', () => {
-			login_container.style.visibility = 'visible';
+			login_container.style.visibility = 'hidden';
 			sign_up_container.style.visibility = 'hidden';
 			devLog('login!');
 		});
@@ -141,7 +178,7 @@ jQuery(document).ready(() => {
 	sign_up_btn.forEach((element) => {
 		element.addEventListener('click', () => {
 			login_container.style.visibility = 'hidden';
-			sign_up_container.style.visibility = 'visible';
+			sign_up_container.style.visibility = 'hidden';
 			devLog('sign up!');
 		});
 	});
@@ -153,5 +190,15 @@ jQuery(document).ready(() => {
 			devLog('closed!');
 		});
 	});
+
+	//Is there a current user?
+	hideShowOnUser();
+
+	//Create User
+	jQuery(sign_up_form).submit((e) => (signUp(e)));
+
+	//Create Session
+	jQuery(login_form).submit((e) => (login(e)));
+
 
 });

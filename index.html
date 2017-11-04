@@ -205,8 +205,12 @@
 	<div id="main_menu">
 		<div class="btn-container">
 			<div class="left">
-				<button class="login_btn">Login</button>
-				<button class="sign_up_btn">Sign Up</button>
+				<p id="user_name" class="hidden hide_user"></p>
+				<a href="./my_profile.html" class="hidden hide_user">
+					<button>My Profile</button>
+				</a>
+				<button class="login_btn" class="hidden hide_anonymous">Login</button>
+				<button class="sign_up_btn" class="hidden hide_anonymous">Sign Up</button>
 			</div>
 			<div class="right">
 				<button>
@@ -244,7 +248,7 @@
 
 		</div>
 	</div>
-	<div id="login_container" class="fancybox">
+	<div id="login_container" class="fancybox hidden hide_anonymous">
 		<div class="fancybox_content">
 			<button class="close_btn">Close</button>
 			<form action="" accept-method="post" id="login_form">
@@ -262,7 +266,7 @@
 			</form>
 		</div>
 	</div>
-	<div id="sign_up_container" class="fancybox">
+	<div id="sign_up_container" class="fancybox hidden hide_anonymous">
 		<div class="fancybox_content">
 			<button class="close_btn">Close</button>
 			<form action="" id="sign_up_form" accept-method="post">

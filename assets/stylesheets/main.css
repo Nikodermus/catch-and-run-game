@@ -979,6 +979,11 @@ button.square:hover > * {
 .clearfix {
   text-align: center;
 }
-[hidden] {
+.hide_user,
+.hide_anonymous {
+  visibility: hidden;
+}
+[hidden],
+.hidden {
   display: none;
 }
