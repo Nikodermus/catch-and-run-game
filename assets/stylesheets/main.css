@@ -163,11 +163,6 @@ body {
   box-sizing: border-box;
   width: 100%;
   height: 100%;
-  background: url("../../assets/images/background_3.png");
-  -webkit-background-size: 80px 80px;
-  -moz-background-size: 80px 80px;
-  background-size: 80px 80px;
-  background-repeat: repeat;
   overflow: hidden;
 }
 table {
@@ -246,6 +241,42 @@ button.square:hover > * {
   -ms-filter: none;
   filter: none;
   color: #9c1b00;
+}
+#game_container {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  background: url("../../assets/images/background_3.png");
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: unset;
+  bottom: unset;
+  z-index: 100;
+  background: url("../../assets/images/background_3.png");
+  display: -ms-flexbox;
+  display: box;
+  display: flex;
+  -webkit-box-pack: center;
+  -moz-box-pack: center;
+  -o-box-pack: center;
+  -apple-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -moz-box-align: center;
+  -o-box-align: center;
+  -apple-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-background-size: 80px 80px;
+  -moz-background-size: 80px 80px;
+  background-size: 80px 80px;
+  background-repeat: repeat;
 }
 #canvas_container {
   width: 100%;
@@ -979,9 +1010,9 @@ button.square:hover > * {
 .clearfix {
   text-align: center;
 }
-.hide_user,
-.hide_anonymous {
+.user_elem {
   visibility: hidden;
+  display: none;
 }
 [hidden],
 .hidden {

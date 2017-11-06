@@ -6,14 +6,6 @@
 
 /*jshint esversion: 6 */
 
-
-
-// REQUIRE MODULES
-import jQuery from 'jquery';
-import Cookies from 'js-cookie';
-// require('js-cookie');
-
-
 jQuery.noConflict();
 
 //Global Variables
@@ -25,8 +17,10 @@ let
 	login_container,
 	sign_up_container,
 	close_btn,
-	hide_anonymous,
-	hide_user;
+	anonymous_elem,
+	user_elem,
+	current_user,
+	user_info;
 
 //Global Objects
 let global = {
@@ -41,95 +35,23 @@ const BACK_URL = global.development ? 'http://localhost:3000' : 'http://heroku.b
 
 
 
-function devLog(object) {
-	if (global.development) {
-		console.log(object);
-	}
-}
+// Setup Prototypes
+HTMLElement.prototype.beforeDisplay = '';
 
+HTMLElement.prototype.hide = function () {
+	this.beforeDisplay = this.style.display;
+	this.style.visibility = 'hidden';
+	this.style.display = 'none';
+};
 
-
-
-function refreshToken(params) {
-
-}
-
-function currentUser() {
-	let return_value = false;
-	jQuery.ajax({
-		type: 'GET',
-		url: `${BACK_URL}/current_user`,
-		data: '',
-		success: (data, status, info) => {
-			devLog(data);
-			return_value = true;
-		},
-		error: (data, status, info) => {
-			devLog(data);
-		}
-	});
-	return return_value;
-}
-
-function hideShowOnUser() {
-	if (currentUser()) {
-		hide_user.forEach((element) => {
-			element.classList.remove = 'hidden';
-		});
-		hide_anonymous.forEach((element) => {
-			element.classList.add = 'hidden';
-		});
+HTMLElement.prototype.show = function () {
+	this.style.visibility = 'visible';
+	if (this.beforeDisplay && this.beforeDisplay !== 'none') {
+		this.style.display = this.beforeDisplay;
 	} else {
-		hide_user.forEach((element) => {
-			element.classList.remove = 'hidden';
-		});
-		hide_anonymous.forEach((element) => {
-			element.classList.add = 'hidden';
-		});
+		this.style.display = 'inherit';
 	}
-}
-
-function signUp() {
-	jQuery(sign_up_form).submit((e) => {
-		e.preventDefault();
-		let form_data = jQuery(sign_up_form).serialize();
-		jQuery.ajax({
-			type: 'POST',
-			url: `${BACK_URL}/users`,
-			data: form_data,
-			success: (data, status, info) => {
-				devLog(data);
-			},
-			error: (data, status, info) => {
-				devLog(data);
-			}
-		});
-	});
-}
-
-function login(e) {
-	e.preventDefault();
-	let form_data = jQuery(login_form).serialize();
-	jQuery.ajax({
-		type: 'POST',
-		url: `${BACK_URL}/sessions/create`,
-		data: form_data,
-		success: (data, status, info) => {
-			devLog(data);
-			Cookies.set('token', data.meta.token, {
-				expires: fifteen_minutes
-			});
-			Cookies.set('device_token', data.meta.device_token, {
-				expires: 365
-			});
-			hideShowOnUser();
-		},
-		error: (data, status, info) => {
-			devLog(data);
-		}
-	});
-
-}
+};
 
 // Set Headers if the cookies exist
 jQuery(document).ajaxSend((event, request) => {
@@ -147,6 +69,107 @@ jQuery(document).ajaxSend((event, request) => {
 });
 
 
+function devLog(object) {
+	if (global.development) {
+		console.log(object);
+	}
+}
+
+
+function currentUser() {
+	let return_value = false;
+	jQuery.ajax({
+		type: 'GET',
+		url: `${BACK_URL}/current_user`,
+		data: '',
+		success: (data, status, info) => {
+
+			return_value = true;
+			if (data.success) {
+				showUser();
+				renderUser(data.user);
+				devLog('we have a user!');
+			} else {
+				showAnonymous();
+			}
+		},
+		error: (data, status, info) => {
+			devLog(data);
+			showAnonymous();
+		}
+	});
+	return return_value;
+}
+
+function showUser() {
+	user_elem.forEach((elem) => {
+		elem.show();
+	});
+	anonymous_elem.forEach((elem) => {
+		elem.hide();
+	});
+}
+
+function showAnonymous() {
+	user_elem.forEach((elem) => {
+		elem.hide();
+	});
+	anonymous_elem.forEach((elem) => {
+		elem.show();
+	});
+}
+
+function signUp(e) {
+	devLog('signing up');
+	e.preventDefault();
+	let form_data = jQuery(sign_up_form).serialize();
+	jQuery.ajax({
+		type: 'POST',
+		url: `${BACK_URL}/users`,
+		data: form_data,
+		success: (data, status, info) => {
+			devLog(data);
+		},
+		error: (data, status, info) => {
+			devLog(data);
+		}
+	});
+}
+
+function login(e) {
+	devLog('logging in');
+	e.preventDefault();
+	let form_data = jQuery(login_form).serialize();
+	jQuery.ajax({
+		type: 'POST',
+		url: `${BACK_URL}/sessions/create`,
+		data: form_data,
+		success: (data, status, info) => {
+			if (data.success) {
+				Cookies.set('token', data.meta.token, {
+					expires: fifteen_minutes
+				});
+				Cookies.set('device_token', data.meta.device_token, {
+					expires: 365
+				});
+				currentUser();
+				login_container.hide();
+			}
+		},
+		error: (data, status, info) => {
+			devLog(data);
+		}
+	});
+
+}
+
+function renderUser(user) {
+	user_info.forEach((elem) => {
+		elem.innerText = user[elem.dataset.user];
+	});
+}
+
+
 
 // Window Ready (Using jQuery to avoid conflicts)
 jQuery(document).ready(() => {
@@ -162,37 +185,38 @@ jQuery(document).ready(() => {
 	sign_up_btn = document.querySelectorAll('.sign_up_btn');
 	login_btn = document.querySelectorAll('.login_btn');
 	close_btn = document.querySelectorAll('.close_btn');
-	hide_user = document.querySelectorAll('hide_user');
-	hide_anonymous = document.querySelectorAll('hide_anonymous');
+	user_elem = document.querySelectorAll('.user_elem');
+	anonymous_elem = document.querySelectorAll('.anonymous_elem');
+	user_info = document.querySelectorAll('.user_info');
 
 
 	//Event Listeners
 	login_btn.forEach((element) => {
 		element.addEventListener('click', () => {
-			login_container.style.visibility = 'hidden';
-			sign_up_container.style.visibility = 'hidden';
+			login_container.show();
+			sign_up_container.hide();
 			devLog('login!');
 		});
 	});
 
 	sign_up_btn.forEach((element) => {
 		element.addEventListener('click', () => {
-			login_container.style.visibility = 'hidden';
-			sign_up_container.style.visibility = 'hidden';
+			login_container.hide();
+			sign_up_container.show();
 			devLog('sign up!');
 		});
 	});
 
 	close_btn.forEach((element) => {
 		element.addEventListener('click', () => {
-			login_container.style.visibility = 'hidden';
-			sign_up_container.style.visibility = 'hidden';
+			login_container.hide();
+			sign_up_container.hide();
 			devLog('closed!');
 		});
 	});
 
-	//Is there a current user?
-	hideShowOnUser();
+	// Set Headers
+	setInterval(currentUser(), 840000);
 
 	//Create User
 	jQuery(sign_up_form).submit((e) => (signUp(e)));

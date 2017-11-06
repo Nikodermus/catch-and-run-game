@@ -100,6 +100,8 @@
 	<link rel="stylesheet" href="./assets/stylesheets/icons.css" />
 	<link rel="stylesheet" href="./assets/stylesheets/main.css" />
 
+	<script src="./assets/javascripts/jquery.min.js"></script>
+	<script src="./assets/javascripts/js.cookie.js"></script>
 	<script src="./assets/javascripts/bundle.js"></script>
 	<script src="./assets/javascripts/sessions.js"></script>
 
@@ -107,41 +109,51 @@
 </head>
 
 <body>
-	<figure class="top">
-		<img src="./assets/images/pause_icon.png" alt="">
-	</figure>
-	<div class="border">
-	</div>
-	<div class="border">
-	</div>
-	<div class="border">
-		<div class="panel" class="no-select">
-			<div class="left">
-				<img src="./assets/images/lost_soul.gif" alt="">
-				<span id="souls_count">00
-				</span>
-			</div>
-			<div class="right">
-				<figure class="lives" id="life_count">
-				</figure>
-				<button id="pause_game" class="square">
-					<div>II
-					</div>
-				</button>
-			</div>
-			<figure>
-				<img src="./assets/images/3_lifes.gif" alt="" id="player_status">
-				<img src="" alt="" id="power_active">
-			</figure>
+	<span id="global" hidden>
+		<span class="user_info" data-user="name"></span>
+		<span class="user_info" data-user="email"></span>
+		<span class="user_info" data-user="nickname"></span>
+		<span class="user_info" data-user="id"></span>
+		<span class="game_info" data-game="id"></span>
+	</span>
+
+	<div id="game_container">
+		<figure class="top">
+			<img src="./assets/images/pause_icon.png" alt="">
+		</figure>
+		<div class="border">
 		</div>
-	</div>
-	<div class="border">
-	</div>
-	<img src="./assets/images/corner.png" alt="" class="corner">
-	<img src="./assets/images/corner.png" alt="" class="corner">
-	<img src="./assets/images/corner.png" alt="" class="corner">
-	<img src="./assets/images/corner.png" alt="" class="corner">
-	<div id="canvas_container">
+		<div class="border">
+		</div>
+		<div class="border">
+			<div class="panel" class="no-select">
+				<div class="left">
+					<img src="./assets/images/lost_soul.gif" alt="">
+					<span id="souls_count">00
+					</span>
+				</div>
+				<div class="right">
+					<figure class="lives" id="life_count">
+					</figure>
+					<button id="pause_game" class="square">
+						<div>II
+						</div>
+					</button>
+				</div>
+				<figure>
+					<img src="./assets/images/3_lifes.gif" alt="" id="player_status">
+					<img src="" alt="" id="power_active">
+				</figure>
+			</div>
+		</div>
+		<div class="border">
+		</div>
+		<img src="./assets/images/corner.png" alt="" class="corner">
+		<img src="./assets/images/corner.png" alt="" class="corner">
+		<img src="./assets/images/corner.png" alt="" class="corner">
+		<img src="./assets/images/corner.png" alt="" class="corner">
+		<div id="canvas_container">
+		</div>
 	</div>
 	<div id="pause_menu">
 		<div class="menu_overlay">
@@ -205,12 +217,12 @@
 	<div id="main_menu">
 		<div class="btn-container">
 			<div class="left">
-				<p id="user_name" class="hidden hide_user"></p>
-				<a href="./my_profile.html" class="hidden hide_user">
+				<p class="user_elem user_info" data-user="name"></p>
+				<a href="./my_profile.html" class="user_elem">
 					<button>My Profile</button>
 				</a>
-				<button class="login_btn" class="hidden hide_anonymous">Login</button>
-				<button class="sign_up_btn" class="hidden hide_anonymous">Sign Up</button>
+				<button class="login_btn anonymous_elem">Login</button>
+				<button class="sign_up_btn anonymous_elem">Sign Up</button>
 			</div>
 			<div class="right">
 				<button>
@@ -245,20 +257,19 @@
 			</figure>
 			<button id="restart_game">Restart</button>
 			<button id="reload_window">Main Menu</button>
-
 		</div>
 	</div>
-	<div id="login_container" class="fancybox hidden hide_anonymous">
+	<div id="login_container" class="fancybox">
 		<div class="fancybox_content">
 			<button class="close_btn">Close</button>
 			<form action="" accept-method="post" id="login_form">
 				<div class="column">
-					<label for="_login">Email</label>
-					<input type="email" id="_login" name="session[email]">
+					<label for="email_login">Email</label>
+					<input type="email" id="email_login" name="session[email]">
 				</div>
 				<div class="column">
-					<label for="_login">Password</label>
-					<input type="password" id="_login" name="session[password]">
+					<label for="password_login">Password</label>
+					<input type="password" id="password_login" name="session[password]">
 				</div>
 				<div>
 					<input type="submit" value="Login">
@@ -266,7 +277,7 @@
 			</form>
 		</div>
 	</div>
-	<div id="sign_up_container" class="fancybox hidden hide_anonymous">
+	<div id="sign_up_container" class="fancybox">
 		<div class="fancybox_content">
 			<button class="close_btn">Close</button>
 			<form action="" id="sign_up_form" accept-method="post">

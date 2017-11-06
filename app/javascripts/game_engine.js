@@ -1,7 +1,6 @@
 /*!
-    Project: Catch & Run X
+    Project: Catch & Run 
 	Date: 08/14/2017
-	
     Author: Nicolas M. Pardo
 */
 
@@ -10,8 +9,7 @@
 
 
 // REQUIRE MODULES
-import jQuery from 'jquery';
-require('html2canvas');
+import html2canvas from 'html2canvas';
 require('howler');
 
 jQuery.noConflict();
@@ -47,7 +45,9 @@ let container,
 	then,
 	ctx,
 	mouse_x,
-	mouse_y;
+	mouse_y,
+	game_info,
+	game_container;
 
 
 //EMPTY GLOBAL OBJECTS
@@ -73,11 +73,11 @@ let monster = {};
 
 
 
-
 // GLOBAL OBJECTS
 let game = {
 	playable: false,
 	development: true,
+	difficulty: 'easy',
 	lifes: 3,
 	x0: 0,
 	y0: 0,
@@ -158,6 +158,25 @@ let catchable = {
 	})
 };
 
+
+
+//Constants
+const BACK_URL = game.development ? 'http://localhost:3000' : 'http://heroku.bla.bla';
+
+
+// Set Headers if the cookies exist
+jQuery(document).ajaxSend((event, request) => {
+	if (Cookies.get('device_token')) {
+		request.setRequestHeader(
+			'APP-DEVICE-TOKEN', Cookies.get('device_token')
+		);
+	}
+	if (Cookies.get('token')) {
+		request.setRequestHeader(
+			'APP-TOKEN', Cookies.get('token')
+		);
+	}
+});
 
 
 //CONSTRUCTORS
@@ -299,7 +318,6 @@ function Projectile(new_projectile) {
 }
 
 
-
 // FUNCTIONS
 function devLog(object) {
 	if (game.development) {
@@ -322,50 +340,59 @@ function detectCollition(object_1, object_2) {
 }
 
 function ajaxStartGame() {
-	devLog('ajax start game');
-	let difficulty_game;
-	switch (game.modifier) {
-		case 0.7:
-			difficulty_game = 'easy';
-			break;
-		case 1:
-			difficulty_game = 'normal';
-			break;
-		case 1.3:
-			difficulty_game = 'hard';
-			break;
-		default:
-			difficulty_game = 'normal';
-	}
-
-	let user_game = document.querySelector("[data-user-id]").getAttribute("data-user-id");
-
+	let difficulty_game = game.difficulty;
+	let user_id = document.querySelector("#global [data-user=id]").innerText;
 	jQuery.ajax({
 		type: "POST",
-		datatype: "json",
-		url: "/users/" + user_game + "/games",
+		url: `${BACK_URL}/users/${user_id}/games/`,
 		data: {
-			"game": {
+			game: {
 				"difficulty": difficulty_game
+			}
+		},
+		success: (data, status, info) => {
+			devLog('ajax start game');
+			if (data.success) {
+				renderGame(data.game);
 			}
 		}
 	});
 }
 
-function createCanvas() {
-	devLog('create canvas');
-	return html2canvas(document.body, {
+function createCanvas(callback) {
+	html2canvas(game_container, {
+		width: game_container.clientWidth,
+		height: game_container.clientHeight,
 		onrendered: function (canvas) {
-			return canvas.toDataURL('image/png');
+			callback(canvas.toDataURL('image/jpg'));
 		}
 	});
-
 }
 
-function ajaxEndGame() {
+function renderGame(game) {
+	game_info.forEach((elem) => {
+		elem.innerText = game[elem.dataset.game];
+	});
+}
+
+function ajaxEndGame(image_game) {
 	devLog('ajax end game');
-	let image_game = createCanvas();
+	let user_id = document.querySelector('#global [data-user=id]').innerText;
+	let game_id = document.querySelector('#global [data-game=id]').innerText;
 	let score_game = Number(soul_count.innerText);
+	window.open(image_game, 'Image', 'width=largeImage.stylewidth,height=largeImage.style.height,resizable=1');
+	jQuery.ajax({
+		type: "PATCH",
+		url: `${BACK_URL}/users/${user_id}/games/${game_id}`,
+		data: {
+			game: {
+				id: game_id,
+				score: score_game,
+				img_path: image_game
+			}
+		},
+		success: (data, status, info) => {},
+	});
 }
 
 function loadGame(modifier) {
@@ -409,6 +436,7 @@ function dataLoader(callback, images, images_ready, images_url) {
 function startGame() {
 	reset();
 	main();
+	ajaxStartGame();
 }
 
 
@@ -416,6 +444,7 @@ function newGame() {
 	ctx.restore();
 	monster = m_empty;
 	game.catches = 0;
+	game.score = 0;
 	main_menu.style.visibility = 'visible';
 	main_menu.style.top = 0;
 	time_out = 3;
@@ -648,6 +677,22 @@ function canYouPlay() {
 	);
 }
 
+function gameOver(key) {
+	devLog('game over');
+	if (key === 114) {
+		newGame();
+	}
+	if (game.lifes > 0) {
+		reset();
+	} else {
+		hero.sound.play();
+		game_over.style.visibility = "visible";
+		game.playable = false;
+		game.pause_sound.play();
+		createCanvas(ajaxEndGame);
+	}
+}
+
 function blendColors(c0, c1, p) {
 	let f = parseInt(c0.slice(1), 16),
 		t = parseInt(c1.slice(1), 16),
@@ -667,7 +712,6 @@ function update(modifier) {
 			projectile.update();
 			if (detectCollition(projectile, monster)) {
 				monster.health -= projectile.damage;
-				devLog(monster.health);
 				projectile.explotion();
 				if (monster.health <= 0) {
 					monster2.die();
@@ -675,7 +719,6 @@ function update(modifier) {
 			}
 			if (detectCollition(projectile, monster2)) {
 				monster2.health -= projectile.damage;
-				devLog(monster2.health);
 				projectile.explotion();
 				if (monster2.health <= 0) {
 					monster2.die();
@@ -1089,7 +1132,6 @@ function openMenu() {
 	game.pause_sound.play();
 }
 
-devLog('i');
 
 // Listen for mouse movement
 document.onmousemove = function (e) {
@@ -1275,6 +1317,10 @@ window.onload = function () {
 	game_over = document.getElementById('game_over');
 	restart_game = document.getElementById('restart_game');
 	reload_window = document.getElementById('reload_window');
+	game_container = document.getElementById('game_container');
+
+	//HTMLCollections
+	game_info = document.querySelectorAll('.game_info');
 
 
 	//Create image
@@ -1377,12 +1423,15 @@ window.onload = function () {
 
 	easy_level.addEventListener('click', function () {
 		loadGame(0.7);
+		game.difficulty = 'easy';
 	});
 	normal_level.addEventListener('click', function () {
 		loadGame(1);
+		game.difficulty = 'normal';
 	});
 	hardcore_level.addEventListener('click', function () {
 		loadGame(1.3);
+		game.difficulty = 'hard';
 	});
 
 	game.play_sound.on('play', function () {
@@ -1415,6 +1464,10 @@ window.onload = function () {
 	restart_game.addEventListener('click', function () {
 		game.lifes = 3;
 		game.catches = 0;
+		renderGame({
+			id: ''
+		});
+		startGame();
 		reset();
 	}, false);
 	reload_game.addEventListener('click', function () {
