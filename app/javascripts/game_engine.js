@@ -76,7 +76,7 @@ let monster = {};
 // GLOBAL OBJECTS
 let game = {
 	playable: false,
-	development: true,
+	development: false,
 	difficulty: 'easy',
 	lifes: 3,
 	x0: 0,
