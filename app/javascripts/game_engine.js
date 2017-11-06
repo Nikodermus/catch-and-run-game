@@ -161,7 +161,7 @@ let catchable = {
 
 
 //Constants
-const BACK_URL = game.development ? 'http://localhost:3000' : 'http://heroku.bla.bla';
+const BACK_URL = game.development ? 'http://localhost:3000' : 'http://game.api.dakio.co';
 
 
 // Set Headers if the cookies exist

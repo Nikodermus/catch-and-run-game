@@ -31,7 +31,7 @@ let global = {
 let fifteen_minutes = new Date(new Date().getTime() + 15 * 60 * 1000);
 
 //Constants
-const BACK_URL = global.development ? 'http://localhost:3000' : 'http://heroku.bla.bla';
+const BACK_URL = global.development ? 'http://localhost:3000' : 'http://game.api.dakio.co';
 
 
 
