@@ -31,9 +31,9 @@
 ### New In-Game Features
 	--- x Bind player sprite to change based on the keys hold to reflect where the player is heading to
 	--- x Bind monster sprite to change based on the keys hold to reflect where the monster is heading to 
-	--- x Proyectiles will be from the player position towards the mouse-pointer location each second
-	--- x Monster HP will decrease when projectiles hit it  
-	--- x Monster will disappear when its HP arrives to 0 
+	--- ✓ Proyectiles will be from the player position towards the mouse-pointer location each second
+	--- ✓ Monster HP will decrease when projectiles hit it  
+	--- ✓ Monster will disappear when its HP arrives to 0 
 	--- x Weapons will appear randomly each 5 levels, changing projectiles look and damage permanently  
 	--- x Weapons available will be three:
 		1. Firegun: Damage x2
@@ -44,17 +44,17 @@
 
 
 ### Games
-    --- x Once the game is finished will be taken an screenshot of the page that will be used as image    
-    --- x Game will be saved once finished with [Score, duration, difficulty and image]    
-    --- x Game will be added to the current user (Even guest)    
+    --- ✓ Once the game is finished will be taken an screenshot of the page that will be used as image    
+    --- ✓ Game will be saved once finished with [Score, duration, difficulty and image]    
+    --- ✓ Game will be added to the current user --- x (Even guest)    
 
 
 
 ### Users and Scores
-	--- x Users will be able to play as guest if there's no logged-in user    
-	--- x User can sign up with e-mail, password
-	--- x User can log in with e-mail, password    
-    --- x Users will be authenticated through session and device tokens
+	--- ✓ Users will be able to play as guest if there's no logged-in user    
+	--- ✓ User can sign up with e-mail, password
+	--- ✓ User can log in with e-mail, password    
+    --- ✓ Users will be authenticated through session and device tokens
 	--- x User can log out, thus destroying tokens
     --- x Users will have a "My Profile" page with their data and games
 	--- x User can add and modify nickname, name and picture in "My Profile"
