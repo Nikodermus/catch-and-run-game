@@ -1,21 +1,139 @@
 /*
-    Project: Catch & Run X
-    Date: 08/14/2017
-    Author: Nicolas M. Pardo
+    Project Catch & Run X
+    Date 08/14/2017
+    Author Nicolas M. Pardo
 */
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+}
+body {
+  line-height: 1;
+  color: #000;
+  background: #fff;
+}
+ol,
+ul {
+  list-style: none;
+}
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+  vertical-align: middle;
+}
+caption,
+th,
+td {
+  text-align: left;
+  font-weight: normal;
+  vertical-align: middle;
+}
+a img {
+  border: none;
+}
 @-ms-viewport {
   width: device-width;
 }
 html {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
   box-sizing: border-box;
   font-size: 16px;
 }
 *,
-*:after,
-*:before {
+*::after,
+*::before {
   margin: 0;
   padding: 0;
-  box-sizing: inherit;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  outline: none !important;
+  outline-style: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  border-color: transparent;
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+*:focus,
+*::after:focus,
+*::before:focus {
+  outline: none !important;
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
 a,
 a:visited,
@@ -30,46 +148,28 @@ a:focus:hover {
   color: inherit;
 }
 body {
-  font-family: sans-serif;
   font-size: 1em;
   width: 100%;
   max-width: 100vw;
 }
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  margin: 0;
-  padding: 0;
-}
+overflow-x hidden,
 img {
   object-fit: contain;
 }
-user-select: none;
--webkit-touch-callout: none;
--webkit-user-select: none;
--khtml-user-select: none;
--moz-user-select: none;
--ms-user-select: none;
-.no-select {
-  user-select: none;
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-}
 html,
 body {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
   box-sizing: border-box;
   width: 100%;
   height: 100%;
-  background: url("../../assets/images/background_3.png");
-  background-size: 80px 80px;
-  background-repeat: repeat;
   overflow: hidden;
+}
+table {
+  width: 100%;
+  max-width: 100%;
+  border-collapse: collapse;
+  table-layout: auto;
 }
 *,
 h1,
@@ -80,18 +180,23 @@ h5,
 h6,
 p,
 span {
-  font-family: 'doomregular', sans-serif;
   color: #9c1b00;
+  font-family: 'doomregular';
   text-shadow: 1px 2px 0 #000;
+}
+:focus:active,
+:focus:hover {
+  outline: 0 !important;
 }
 button.square {
   border: 0;
   border-radius: 10px;
   position: relative;
   background: url("../../assets/images/button_bg.png");
+  -webkit-box-shadow: inset 2px 2px transparent, 2px 2px 0 1px #10210b;
   box-shadow: inset 2px 2px transparent, 2px 2px 0 1px #10210b;
 }
-button.square::after {
+button.square:after {
   content: '';
   padding-bottom: 100%;
   display: block;
@@ -100,26 +205,84 @@ button.square > * {
   position: absolute;
   width: 100%;
   height: 100%;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: box;
   display: flex;
+  -webkit-box-pack: center;
+  -moz-box-pack: center;
+  -o-box-pack: center;
+  -apple-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
+  -webkit-box-align: center;
+  -moz-box-align: center;
+  -o-box-align: center;
+  -apple-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
   align-items: center;
   color: #10210b;
   opacity: 0.9;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
+  filter: alpha(opacity=90);
 }
 button.square:hover {
+  -webkit-box-shadow: inset 2px 2px #10210b, 2px 2px 0 1px transparent;
   box-shadow: inset 2px 2px #10210b, 2px 2px 0 1px transparent;
   cursor: pointer;
   filter: brightness(0.7);
 }
 button.square:hover > * {
   opacity: 1;
+  -ms-filter: none;
+  filter: none;
   color: #9c1b00;
 }
-#CanvasContainer {
+#game_container {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  background: url("../../assets/images/background_3.png");
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: unset;
+  bottom: unset;
+  z-index: 100;
+  background: url("../../assets/images/background_3.png");
+  display: -ms-flexbox;
+  display: box;
+  display: flex;
+  -webkit-box-pack: center;
+  -moz-box-pack: center;
+  -o-box-pack: center;
+  -apple-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -moz-box-align: center;
+  -o-box-align: center;
+  -apple-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-background-size: 80px 80px;
+  -moz-background-size: 80px 80px;
+  background-size: 80px 80px;
+  background-repeat: repeat;
+}
+#canvas_container {
   width: 100%;
   height: 100%;
 }
-#CanvasContainer canvas {
+#canvas_container canvas {
   background: transparent;
   position: absolute;
   top: 64px;
@@ -206,23 +369,45 @@ button.square:hover > * {
 .border .panel > figure {
   width: 100%;
   height: 100%;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: box;
   display: flex;
+  -webkit-box-align: center;
+  -moz-box-align: center;
+  -o-box-align: center;
+  -apple-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
   align-items: center;
+  -webkit-box-pack: center;
+  -moz-box-pack: center;
+  -o-box-pack: center;
+  -apple-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   position: relative;
 }
-.border .panel > figure #PlayerStatus {
+.border .panel > figure #player_status {
   position: relative;
   z-index: 3;
   left: 2px;
 }
-.border .panel > figure #PowerActive {
+.border .panel > figure #power_active {
   position: absolute;
   margin: auto;
   top: 50%;
   left: 0;
   right: 0;
+  -webkit-transform: translateY(-50%);
+  -moz-transform: translateY(-50%);
+  -o-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
   transform: translateY(-50%);
+  -apple-transform: translateY(-50%);
   z-index: 0;
   height: 70%;
 }
@@ -232,7 +417,18 @@ button.square:hover > * {
   top: 0;
   padding: 0 1rem;
   height: 100%;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: box;
   display: flex;
+  -webkit-box-align: center;
+  -moz-box-align: center;
+  -o-box-align: center;
+  -apple-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
   align-items: center;
   z-index: 10;
 }
@@ -247,6 +443,12 @@ button.square:hover > * {
 }
 .border .panel > div.right {
   text-align: right;
+  -webkit-box-pack: end;
+  -moz-box-pack: end;
+  -o-box-pack: end;
+  -apple-box-pack: end;
+  -ms-flex-pack: end;
+  -webkit-justify-content: flex-end;
   justify-content: flex-end;
   right: 0;
 }
@@ -259,12 +461,15 @@ button.square:hover > * {
   font-size: 1.6rem;
   line-height: 40px;
 }
-#PauseMenu {
+#pause_menu {
   visibility: hidden;
   height: 100%;
   width: 100%;
 }
-#PauseMenu .menu_overlay {
+#pause_menu .menu_overlay {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
   background: rgba(0,0,0,0.5);
   height: 100%;
   width: 100%;
@@ -275,29 +480,59 @@ button.square:hover > * {
   bottom: unset;
   z-index: 100;
   background: rgba(0,0,0,0.5);
+  display: -ms-flexbox;
+  display: box;
   display: flex;
+  -webkit-box-pack: center;
+  -moz-box-pack: center;
+  -o-box-pack: center;
+  -apple-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
+  -webkit-box-align: center;
+  -moz-box-align: center;
+  -o-box-align: center;
+  -apple-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
   align-items: center;
 }
-#PauseMenu .menu_overlay .menu_container {
+#pause_menu .menu_overlay .menu_container {
   position: relative;
   z-index: 1001;
   min-width: 200px;
   width: 80%;
-  max-width: 34.375rem;
+  max-width: 31.25rem;
   height: 40%;
   max-height: 350px;
   min-height: 250px;
   background-image: url("../../assets/images/menu_bg.png");
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
   background-size: cover;
+  -webkit-border-image: url("../../assets/images/menu_border.png");
+  -moz-border-image: url("../../assets/images/menu_border.png");
+  -o-border-image: url("../../assets/images/menu_border.png");
   border-image: url("../../assets/images/menu_border.png");
+  -webkit-box-align: center;
+  -moz-box-align: center;
+  -o-box-align: center;
+  -apple-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
   align-items: center;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: box;
   display: flex;
   border-image-width: 15px;
   border-image-repeat: repeat;
   border-image-slice: 15;
 }
-#PauseMenu .menu_overlay .menu_container h1 {
+#pause_menu .menu_overlay .menu_container h1 {
   text-align: center;
   text-transform: uppercase;
   font-size: 22px;
@@ -309,7 +544,7 @@ button.square:hover > * {
   right: unset;
   bottom: unset;
 }
-#PauseMenu .menu_overlay .menu_container h3 {
+#pause_menu .menu_overlay .menu_container h3 {
   position: absolute;
   bottom: 15px;
   top: unset;
@@ -317,18 +552,18 @@ button.square:hover > * {
   text-transform: uppercase;
   font-size: 12px;
 }
-#PauseMenu .menu_overlay .menu_container h3:first-of-type {
+#pause_menu .menu_overlay .menu_container h3:first-of-type {
   left: 15px;
   right: unset;
 }
-#PauseMenu .menu_overlay .menu_container h3:last-of-type {
+#pause_menu .menu_overlay .menu_container h3:last-of-type {
   left: unset;
   right: 15px;
 }
-#PauseMenu .menu_overlay .menu_container h3:hover {
+#pause_menu .menu_overlay .menu_container h3:hover {
   cursor: pointer;
 }
-#PauseMenu .menu_overlay .menu_container figure {
+#pause_menu .menu_overlay .menu_container figure {
   width: 100%;
   position: absolute;
   z-index: -2;
@@ -339,24 +574,24 @@ button.square:hover > * {
   text-align: center;
   padding: 0;
 }
-#PauseMenu .menu_overlay .menu_container figure img {
+#pause_menu .menu_overlay .menu_container figure img {
   margin-bottom: -3px;
 }
-#PauseMenu .menu_overlay .menu_container .menu_buttons {
+#pause_menu .menu_overlay .menu_container .menu_buttons {
   width: 100%;
   text-align: center;
 }
-#PauseMenu .menu_overlay .menu_container .menu_buttons a button {
+#pause_menu .menu_overlay .menu_container .menu_buttons a button {
   width: 40px;
   margin-right: 1rem;
 }
-#PauseMenu .menu_overlay .menu_container .menu_buttons a button:hover i {
+#pause_menu .menu_overlay .menu_container .menu_buttons a button:hover i {
   color: #9c1b00;
 }
-#PauseMenu .menu_overlay .menu_container .menu_buttons a:last-of-type button {
+#pause_menu .menu_overlay .menu_container .menu_buttons a:last-of-type button {
   margin-right: 0;
 }
-#PauseMenu .menu_overlay .menu_container .menu_buttons a i {
+#pause_menu .menu_overlay .menu_container .menu_buttons a i {
   text-align: center;
   color: #10210b;
   vertical-align: middle;
@@ -364,11 +599,11 @@ button.square:hover > * {
   line-height: 21px;
   text-shadow: none;
 }
-#PauseMenu .menu_overlay .menu_container .menu_buttons a i.icon-nikodermus {
+#pause_menu .menu_overlay .menu_container .menu_buttons a i.icon-nikodermus {
   font-size: 16px;
   line-height: 16px;
 }
-#PowerUpText {
+#power_up_text {
   position: fixed;
   top: 64px;
   left: 64px;
@@ -376,25 +611,27 @@ button.square:hover > * {
   padding: 1rem;
   z-index: 40;
   text-transform: uppercase;
-  font-family: 'doomregular';
 }
-#PowerUpText.blue {
+#power_up_text.blue {
   color: #0000d3;
 }
-#PowerUpText.yellow {
+#power_up_text.yellow {
   color: #ff5;
 }
-#PowerUpText.white {
+#power_up_text.white {
   color: #fff;
 }
-#PowerUpText.life {
+#power_up_text.life {
   color: #10770b;
 }
-#PowerUpText.green {
+#power_up_text.green {
   color: #6ccf3f;
 }
-#CountDown {
+#count_down {
   font-size: 80px;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
   background: rgba(0,0,0,0.4);
   height: 100%;
   width: 100%;
@@ -405,12 +642,29 @@ button.square:hover > * {
   bottom: unset;
   z-index: 100;
   background: rgba(0,0,0,0.4);
+  display: -ms-flexbox;
+  display: box;
   display: flex;
+  -webkit-box-pack: center;
+  -moz-box-pack: center;
+  -o-box-pack: center;
+  -apple-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
+  -webkit-box-align: center;
+  -moz-box-align: center;
+  -o-box-align: center;
+  -apple-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
   align-items: center;
   z-index: 100;
 }
-#MainMenu {
+#main_menu {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
   background: url("../../assets/images/main_bg.png");
   height: 100%;
   width: 100%;
@@ -421,92 +675,85 @@ button.square:hover > * {
   bottom: unset;
   z-index: 100;
   background: url("../../assets/images/main_bg.png");
+  display: -ms-flexbox;
+  display: box;
   display: flex;
+  -webkit-box-pack: center;
+  -moz-box-pack: center;
+  -o-box-pack: center;
+  -apple-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
+  -webkit-box-align: center;
+  -moz-box-align: center;
+  -o-box-align: center;
+  -apple-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
   align-items: center;
-  z-index: 9999;
-  transition: 0.3s ease all;
 }
-#MainMenu::after {
-  content: "";
-  width: 100%;
-  height: 70px;
+#main_menu .btn-container {
   position: absolute;
-  bottom: 0;
+  top: 0;
   left: 0;
-  right: unset;
-  top: unset;
-  background: url("../../assets/images/blood_degrade.png");
+  width: 100%;
+  padding: 1rem;
 }
-#MainMenu .menu_container {
-  width: 80%;
-  max-width: 500px;
-  position: relative;
-  padding-bottom: 1rem;
-}
-#MainMenu .menu_container figure {
-  display: flex;
-  align-items: center;
-  margin-bottom: 2rem;
-}
-#MainMenu .menu_container figure img {
+#main_menu .btn-container > div {
+  width: 50%;
   float: left;
 }
-#MainMenu .menu_container figure img:nth-child(1) {
-  width: 80%;
+#main_menu .btn-container > div.left button {
+  font-size: 1rem;
+  background: #9c1b00;
+  padding: 0.25rem 0.5rem;
+  border: 0;
+  color: #313131;
+  text-shadow: none;
 }
-#MainMenu .menu_container figure img:nth-child(2) {
-  width: 17%;
-  margin-left: 3%;
+#main_menu .btn-container > div.right {
+  text-align: right;
 }
-#MainMenu .menu_container > button {
+#main_menu .btn-container > div.right button {
+  font-size: 1.5rem;
+  background: transparent;
+  border: 0;
+}
+#main_menu .menu_content {
+  max-width: 62.5rem;
+}
+#main_menu .menu_content .logo {
+  width: 100%;
+  margin-bottom: 2rem;
+}
+#main_menu .menu_content .logo >figure {
+  display: inline-block;
+}
+#main_menu .menu_content .logo >figure img {
+  height: 6.25rem;
+}
+#main_menu .menu_content >button {
   width: 100%;
   background: transparent;
+  border: 0;
+  font-size: 1.5rem;
+  padding: 0.5rem 0;
+  color: #8f8f8e;
+  cursor: pointer;
+}
+#main_menu .menu_content >button:hover {
+  color: #90908f;
+}
+#main_menu .menu_content >button:focus {
+  outline: 0;
+  border: 0;
   color: #fff;
-  font-size: 26px;
-  border: 0;
-  margin-bottom: 1.5rem;
 }
-#MainMenu .menu_container > button:hover {
-  color: #ab730f;
-  cursor: pointer;
-}
-#MainMenu .menu_container > div {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  top: unset;
-  right: unset;
-}
-#MainMenu .menu_container > div button {
-  left: 0;
-  font-size: 2rem;
-}
-#MainMenu .menu_container > div a {
-  right: 0;
-}
-#MainMenu .menu_container > div a button {
-  font-size: 1.7rem;
-}
-#MainMenu .menu_container > div a,
-#MainMenu .menu_container > div button {
-  background: transparent;
-  position: absolute;
-  bottom: 0;
-  border: 0;
-  z-index: 10;
-}
-#MainMenu .menu_container > div a i,
-#MainMenu .menu_container > div button i {
-  color: #ab730f !important;
-}
-#MainMenu .menu_container > div a:hover,
-#MainMenu .menu_container > div button:hover {
-  filter: brightness(1.3);
-  cursor: pointer;
-}
-#GameOver {
+#game_over {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
   background: rgba(0,0,0,0.9);
   height: 100%;
   width: 100%;
@@ -517,21 +764,35 @@ button.square:hover > * {
   bottom: unset;
   z-index: 100;
   background: rgba(0,0,0,0.9);
+  display: -ms-flexbox;
+  display: box;
   display: flex;
+  -webkit-box-pack: center;
+  -moz-box-pack: center;
+  -o-box-pack: center;
+  -apple-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
+  -webkit-box-align: center;
+  -moz-box-align: center;
+  -o-box-align: center;
+  -apple-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
   align-items: center;
   visibility: hidden;
   z-index: 99999;
 }
-#GameOver .game_container {
+#game_over .game_container {
   width: 300px;
 }
-#GameOver .game_container figure {
+#game_over .game_container figure {
   width: 100%;
   text-align: center;
   padding: 2rem;
 }
-#GameOver .game_container button {
+#game_over .game_container button {
   display: block;
   text-align: center;
   padding: 0.5rem 1rem;
@@ -540,12 +801,220 @@ button.square:hover > * {
   font-size: 21px;
   border-radius: 10px;
   background: url("../../assets/images/blood_degrade.png");
+  -webkit-background-size: contain;
+  -moz-background-size: contain;
   background-size: contain;
   color: #fff;
   border: 0;
   filter: blur(1px);
 }
-#GameOver .game_container button:hover {
+#game_over .game_container button:hover {
   filter: blur(0);
   cursor: pointer;
+}
+.content {
+  padding: 4rem;
+}
+.content .btn_container {
+  padding: 2rem;
+}
+.content .btn_container >div {
+  width: 50%;
+  float: left;
+}
+.content .btn_container >div button {
+  font-size: 1rem;
+  background: #9c1b00;
+  padding: 0.25rem 0.5rem;
+  border: 0;
+  color: #313131;
+  text-shadow: none;
+}
+.content .btn_container .left {
+  text-align: left;
+}
+.content .btn_container .right {
+  text-align: right;
+}
+.content .profile_container {
+  overflow: auto;
+  padding-top: 1rem;
+  width: 70%;
+  margin: auto;
+}
+.content .profile_container >div {
+  float: left;
+}
+.content .profile_container .profile_data {
+  width: calc(100% - 130px);
+  padding-top: 2.5rem;
+}
+.content .profile_container .profile_data * {
+  text-align: center;
+  color: #fff;
+}
+.content .profile_container .profile_pic {
+  width: 8.125rem;
+}
+.content .profile_container .profile_pic figure {
+  background: url("../../assets/images/button_bg.png");
+  padding: 10px;
+}
+.content .profile_container .profile_pic figure img {
+  width: 100%;
+}
+.content .scores_container {
+  padding-top: 2rem;
+  height: auto;
+}
+.content .scores_container > div {
+  width: 50%;
+  float: left;
+  padding: 0 1rem;
+}
+.content .scores_container > div table {
+  text-transform: uppercase;
+}
+.content .scores_container > div table thead {
+  font-size: 0.75rem;
+}
+.content .scores_container > div table thead th {
+  padding: 1rem 0;
+  text-align: center;
+}
+.content .scores_container > div table tbody {
+  font-size: 0.875rem;
+}
+.content .scores_container > div table tbody td,
+.content .scores_container > div table tbody td i {
+  color: #fff;
+  text-align: center;
+}
+.content .scores_container > div table tbody td {
+  padding: 0.5rem 0;
+}
+.content .scores_container > div table tbody i:hover {
+  color: #9c1b00;
+}
+.content .scores_container h3 {
+  text-align: center;
+  padding-bottom: 1rem;
+}
+.fancybox {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  background: rgba(0,0,0,0.5);
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: unset;
+  bottom: unset;
+  z-index: 100;
+  background: rgba(0,0,0,0.5);
+  display: -ms-flexbox;
+  display: box;
+  display: flex;
+  -webkit-box-pack: center;
+  -moz-box-pack: center;
+  -o-box-pack: center;
+  -apple-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -moz-box-align: center;
+  -o-box-align: center;
+  -apple-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: box;
+  display: flex;
+  -webkit-box-pack: center;
+  -moz-box-pack: center;
+  -o-box-pack: center;
+  -apple-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -moz-box-align: center;
+  -o-box-align: center;
+  -apple-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+  z-index: 9999;
+  visibility: hidden;
+}
+.fancybox .fancybox_content {
+  background: url("../../assets/images/main_bg.png");
+  width: 80%;
+  max-width: 37.5rem;
+  padding: 1rem;
+  position: relative;
+}
+.fancybox .fancybox_content .close_btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  color: rgba(255,255,255,0.75);
+  background: transparent;
+  border: 0;
+  font-size: 0.7rem;
+  cursor: pointer;
+}
+.fancybox .fancybox_content form {
+  overflow: auto;
+  font-size: 0;
+}
+.fancybox .fancybox_content form .column {
+  width: 50%;
+  display: inline-block;
+  padding: 1rem;
+  font-size: 1rem;
+}
+.fancybox .fancybox_content form label,
+.fancybox .fancybox_content form input {
+  width: 100%;
+}
+.fancybox .fancybox_content form input {
+  margin: 0.5rem 0 1rem 0;
+  border-radius: 5px;
+  -webkit-box-shadow: inset 0 1px 3px 0 rgba(0,0,0,0.5);
+  box-shadow: inset 0 1px 3px 0 rgba(0,0,0,0.5);
+  padding: 0.25rem 0.5rem;
+  text-shadow: none;
+}
+.fancybox .fancybox_content form input[type="submit"] {
+  width: auto;
+  background: #9c1b00;
+  padding: 0.25rem 0.5rem;
+  border: 0;
+  color: #313131;
+  display: block;
+  text-align: center;
+  margin: auto;
+  font-size: 1.2rem;
+}
+.fancybox .fancybox_content form label {
+  white-space: nowrap;
+}
+.clearfix {
+  text-align: center;
+}
+.user_elem {
+  visibility: hidden;
+  display: none;
+}
+[hidden],
+.hidden {
+  display: none;
 }

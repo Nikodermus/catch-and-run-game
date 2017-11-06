@@ -100,6 +100,8 @@
 	<link rel="stylesheet" href="./assets/stylesheets/icons.css" />
 	<link rel="stylesheet" href="./assets/stylesheets/main.css" />
 
+	<script src="./assets/javascripts/jquery.min.js"></script>
+	<script src="./assets/javascripts/js.cookie.js"></script>
 	<script src="./assets/javascripts/bundle.js"></script>
 	<script src="./assets/javascripts/sessions.js"></script>
 
@@ -107,50 +109,60 @@
 </head>
 
 <body>
-	<figure class="top">
-		<img src="./assets/images/pause_icon.png" alt="">
-	</figure>
-	<div class="border">
-	</div>
-	<div class="border">
-	</div>
-	<div class="border">
-		<div class="panel" class="no-select">
-			<div class="left">
-				<img src="./assets/images/lost_soul.gif" alt="">
-				<span id="SoulsCount">00
-				</span>
-			</div>
-			<div class="right">
-				<figure class="lives" id="LifeCount">
+	<span id="global" hidden>
+		<span class="user_info" data-user="name"></span>
+		<span class="user_info" data-user="email"></span>
+		<span class="user_info" data-user="nickname"></span>
+		<span class="user_info" data-user="id"></span>
+		<span class="game_info" data-game="id"></span>
+	</span>
+
+	<div id="game_container">
+		<figure class="top">
+			<img src="./assets/images/pause_icon.png" alt="">
+		</figure>
+		<div class="border">
+		</div>
+		<div class="border">
+		</div>
+		<div class="border">
+			<div class="panel" class="no-select">
+				<div class="left">
+					<img src="./assets/images/lost_soul.gif" alt="">
+					<span id="souls_count">00
+					</span>
+				</div>
+				<div class="right">
+					<figure class="lives" id="life_count">
+					</figure>
+					<button id="pause_game" class="square">
+						<div>II
+						</div>
+					</button>
+				</div>
+				<figure>
+					<img src="./assets/images/3_lifes.gif" alt="" id="player_status">
+					<img src="" alt="" id="power_active">
 				</figure>
-				<button id="PauseGame" class="square">
-					<div>II
-					</div>
-				</button>
 			</div>
-			<figure>
-				<img src="./assets/images/3_lifes.gif" alt="" id="PlayerStatus">
-				<img src="" alt="" id="PowerActive">
-			</figure>
+		</div>
+		<div class="border">
+		</div>
+		<img src="./assets/images/corner.png" alt="" class="corner">
+		<img src="./assets/images/corner.png" alt="" class="corner">
+		<img src="./assets/images/corner.png" alt="" class="corner">
+		<img src="./assets/images/corner.png" alt="" class="corner">
+		<div id="canvas_container">
 		</div>
 	</div>
-	<div class="border">
-	</div>
-	<img src="./assets/images/corner.png" alt="" class="corner">
-	<img src="./assets/images/corner.png" alt="" class="corner">
-	<img src="./assets/images/corner.png" alt="" class="corner">
-	<img src="./assets/images/corner.png" alt="" class="corner">
-	<div id="CanvasContainer">
-	</div>
-	<div id="PauseMenu">
+	<div id="pause_menu">
 		<div class="menu_overlay">
 			<div class="menu_container">
 				<h1>Menu
 				</h1>
 				<div class="menu_buttons">
 					<a href="javaScript:void(0);">
-						<button class="square" id="CloseMenu">
+						<button class="square" id="close_menu">
 							<div class="square-content">
 								<i class="icon icon-cancel">
 								</i>
@@ -158,7 +170,7 @@
 						</button>
 					</a>
 					<a href="javaScript:void(0);">
-						<button class="square" id="ReloadGame">
+						<button class="square" id="reload_game">
 							<div class="square-content">
 								<i class="icon icon-reset">
 								</i>
@@ -196,49 +208,100 @@
 			</div>
 		</div>
 	</div>
-	<div id="PowerUpText" class="no-select">
+	<div id="power_up_text" class="no-select">
 	</div>
-	<div id="CountDown" class="no-select">
+	<div id="count_down" class="no-select">
 		<span>3
 		</span>
 	</div>
-	<div id="MainMenu">
-		<div class="menu_container no-select">
-			<figure>
-				<img src="./assets/images/logo.png" alt="">
-				<img src="./assets/images/main.gif" alt="">
-			</figure>
-			<button id="EasyLevel">I'm a baby
-			</button>
-			<button id="NormalLevel">Brutal Warrior
-			</button>
-			<button id="HardcoreLevel">Hell Overlord
-			</button>
-			<div>
-				<button>
-					<div class="square-content">
-						<i class="icon icon-facebook">
-						</i>
-					</div>
-				</button>
-				<a href="http://nikodermus.media/" target="_blank">
-					<button>
-						<div class="square-content">
-							<i class="icon icon-nikodermus">
-							</i>
-						</div>
-					</button>
+	<div id="main_menu">
+		<div class="btn-container">
+			<div class="left">
+				<p class="user_elem user_info" data-user="name"></p>
+				<a href="./my_profile.html" class="user_elem">
+					<button>My Profile</button>
 				</a>
+				<button class="login_btn anonymous_elem">Login</button>
+				<button class="sign_up_btn anonymous_elem">Sign Up</button>
+			</div>
+			<div class="right">
+				<button>
+					<i class="icon icon-nikodermus">
+					</i>
+				</button>
+				<button>
+					<i class="icon icon-facebook">
+					</i>
+				</button>
 			</div>
 		</div>
+		<div class="menu_content">
+			<div class="logo">
+				<figure>
+					<img src="./assets/images/main.gif" alt="">
+				</figure>
+				<figure>
+					<img src="./assets/images/logo.png" alt="">
+				</figure>
+
+			</div>
+			<button id="easy_level">I'm a baby</button>
+			<button id="normal_level">Hurt me</button>
+			<button id="hardcore_level">Hell Overlord</button>
+		</div>
 	</div>
-	<div id="GameOver">
+	<div id="game_over">
 		<div class="game_container">
 			<figure>
-				<img src="./assets/images/marine.gif" alt="" id="DeathGif">
+				<img src="./assets/images/marine.gif" alt="" id="death_gif">
 			</figure>
-			<button id="RestartGame">Restart</button>
-			<button id="ReloadWindow">Main Menu</button>
+			<button id="restart_game">Restart</button>
+			<button id="reload_window">Main Menu</button>
+		</div>
+	</div>
+	<div id="login_container" class="fancybox">
+		<div class="fancybox_content">
+			<button class="close_btn">Close</button>
+			<form action="" accept-method="post" id="login_form">
+				<div class="column">
+					<label for="email_login">Email</label>
+					<input type="email" id="email_login" name="session[email]">
+				</div>
+				<div class="column">
+					<label for="password_login">Password</label>
+					<input type="password" id="password_login" name="session[password]">
+				</div>
+				<div>
+					<input type="submit" value="Login">
+				</div>
+			</form>
+		</div>
+	</div>
+	<div id="sign_up_container" class="fancybox">
+		<div class="fancybox_content">
+			<button class="close_btn">Close</button>
+			<form action="" id="sign_up_form" accept-method="post">
+				<div class="column">
+					<label for="name_sign_up">Name</label>
+					<input type="text" id="name_sign_up" name="user[name]">
+					<label for="email_sign_up">Email</label>
+					<input type="email" id="email_sign_up" name="user[email]">
+					<label for="nickname_sign_up">Nickname</label>
+					<input type="text" id="nickname_sign_up" name="user[nickname]">
+				</div>
+				<div class="column">
+					<label for="password_sign_up">Password</label>
+					<input type="password" id="password_sign_up" name="user[password]">
+					<label for="password_confirmation_sign_up">Password Confirmation</label>
+					<input type="password" id="password_confirmation_sign_up" name="user[password_confirmation]">
+				</div>
+				<div class="clearfix">
+					<input type="submit" value="Sign Up">
+				</div>
+
+
+			</form>
+			<button class="login_btn">Login</button>
 		</div>
 	</div>
 

@@ -1,11 +1,131 @@
 /*!
-    Project: Catch & Run X
-    Date: 08/14/2017
-    Author: Nicolas M. Pardo
+    Project Catch & Run X
+    Date 08/14/2017
+    Author Nicolas M. Pardo
 */
 
-import 'nibx'
 
+@require 'nib'
+
+html, body, div, span, applet, object, iframe,
+  h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+  a, abbr, acronym, address, big, cite, code,
+  del, dfn, em, img, ins, kbd, q, s, samp,
+  small, strike, strong, sub, sup, tt, var,
+  dl, dt, dd, ol, ul, li,
+  fieldset, form, label, legend,
+  table, caption, tbody, tfoot, thead, tr, th, td
+    reset-box-model()
+  body
+    reset-body()
+  ol, ul
+    list-style none
+  table
+    reset-table()
+  caption, th, td
+    reset-table-cell()
+  a img
+    border none
+
+
+//Variables
+vendor-prefixes = webkit moz o ms official apple
+$size = 16
+$red = #9C1B00
+$green_light = #10770B
+$green = #10210B
+$gray = #313131
+$light-gray = #8F8F8E
+$gold = #AB730F
+$i = !important
+
+
+//Mixins
+rem(size)
+    return size/$size rem
+fullFixed(n)
+    background n
+    height 100%
+    width 100%
+    position fixed
+    top 0
+    left 0
+    right unset
+    bottom unset
+    z-index 100
+    background n
+    display flex
+    justify-content center
+    align-items center
+
+	
+
+
+//Preset
+@-ms-viewport
+    width device-width
+
+html
+    box-sizing border-box
+    font-size $size px
+
+*
+*::after
+*::before
+	margin 0
+	padding 0
+	box-sizing border-box
+	outline none $i
+	outline-style none
+	box-shadow none
+	border-color transparent
+	user-select none $i
+	-webkit-touch-callout none
+	-webkit-user-select none
+	-khtml-user-select none
+	-moz-user-select none
+	-ms-user-select none
+	&:focus
+		outline none $i
+		user-select none $i
+		-webkit-touch-callout none
+		-webkit-user-select none
+		-khtml-user-select none
+		-moz-user-select none
+		-ms-user-select none
+a
+a:visited
+a:focus
+    text-decoration none
+    color inherit
+    &:hover
+        text-decoration none
+        color inherit
+
+body
+    font-size 1em
+    width 100%
+    max-width 100vw
+	overflow-x hidden
+
+img 
+    object-fit contain
+
+html
+body
+	box-sizing border-box
+	width 100%
+	height 100%
+	overflow hidden
+table
+	width 100%
+	max-width 100%
+	border-collapse collapse
+	table-layout auto
+	
+
+
+//Global classed
 *
 h1
 h2
@@ -16,7 +136,13 @@ h6
 p
 span
     color $red
+    font-family 'doomregular' 	
     text-shadow 1px 2px 0 #000000
+	&:focus
+	&:active
+	&:hover
+		outline 0 $i
+
 
 button.square
     border 0
@@ -24,7 +150,7 @@ button.square
     position relative
     background url('../../assets/images/button_bg.png')
     box-shadow inset 2px 2px transparent, 2px 2px 0 1px $green
-    &::after
+    &:after
         content ''
         padding-bottom 100%
         display block
@@ -45,7 +171,13 @@ button.square
             opacity 1
             color $red
 
-#CanvasContainer
+#game_container
+	fullFixed(url('../../assets/images/background_3.png'))
+	background-size 80px 80px
+	background-repeat  repeat
+
+
+#canvas_container
     width 100%
     height 100%  
     canvas
@@ -126,11 +258,11 @@ button.square
             align-items center
             justify-content center
             position relative
-            #PlayerStatus
+            #player_status
                 position relative
                 z-index 3
                 left 2px
-            #PowerActive
+            #power_active
                 position absolute
                 margin auto
                 top 50%
@@ -170,7 +302,7 @@ button.square
                     line-height 40px
 
 
-#PauseMenu
+#pause_menu
     visibility hidden
     height 100%
     width 100%
@@ -181,7 +313,7 @@ button.square
             z-index 1001
             min-width 200px
             width 80%
-            max-width (550/$size)rem
+            max-width rem(500)
             height 40%
             max-height 350px
             min-height 250px
@@ -244,7 +376,6 @@ button.square
                     &:last-of-type
                         button
                             margin-right 0
-                    
                     i
                         text-align center
                         color $green
@@ -255,7 +386,7 @@ button.square
                         &.icon-nikodermus
                             font-size 16px
                             line-height 16px
-#PowerUpText
+#power_up_text
     position fixed
     top 64px
     left 64px
@@ -263,7 +394,6 @@ button.square
     padding 1rem
     z-index 40
     text-transform uppercase
-    font-family 'doomregular'
     &.blue
         color #0000D3
     &.yellow
@@ -274,98 +404,208 @@ button.square
         color $green_light
     &.green
         color #6CCF3F
-#CountDown
+#count_down
     font-size 80px
     fullFixed(alpha(black, .4)) 
     z-index 100
-#MainMenu
-    fullFixed(url(../../assets/images/main_bg.png)) 
-    z-index 9999
-    transition 0.3s ease all
-    &::after
-        content ""
-        width 100%
-        height 70px
-        position absolute
-        bottom 0
-        left 0
-        right unset 
-        top unset 
-        background url('../../assets/images/blood_degrade.png')
-    .menu_container
-        width 80%
-        max-width 500px
-        position relative
-        padding-bottom 1rem
-        figure
-            display flex
-            align-items center
-            margin-bottom 2rem
-            img
-                float left
-                &:nth-child(1)
-                    width 80%
-                &:nth-child(2)
-                    width 17%
-                    margin-left 3%
-        > button
-            width 100%
-            background transparent
-            color white  
-            font-size 26px
-            border 0
-            margin-bottom 1.5rem
-            &:hover
-                color $gold
-                cursor pointer
-        > div
-            position absolute
-            bottom 0
-            left 0
-            width 100%
-            top unset 
-            right unset 
-            button
-                left 0
-                font-size 2rem
-            a
-                right 0
-                button 
-                    font-size 1.7rem
-            a, button
-                background transparent
-                position absolute
-                bottom 0
-                border 0
-                z-index 10
-                i
-                    color $gold !important
-                &:hover
-                    filter brightness(1.3)
-                    cursor pointer
-#GameOver
+#main_menu
+	fullFixed(url('../../assets/images/main_bg.png'))
+	.btn-container
+		absolute top left 
+		width 100%
+		padding 1rem
+		> div
+			width 50%
+			float left
+			&.left
+				button
+					font-size 1rem
+					background $red
+					padding .25rem .5rem
+					border 0
+					color $gray
+					text-shadow none
+			&.right
+				text-align right
+				button
+					font-size 1.5rem
+					background transparent
+					border 0
+	.menu_content
+		max-width rem(1000)
+		.logo
+			width 100%
+			margin-bottom 2rem
+			>figure
+				display inline-block
+				img
+					height rem(100)
+		>button 
+			width 100%
+			background transparent 
+			border 0
+			font-size 1.5rem
+			padding .5rem 0
+			color $light-gray
+			cursor pointer
+			&:hover
+				color lighten($light-gray, .5)
+			&:focus
+				outline 0
+				border 0
+				color white
+					
+
+#game_over
     fullFixed(alpha(black, .9))
     visibility hidden
-    z-index: 99999
+    z-index 99999
     .game_container
-        width: 300px
+        width 300px
         figure
-            width: 100%
-            text-align: center
-            padding: 2rem
+            width 100%
+            text-align center
+            padding 2rem
         button
-            display: block
-            text-align: center
-            padding: .5rem 1rem   
-            text-align: center
-            margin: auto auto 1rem auto
-            font-size: 21px
-            border-radius: 10px
-            background: url('../../assets/images/blood_degrade.png')
-            background-size: contain
+            display block
+            text-align center
+            padding .5rem 1rem   
+            text-align center
+            margin auto auto 1rem auto
+            font-size 21px
+            border-radius 10px
+            background url('../../assets/images/blood_degrade.png')
+            background-size contain
             color white
             border 0
-            filter: blur(1px)
+            filter blur(1px)
             &:hover
-                filter: blur(0)
+                filter blur(0)
                 cursor pointer
+.content
+	padding rem(64)
+	.btn_container
+		padding 2rem
+		>div
+			width 50%
+			float left
+			button
+				font-size 1rem
+				background $red
+				padding .25rem .5rem
+				border 0
+				color $gray
+				text-shadow none
+		.left	
+			text-align left
+		.right
+			text-align right
+	.profile_container
+		overflow auto
+		padding-top 1rem
+		width 70%
+		margin auto
+		>div
+			float left
+		.profile_data
+			width calc(100% - 130px)
+			padding-top 2.5rem
+			*
+				text-align center
+				color white
+		.profile_pic
+			width rem(130)
+			figure
+				background url('../../assets/images/button_bg.png')
+				padding 10px
+				img
+					width 100%
+	.scores_container
+		padding-top 2rem
+		height auto
+		> div
+			width 50%
+			float left
+			padding 0 1rem
+			table
+				text-transform uppercase
+				thead
+					font-size rem(12)
+					th
+						padding 1rem 0
+						text-align center
+				tbody
+					font-size rem(14)
+					td, td i
+						color white
+						text-align center
+					td
+						padding .5rem 0
+					i:hover
+						color $red
+		h3
+			text-align center
+			padding-bottom 1rem
+.fancybox
+	fullFixed(alpha(black, 0.5))
+	display flex
+	justify-content center
+	align-items center
+	z-index 9999
+	visibility hidden
+	.fancybox_content
+		background url('../../assets/images/main_bg.png')
+		width 80%
+		max-width rem(600)
+		padding 1rem
+		position relative
+		.close_btn
+			absolute top 1rem right 1rem
+			color alpha(white, .75)
+			background transparent 
+			border 0
+			font-size 0.7rem
+			cursor pointer
+		form
+			overflow auto
+			font-size 0
+			.column
+				width 50%
+				display inline-block
+				padding 1rem
+				font-size 1rem
+			label
+			input 
+				width 100%
+			input
+				margin .5rem 0 1rem 0
+				border-radius 5px
+				box-shadow inset 0 1px 3px 0 rgba(0,0,0,0.50)
+				padding .25rem .5rem
+				text-shadow none
+				&[type="submit"]
+					width auto
+					background $red
+					padding .25rem .5rem
+					border 0
+					color $gray
+					display block
+					text-align center
+					margin auto
+					font-size 1.2rem
+
+			label
+				white-space nowrap
+.clearfix
+	clearfix 
+	text-align center
+.user_elem
+	visibility hidden
+	display none
+
+[hidden]
+.hidden
+	display none
+
+
+
