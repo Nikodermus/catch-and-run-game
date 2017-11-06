@@ -1,7 +1,7 @@
 # Catch & Run UI
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/) ![License MIT](https://img.shields.io/packagist/l/doctrine/orm.svg) ![NPM](https://img.shields.io/npm/v/npm.svg) [![game.dakio.co](https://img.shields.io/website-up-down-green-red/http/shields.io.svg?label=game.dakio.co)](http://game.dakio.co)  
 
-2D Javascript-Based Game. Play it [here](http://game.dakio.co) once released!     
+2D Javascript-Based Game. Play it now in [game.dakio.co](http://game.dakio.co)!
 
 
 ## In-Game Features   
@@ -56,9 +56,9 @@
 	--- ✓ User can log in with e-mail, password    
     --- ✓ Users will be authenticated through session and device tokens
 	--- x User can log out, thus destroying tokens
-    --- x Users will have a "My Profile" page with their data and games
+    --- ✓ Users will have a "My Profile" page with their data and games
 	--- x User can add and modify nickname, name and picture in "My Profile"
-	--- x "My Profile" will show only 10 latest games, and 10 best games for the user
+	--- ✓ "My Profile" will show only 10 latest games, and 10 best games for the user
 	--- x Games can be deleted in the "My Profile" page with a confirmation
     --- x Account can be deleted with password confirmation in the "My Profile" page
     --- x Deleted accounts will destroy their games and scores if they appear in the leaderboards 

@@ -68,8 +68,8 @@
 
 
 	<!--Only use if needed
-         <link rel="canonical" href="http://www.game.dakio.co" />
-         -->
+			 <link rel="canonical" href="http://www.game.dakio.co" />
+			 -->
 
 	<!--Apple Meta Data-->
 	<meta name="apple-mobile-web-app-capable" content="yes" />
@@ -87,8 +87,8 @@
 
 
 	<!--[if lt IE 8]>
-         <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-         <![endif]-->
+			 <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+			 <![endif]-->
 
 
 	<title>
@@ -100,17 +100,19 @@
 	<link rel="stylesheet" href="./assets/stylesheets/icons.css" />
 	<link rel="stylesheet" href="./assets/stylesheets/main.css" />
 
+	<script src="./assets/javascripts/jquery.min.js"></script>
+	<script src="./assets/javascripts/js.cookie.js"></script>
 	<script src="./assets/javascripts/sessions.js"></script>
 
 
 </head>
 
-<body>
+<body hidden>
 	<div class="border">
 	</div>
 	<div class="border">
 	</div>
-	<div class="border">
+	<div class="border" hidden>
 	</div>
 	<div class="border">
 	</div>
@@ -133,12 +135,12 @@
 		<div class="profile_container">
 			<div class="profile_pic">
 				<figure>
-					<img src="./assets/images/profile.png" alt="">
+					<img alt="./assets/images/default.jpg" id="profile_img" />
 				</figure>
 			</div>
 			<div class="profile_data">
-				<h1>Nicolas M. Pardo</h1>
-				<h2>Nikodermus</h2>
+				<h1 class="user_info" data-user="name">User</h1>
+				<h2 class="user_info" data-user="nickname">Username</h2>
 			</div>
 		</div>
 		<div class="scores_container">
@@ -153,62 +155,14 @@
 							<th>Difficulty</th>
 						</tr>
 					</thead>
-					<tbody>
+
+					<tbody id="latest_games">
 						<tr>
-							<td>
-								<i class="icon icon-nikodermus"></i>
+							<td colspan="4">
+								<h4>
+									Your games will appear here once you play one
+								</h4>
 							</td>
-							<td>05 Aug, 2017</td>
-							<td>25.234</td>
-							<td>Hard</td>
-						</tr>
-						<tr>
-							<td>
-								<i class="icon icon-nikodermus"></i>
-							</td>
-							<td>05 Aug, 2017</td>
-							<td>25.234</td>
-							<td>Hard</td>
-						</tr>
-						<tr>
-							<td>
-								<i class="icon icon-nikodermus"></i>
-							</td>
-							<td>05 Aug, 2017</td>
-							<td>25.234</td>
-							<td>Hard</td>
-						</tr>
-						<tr>
-							<td>
-								<i class="icon icon-nikodermus"></i>
-							</td>
-							<td>05 Aug, 2017</td>
-							<td>25.234</td>
-							<td>Hard</td>
-						</tr>
-						<tr>
-							<td>
-								<i class="icon icon-nikodermus"></i>
-							</td>
-							<td>05 Aug, 2017</td>
-							<td>25.234</td>
-							<td>Hard</td>
-						</tr>
-						<tr>
-							<td>
-								<i class="icon icon-nikodermus"></i>
-							</td>
-							<td>05 Aug, 2017</td>
-							<td>25.234</td>
-							<td>Hard</td>
-						</tr>
-						<tr>
-							<td>
-								<i class="icon icon-nikodermus"></i>
-							</td>
-							<td>05 Aug, 2017</td>
-							<td>25.234</td>
-							<td>Hard</td>
 						</tr>
 					</tbody>
 				</table>
@@ -224,66 +178,23 @@
 							<th>Difficulty</th>
 						</tr>
 					</thead>
-					<tbody>
+					<tbody id="best_games">
+
 						<tr>
-							<td>
-								<i class="icon icon-nikodermus"></i>
+							<td colspan="4">
+								<h4>
+									Your games will appear here once you play one
+								</h4>
 							</td>
-							<td>05 Aug, 2017</td>
-							<td>25.234</td>
-							<td>Hard</td>
-						</tr>
-						<tr>
-							<td>
-								<i class="icon icon-nikodermus"></i>
-							</td>
-							<td>05 Aug, 2017</td>
-							<td>25.234</td>
-							<td>Hard</td>
-						</tr>
-						<tr>
-							<td>
-								<i class="icon icon-nikodermus"></i>
-							</td>
-							<td>05 Aug, 2017</td>
-							<td>25.234</td>
-							<td>Hard</td>
-						</tr>
-						<tr>
-							<td>
-								<i class="icon icon-nikodermus"></i>
-							</td>
-							<td>05 Aug, 2017</td>
-							<td>25.234</td>
-							<td>Hard</td>
-						</tr>
-						<tr>
-							<td>
-								<i class="icon icon-nikodermus"></i>
-							</td>
-							<td>05 Aug, 2017</td>
-							<td>25.234</td>
-							<td>Hard</td>
-						</tr>
-						<tr>
-							<td>
-								<i class="icon icon-nikodermus"></i>
-							</td>
-							<td>05 Aug, 2017</td>
-							<td>25.234</td>
-							<td>Hard</td>
-						</tr>
-						<tr>
-							<td>
-								<i class="icon icon-nikodermus"></i>
-							</td>
-							<td>05 Aug, 2017</td>
-							<td>25.234</td>
-							<td>Hard</td>
 						</tr>
 					</tbody>
 				</table>
 			</div>
+		</div>
+	</div>
+	<div id="image_fancybox" class="fancybox_container img">
+		<div class="fancybox">
+			<img src="" alt="">
 		</div>
 	</div>
 </body>

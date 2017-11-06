@@ -217,12 +217,17 @@
 	<div id="main_menu">
 		<div class="btn-container">
 			<div class="left">
-				<p class="user_elem user_info" data-user="name"></p>
-				<a href="./my_profile.html" class="user_elem">
-					<button>My Profile</button>
-				</a>
-				<button class="login_btn anonymous_elem">Login</button>
-				<button class="sign_up_btn anonymous_elem">Sign Up</button>
+				<div class="user_elem">
+					<p class="inline_block">Hello
+						<span class="user_info" data-user="name"></span>!</p>
+					<a href="./my_profile.html">
+						<button>My Profile</button>
+					</a>
+				</div>
+				<div class="anonymous_elem">
+					<button class="login_btn">Login</button>
+					<button class="sign_up_btn">Sign Up</button>
+				</div>
 			</div>
 			<div class="right">
 				<button>
@@ -259,50 +264,55 @@
 			<button id="reload_window">Main Menu</button>
 		</div>
 	</div>
-	<div id="login_container" class="fancybox">
-		<div class="fancybox_content">
-			<button class="close_btn">Close</button>
-			<form action="" accept-method="post" id="login_form">
-				<div class="column">
-					<label for="email_login">Email</label>
-					<input type="email" id="email_login" name="session[email]">
-				</div>
-				<div class="column">
-					<label for="password_login">Password</label>
-					<input type="password" id="password_login" name="session[password]">
-				</div>
-				<div>
-					<input type="submit" value="Login">
-				</div>
-			</form>
+	<div class="fancybox_container" id="login_container">
+		<div class="fancybox">
+			<div class="fancybox_content">
+				<button class="close_btn">Close</button>
+				<form action="" accept-method="post" id="login_form">
+					<div class="column">
+						<label for="email_login">Email</label>
+						<input type="email" id="email_login" name="session[email]">
+					</div>
+					<div class="column">
+						<label for="password_login">Password</label>
+						<input type="password" id="password_login" name="session[password]">
+					</div>
+					<div>
+						<input type="submit" value="Login">
+					</div>
+				</form>
+			</div>
 		</div>
 	</div>
-	<div id="sign_up_container" class="fancybox">
-		<div class="fancybox_content">
-			<button class="close_btn">Close</button>
-			<form action="" id="sign_up_form" accept-method="post">
-				<div class="column">
-					<label for="name_sign_up">Name</label>
-					<input type="text" id="name_sign_up" name="user[name]">
-					<label for="email_sign_up">Email</label>
-					<input type="email" id="email_sign_up" name="user[email]">
-					<label for="nickname_sign_up">Nickname</label>
-					<input type="text" id="nickname_sign_up" name="user[nickname]">
-				</div>
-				<div class="column">
-					<label for="password_sign_up">Password</label>
-					<input type="password" id="password_sign_up" name="user[password]">
-					<label for="password_confirmation_sign_up">Password Confirmation</label>
-					<input type="password" id="password_confirmation_sign_up" name="user[password_confirmation]">
-				</div>
-				<div class="clearfix">
-					<input type="submit" value="Sign Up">
-				</div>
+	<div class="fancybox_container" id="sign_up_container">
+		<div class="fancybox">
+			<div class="fancybox_content">
+				<button class="close_btn">Close</button>
+				<form action="" id="sign_up_form" accept-method="post">
+					<div class="column">
+						<label for="name_sign_up">Name</label>
+						<input type="text" id="name_sign_up" name="user[name]">
+						<label for="email_sign_up">Email</label>
+						<input type="email" id="email_sign_up" name="user[email]">
+						<label for="nickname_sign_up">Nickname</label>
+						<input type="text" id="nickname_sign_up" name="user[nickname]">
+					</div>
+					<div class="column">
+						<label for="password_sign_up">Password</label>
+						<input type="password" id="password_sign_up" name="user[password]">
+						<label for="password_confirmation_sign_up">Password Confirmation</label>
+						<input type="password" id="password_confirmation_sign_up" name="user[password_confirmation]">
+					</div>
+					<div class="clearfix">
+						<input type="submit" value="Sign Up">
+					</div>
 
 
-			</form>
-			<button class="login_btn">Login</button>
+				</form>
+				<button class="login_btn">Login</button>
+			</div>
 		</div>
+
 	</div>
 
 </body>
