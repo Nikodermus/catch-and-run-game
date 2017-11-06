@@ -24,7 +24,7 @@ let
 
 //Global Objects
 let global = {
-	development: true,
+	development: false,
 	headers: {}
 };
 
