@@ -28,7 +28,7 @@ let
 
 //Global Objects
 let global = {
-	development: true
+	development: false
 };
 
 let fifteen_minutes = new Date(new Date().getTime() + 15 * 60 * 1000);
