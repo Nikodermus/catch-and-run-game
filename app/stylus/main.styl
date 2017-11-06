@@ -59,8 +59,15 @@ fullFixed(n)
     align-items center
 
 	
-
-
+//Animations
+@keyframes show_error 
+	0%
+		transform translateY(-120%) translateX(-50%)
+	50%
+		transform translateY(0%) translateX(-50%)
+	100%
+		transform translateY(0%) translateX(-50%)
+		
 //Preset
 @-ms-viewport
     width device-width
@@ -117,6 +124,9 @@ body
 	width 100%
 	height 100%
 	overflow hidden
+	background url('../../assets/images/background_3.png')
+	background-size 80px 80px
+	background-repeat  repeat
 table
 	width 100%
 	max-width 100%
@@ -482,6 +492,32 @@ button.square
             &:hover
                 filter blur(0)
                 cursor pointer
+.inline_block
+	display inline-block
+.error
+	fixed top 0 left 50%
+	white-space nowrap
+	text-align center
+	padding 1rem
+	color white
+	transform translateX(-50%)
+	z-index 99999
+	background alpha(black, 0.5)
+	background-size 128px 128px
+	background-repeat  repeat
+	overflow hidden
+	animation show_error ease 1.5s forwards alternate 2
+	max-width 80%
+	&::after
+		content ''
+		absolute left bottom
+		display block
+		width 100%
+		height 60%
+		background url('../../assets/images/blood_degrade.png')
+		background-size 47px 47px
+		background-repeat  repeat
+		z-index -1
 .content
 	padding rem(64)
 	.btn_container
@@ -496,10 +532,13 @@ button.square
 				border 0
 				color $gray
 				text-shadow none
-		.left	
-			text-align left
 		.right
 			text-align right
+		.left	
+			text-align left
+			.user_elem
+				*
+					display inline-block
 	.profile_container
 		overflow auto
 		padding-top 1rem
@@ -546,13 +585,18 @@ button.square
 		h3
 			text-align center
 			padding-bottom 1rem
+.fancybox_container
+	display none
+	&.img
+		img
+			max-height 80vh
+			max-width 80vw
 .fancybox
 	fullFixed(alpha(black, 0.5))
 	display flex
 	justify-content center
 	align-items center
 	z-index 9999
-	visibility hidden
 	.fancybox_content
 		background url('../../assets/images/main_bg.png')
 		width 80%

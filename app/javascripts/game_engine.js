@@ -325,6 +325,19 @@ function devLog(object) {
 	}
 }
 
+function renderError(string) {
+	if (typeof (string) === Array) {
+		string = string[0];
+	}
+	let div = document.createElement('div');
+	div.classList = 'error';
+	div.innerHTML = `Oops: ${string}`;
+	document.body.appendChild(div);
+	setTimeout(function () {
+		document.body.removeChild(div);
+	}, 3000);
+}
+
 
 function detectCollition(object_1, object_2) {
 	if (
@@ -354,7 +367,12 @@ function ajaxStartGame() {
 			devLog('ajax start game');
 			if (data.success) {
 				renderGame(data.game);
+			} else {
+				renderError('Game won\'t be saved');
 			}
+		},
+		error: (data, status, info) => {
+			renderError('Game won\'t be saved');
 		}
 	});
 }
@@ -380,7 +398,6 @@ function ajaxEndGame(image_game) {
 	let user_id = document.querySelector('#global [data-user=id]').innerText;
 	let game_id = document.querySelector('#global [data-game=id]').innerText;
 	let score_game = Number(soul_count.innerText);
-	window.open(image_game, 'Image', 'width=largeImage.stylewidth,height=largeImage.style.height,resizable=1');
 	jQuery.ajax({
 		type: "PATCH",
 		url: `${BACK_URL}/users/${user_id}/games/${game_id}`,
