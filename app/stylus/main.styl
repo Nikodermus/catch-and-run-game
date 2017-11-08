@@ -494,6 +494,10 @@ button.square
                 cursor pointer
 .inline_block
 	display inline-block
+#close_session
+	absolute left 1rem bottom 1rem
+	background transparent
+	font-size 1.2rem
 .error
 	fixed top 0 left 50%
 	white-space nowrap
@@ -566,25 +570,26 @@ button.square
 			width 50%
 			float left
 			padding 0 1rem
-			table
-				text-transform uppercase
-				thead
-					font-size rem(12)
-					th
-						padding 1rem 0
-						text-align center
-				tbody
-					font-size rem(14)
-					td, td i
-						color white
-						text-align center
-					td
-						padding .5rem 0
-					i:hover
-						color $red
+			
 		h3
 			text-align center
 			padding-bottom 1rem
+table
+	text-transform uppercase
+	thead
+		font-size rem(12)
+		th
+			padding 1rem 0
+			text-align center
+	tbody
+		font-size rem(14)
+		td, td i
+			color white
+			text-align center
+		td
+			padding .5rem 0
+		i:hover
+			color $red
 .fancybox_container
 	display none
 	&.img

@@ -76,7 +76,7 @@ let monster = {};
 // GLOBAL OBJECTS
 let game = {
 	playable: false,
-	development: false,
+	production: true,
 	difficulty: 'easy',
 	lifes: 3,
 	x0: 0,
@@ -161,7 +161,7 @@ let catchable = {
 
 
 //Constants
-const BACK_URL = game.development ? 'http://localhost:3000' : 'http://game.api.dakio.co';
+const BACK_URL = !game.production ? 'http://localhost:3000' : 'http://game.api.dakio.co';
 
 
 // Set Headers if the cookies exist
@@ -320,7 +320,7 @@ function Projectile(new_projectile) {
 
 // FUNCTIONS
 function devLog(object) {
-	if (game.development) {
+	if (!game.production) {
 		console.log(object);
 	}
 }
@@ -1070,7 +1070,7 @@ function render() {
 
 
 	// Hero rectangle
-	if (game.development) {
+	if (!game.production) {
 		ctx.beginPath();
 		ctx.lineWidth = "3";
 		ctx.strokeStyle = "blue";
@@ -1111,7 +1111,7 @@ function render() {
 	if (monster2 !== m_empty) {
 		ctx.drawImage(monster2.image, monster2.x, monster2.y);
 
-		if (game.development) {
+		if (!game.production) {
 			//Monster Rectangle
 			ctx.beginPath();
 			ctx.lineWidth = "3";
