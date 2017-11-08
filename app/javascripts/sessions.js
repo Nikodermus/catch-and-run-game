@@ -24,17 +24,19 @@ let
 	current_user,
 	user_info,
 	open_img,
-	fancyboxes;
+	fancyboxes,
+	close_session,
+	sign_out_btn;
 
 //Global Objects
 let global = {
-	development: false
+	production: true
 };
 
 let fifteen_minutes = new Date(new Date().getTime() + 15 * 60 * 1000);
 
 //Constants
-const BACK_URL = global.development ? 'http://localhost:3000' : 'http://game.api.dakio.co';
+const BACK_URL = !global.production ? 'http://localhost:3000' : 'http://game.api.dakio.co';
 const current_page = getPageName(jQuery(location).attr('pathname'));
 
 
@@ -67,7 +69,7 @@ jQuery(document).ajaxSend((event, request) => {
 
 
 function devLog(object) {
-	if (global.development) {
+	if (!global.production) {
 		console.log(object);
 	}
 }
@@ -341,6 +343,105 @@ function renderError(string) {
 	}, 3000);
 }
 
+function loadLeaderboard() {
+	jQuery.ajax({
+		type: 'GET',
+		url: `${BACK_URL}/leaderboard`,
+		success: (data, status, info) => {
+			if (data.success) {
+				devLog(data);
+				renderLeaderboard(data);
+			} else {
+				renderError(data.message);
+			}
+		},
+		error: (data, status, info) => {
+			renderError(data.responseJSON.message);
+		}
+	});
+}
+
+function renderLeaderboard(leaderboard) {
+
+	if (leaderboard.success) {
+		let leaderboard_container = document.getElementById('leaderboard');
+		leaderboard_container.innerHTML = '';
+
+		//Fill each TR
+		for (let index in leaderboard.games) {
+			let date = leaderboard.games[index].created_at.substr(0, leaderboard.games[index].created_at.lastIndexOf('.'));
+			let created_at_moment = moment(date)
+				.local()
+				.format('DD MMM[,] YYYY');
+
+			let tr = document.createElement('tr');
+			let td1 = document.createElement('td');
+			let td2 = document.createElement('td');
+			let td3 = document.createElement('td');
+			let td4 = document.createElement('td');
+			let td5 = document.createElement('td');
+
+			let a = document.createElement('a');
+			a.href = leaderboard.games[index].img_path;
+			a.classList = 'open_img';
+
+			let i = document.createElement('i');
+			i.classList = 'icon icon-nikodermus';
+
+			a.appendChild(i);
+			td1.appendChild(a);
+
+			td2.innerText = leaderboard.users[index];
+			td3.innerText = created_at_moment;
+			td4.innerText = leaderboard.games[index].score;
+			td5.innerText = leaderboard.games[index].difficulty;
+
+			tr.appendChild(td1);
+			tr.appendChild(td2);
+			tr.appendChild(td3);
+			tr.appendChild(td4);
+			tr.appendChild(td5);
+
+			leaderboard_container.appendChild(tr);
+		}
+	}
+
+
+	open_img = document.querySelectorAll('.open_img');
+	open_img.forEach((element) => {
+		element.addEventListener('click', (e) => {
+			e.preventDefault();
+			openImage(e);
+		}, false);
+	});
+
+	document.body.show();
+
+}
+
+
+function closeSession() {
+	jQuery.ajax({
+		type: 'DELETE',
+		url: `${BACK_URL}/sessions/destroy`,
+		success: (data, status, info) => {
+			if (data.success) {
+				deleteSession()
+			} else {
+				renderError(data.responseJSON.message);
+			}
+		},
+		error: (data, status, info) => {
+			renderError(data.responseJSON.message);
+		}
+	});
+}
+
+function deleteSession() {
+	Cookies.remove('token');
+	Cookies.remove('device_token');
+	currentUser();
+}
 
 
 // Window Ready (Using jQuery to avoid conflicts)
@@ -351,6 +452,7 @@ jQuery(document).ready(() => {
 	login_form = document.getElementById('login_form');
 	sign_up_container = document.getElementById('sign_up_container');
 	login_container = document.getElementById('login_container');
+	sign_out_btn = document.getElementById('close_session');
 
 	//Load HTMLCollections
 	sign_up_btn = document.querySelectorAll('.sign_up_btn');
@@ -403,13 +505,21 @@ jQuery(document).ready(() => {
 		});
 	});
 
+	sign_out_btn.addEventListener('click', closeSession, false);
+
 	// Set Headers
 	setInterval(currentUser(), 840000);
 
 	//My Profile Actions
-	if (current_page === 'my_profile') {
-		loadMyProfile();
+	switch (current_page) {
+		case 'my_profile':
+			loadMyProfile();
+			break;
+		case 'leaderboard':
+			loadLeaderboard();
+			break;
 	}
+
 
 	//Create User
 	jQuery(sign_up_form).submit((e) => (signUp(e)));

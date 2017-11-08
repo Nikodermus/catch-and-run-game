@@ -55,7 +55,7 @@
 	--- ✓ User can sign up with e-mail, password
 	--- ✓ User can log in with e-mail, password    
     --- ✓ Users will be authenticated through session and device tokens
-	--- x User can log out, thus destroying tokens
+	--- ✓ User can log out, thus destroying tokens
     --- ✓ Users will have a "My Profile" page with their data and games
 	--- x User can add and modify nickname, name and picture in "My Profile"
 	--- ✓ "My Profile" will show only 10 latest games, and 10 best games for the user
@@ -66,8 +66,8 @@
 
 
 ### Leaderboard
-    --- x Will show 10 best global scores 
-    --- x Leaderboard can be sorted by difficulty
+    --- ✓ Will show 10 best global scores 
+    --- ✓ Leaderboard can be sorted by difficulty
 
 ##### Note: When I refer to two elements "touching" each other, it refers when the images of the images overlaps due to have a shared position
 
