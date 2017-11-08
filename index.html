@@ -2,7 +2,6 @@
 <html lang="en">
 
 <head>
-	<!--Meta must have-->
 	<meta charset="utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -13,9 +12,6 @@
 	<meta name="SLURP" content="all" />
 	<meta name="MSNBOT" content="all" />
 	<meta name="teoma" content="all" />
-
-
-	<!--Meta info-->
 	<meta name="keywords" content="nikodermus, javascript, nicolas m pardo, dakio" />
 	<meta name="description" content="This is a solo project in order to learn better JS, DOM Manipulation and my first approach to canvas, I hope it's fun for you too!"
 	/>
@@ -23,9 +19,6 @@
 	<meta name="author" content="Nicolas M. Pardo | Nikodermus" />
 	<meta name='generator' content='Nicolas M. Pardo | Nikodermus'>
 	<meta name="application-name" content="Catch and Run">
-
-
-	<!--Open Graph data -->
 	<meta property="fb:app_id" content="000000000" />
 	<meta property="og:title" content="Catch &amp; Run | Nikodermus" />
 	<meta property="og:site_name" content="Catch and Run" />
@@ -39,13 +32,8 @@
 	<meta property="og:description" content="This is a solo project in order to learn better JS, DOM Manipulation and my first approach to canvas, I hope it's fun for you too!"
 	/>
 	<meta property="article:author" content="https://www.facebook.com/nikodermus/" />
-
-	<!--Google+ data-->
 	<meta itemprop="description" content="This is a solo project in order to learn better JS, DOM Manipulation and my first approach to canvas, I hope it's fun for you too!">
 	<meta itemprop="name" content="Catch &amp; Run | Nikodermus">
-
-
-	<!-- Twitter Card data -->
 	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:site" content="@ndermus" />
 	<meta name="twitter:creator" content="@ndermus" />
@@ -57,55 +45,27 @@
 	<meta name="twitter:image:height" content="750" />
 	<meta name="twitter:image:alt" content="This is a solo project in order to learn better JS, DOM Manipulation and my first approach to canvas, I hope it's fun for you too!"
 	/>
-
-
-	<!-- Windows 8 and Phone-->
 	<meta name="msapplication-TileImage" content="./favicon.gif" />
 	<meta name="msapplication-TileColor" content="#9C1B00" />
 	<meta name="application-name" content="Catch and Run" />
 	<meta name="MobileOptimized" content="320" />
 	<meta name="msapplication-navbutton-color" content="#9C1B00" />
-
-
-	<!--Only use if needed
-         <link rel="canonical" href="http://www.game.dakio.co" />
-         -->
-
-	<!--Apple Meta Data-->
+	<!--Only use if needed<link rel="canonical" href="http://www.game.dakio.co"/>-->
 	<meta name="apple-mobile-web-app-capable" content="yes" />
 	<meta name="apple-mobile-web-app-status-bar-style" content="black-traslucent" />
-
-	<!--Theming-->
 	<meta name="theme-color" content="#9C1B00" />
 	<link rel="mask-icon" href="assets/safari-pinned-tab.svg" color="#9C1B00" />
-
-
-
-	<!--Favicon-->
 	<link rel="icon" href="favicon.gif" type="image/x-icon" />
 	<link rel="shortcut icon" href="favicon.gif" type="image/x-icon" />
-
-
-	<!--[if lt IE 8]>
-         <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-         <![endif]-->
-
-
-	<title>
-		Catch &amp; Run | Nikodermus
-	</title>
-
-	<!-- Stylesheets -->
+	<!--[if lt IE 8]><p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p><![endif]-->
+	<title>Catch &amp; Run | Nikodermus</title>
 	<link rel="stylesheet" href="./assets/stylesheets/fonts.css" />
 	<link rel="stylesheet" href="./assets/stylesheets/icons.css" />
 	<link rel="stylesheet" href="./assets/stylesheets/main.css" />
-
 	<script src="./assets/javascripts/jquery.min.js"></script>
 	<script src="./assets/javascripts/js.cookie.js"></script>
 	<script src="./assets/javascripts/bundle.js"></script>
 	<script src="./assets/javascripts/sessions.js"></script>
-
-
 </head>
 
 <body>
@@ -116,28 +76,22 @@
 		<span class="user_info" data-user="id"></span>
 		<span class="game_info" data-game="id"></span>
 	</span>
-
 	<div id="game_container">
 		<figure class="top">
 			<img src="./assets/images/pause_icon.png" alt="">
 		</figure>
-		<div class="border">
-		</div>
-		<div class="border">
-		</div>
+		<div class="border"></div>
+		<div class="border"></div>
 		<div class="border">
 			<div class="panel" class="no-select">
 				<div class="left">
 					<img src="./assets/images/lost_soul.gif" alt="">
-					<span id="souls_count">00
-					</span>
+					<span id="souls_count">00</span>
 				</div>
 				<div class="right">
-					<figure class="lives" id="life_count">
-					</figure>
+					<figure class="lives" id="life_count"></figure>
 					<button id="pause_game" class="square">
-						<div>II
-						</div>
+						<div>II</div>
 					</button>
 				</div>
 				<figure>
@@ -146,61 +100,52 @@
 				</figure>
 			</div>
 		</div>
-		<div class="border">
-		</div>
+		<div class="border"></div>
 		<img src="./assets/images/corner.png" alt="" class="corner">
 		<img src="./assets/images/corner.png" alt="" class="corner">
 		<img src="./assets/images/corner.png" alt="" class="corner">
 		<img src="./assets/images/corner.png" alt="" class="corner">
-		<div id="canvas_container">
-		</div>
+		<div id="canvas_container"></div>
 	</div>
 	<div id="pause_menu">
 		<div class="menu_overlay">
 			<div class="menu_container">
-				<h1>Menu
-				</h1>
+				<h1>Menu</h1>
 				<div class="menu_buttons">
 					<a href="javaScript:void(0);">
 						<button class="square" id="close_menu">
 							<div class="square-content">
-								<i class="icon icon-cancel">
-								</i>
+								<i class="icon icon-cancel"></i>
 							</div>
 						</button>
 					</a>
 					<a href="javaScript:void(0);">
 						<button class="square" id="reload_game">
 							<div class="square-content">
-								<i class="icon icon-reset">
-								</i>
+								<i class="icon icon-reset"></i>
 							</div>
 						</button>
 					</a>
 					<a href="https://facebook.com/Nikodermus">
 						<button class="square">
 							<div class="square-content">
-								<i class="icon icon-facebook">
-								</i>
+								<i class="icon icon-facebook"></i>
 							</div>
 						</button>
 					</a>
 					<a href="http://github.com/Nikodermus/catch-and-run-game">
 						<button class="square">
 							<div class="square-content">
-								<i class="icon icon-github">
-								</i>
+								<i class="icon icon-github"></i>
 							</div>
 						</button>
 					</a>
 				</div>
 				<h3>
-					<a href="https://www.idsoftware.com/en-gb" target="_blank">id Software
-					</a>
+					<a href="https://www.idsoftware.com/en-gb" target="_blank">id Software</a>
 				</h3>
 				<h3>
-					<a href="http://github.com/Nikodermus" target="_blank">Nikodermus
-					</a>
+					<a href="http://github.com/Nikodermus" target="_blank">Nikodermus</a>
 				</h3>
 				<figure>
 					<img src="./assets/images/menu_img.png" alt="">
@@ -208,11 +153,9 @@
 			</div>
 		</div>
 	</div>
-	<div id="power_up_text" class="no-select">
-	</div>
+	<div id="power_up_text" class="no-select"></div>
 	<div id="count_down" class="no-select">
-		<span>3
-		</span>
+		<span>3</span>
 	</div>
 	<div id="main_menu">
 		<div class="btn-container">
@@ -230,14 +173,7 @@
 				</div>
 			</div>
 			<div class="right">
-				<button>
-					<i class="icon icon-nikodermus">
-					</i>
-				</button>
-				<button>
-					<i class="icon icon-facebook">
-					</i>
-				</button>
+
 			</div>
 		</div>
 		<div class="menu_content">
@@ -248,7 +184,6 @@
 				<figure>
 					<img src="./assets/images/logo.png" alt="">
 				</figure>
-
 			</div>
 			<button id="easy_level">I'm a baby</button>
 			<button id="normal_level">Hurt me</button>
@@ -260,69 +195,64 @@
 				</a>
 			</div>
 		</div>
-		<button id=" close_session " class="user_elem ">Close session</button>
-
+		<button id="close_session" class="user_elem">Close session</button>
 	</div>
-	<div id="game_over ">
-		<div class="game_container ">
+	<div id="game_over">
+		<div class="game_container">
 			<figure>
-				<img src="./assets/images/marine.gif " alt=" " id="death_gif ">
+				<img src="./assets/images/marine.gif" alt="" id="death_gif">
 			</figure>
-			<button id="restart_game ">Restart</button>
-			<button id="reload_window ">Main Menu</button>
+			<button id="restart_game">Restart</button>
+			<button id="reload_window">Main Menu</button>
 		</div>
 	</div>
-	<div class="fancybox_container " id="login_container ">
-		<div class="fancybox ">
-			<div class="fancybox_content ">
-				<button class="close_btn ">Close</button>
-				<form action=" " accept-method="post " id="login_form ">
-					<div class="column ">
-						<label for="email_login ">Email</label>
-						<input type="email " id="email_login " name="session[email] ">
+	<div class="fancybox_container" id="login_container">
+		<div class="fancybox">
+			<div class="fancybox_content">
+				<button class="close_btn">Close</button>
+				<form action="" accept-method="post" id="login_form">
+					<div class="column">
+						<label for="email_login">Email</label>
+						<input type="email" id="email_login" name="session[email]">
 					</div>
-					<div class="column ">
-						<label for="password_login ">Password</label>
-						<input type="password " id="password_login " name="session[password] ">
+					<div class="column">
+						<label for="password_login">Password</label>
+						<input type="password" id="password_login" name="session[password]">
 					</div>
 					<div>
-						<input type="submit " value="Login ">
+						<input type="submit" value="Login">
 					</div>
 				</form>
 			</div>
 		</div>
 	</div>
-	<div class="fancybox_container " id="sign_up_container ">
-		<div class="fancybox ">
-			<div class="fancybox_content ">
-				<button class="close_btn ">Close</button>
-				<form action=" " id="sign_up_form " accept-method="post ">
-					<div class="column ">
-						<label for="name_sign_up ">Name</label>
-						<input type="text " id="name_sign_up " name="user[name] ">
-						<label for="email_sign_up ">Email</label>
-						<input type="email " id="email_sign_up " name="user[email] ">
-						<label for="nickname_sign_up ">Nickname</label>
-						<input type="text " id="nickname_sign_up " name="user[nickname] ">
+	<div class="fancybox_container" id="sign_up_container">
+		<div class="fancybox">
+			<div class="fancybox_content">
+				<button class="close_btn">Close</button>
+				<form action="" id="sign_up_form" accept-method="post">
+					<div class="column">
+						<label for="name_sign_up">Name</label>
+						<input type="text" id="name_sign_up" name="user[name]">
+						<label for="email_sign_up">Email</label>
+						<input type="email" id="email_sign_up" name="user[email]">
+						<label for="nickname_sign_up">Nickname</label>
+						<input type="text" id="nickname_sign_up" name="user[nickname]">
 					</div>
-					<div class="column ">
-						<label for="password_sign_up ">Password</label>
-						<input type="password " id="password_sign_up " name="user[password] ">
-						<label for="password_confirmation_sign_up ">Password Confirmation</label>
-						<input type="password " id="password_confirmation_sign_up " name="user[password_confirmation] ">
+					<div class="column">
+						<label for="password_sign_up">Password</label>
+						<input type="password" id="password_sign_up" name="user[password]">
+						<label for="password_confirmation_sign_up">Password Confirmation</label>
+						<input type="password" id="password_confirmation_sign_up" name="user[password_confirmation]">
 					</div>
-					<div class="clearfix ">
-						<input type="submit " value="Sign Up ">
+					<div class="clearfix">
+						<input type="submit" value="Sign Up">
 					</div>
-
-
 				</form>
-				<button class="login_btn ">Login</button>
+				<button class="login_btn">Login</button>
 			</div>
 		</div>
-
 	</div>
-
 </body>
 
 </html>
