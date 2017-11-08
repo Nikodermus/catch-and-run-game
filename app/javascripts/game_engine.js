@@ -250,7 +250,8 @@ function Projectile(new_projectile) {
 	params.flag = mouseLocation();
 
 	params.impact = new Howl({
-		src: [`./assets/sounds/impact.wav`]
+		src: [`./assets/sounds/impact.wav`],
+		volume: 0.4
 	});
 
 	params.insideCanvas = function () {
